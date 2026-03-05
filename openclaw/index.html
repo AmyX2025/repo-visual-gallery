@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw 项目可视化解读</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --bg-card: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --text-muted: #888;
+  --accent: #e85d26;
+  --accent-light: #fff3ed;
+  --accent2: #3b6df0;
+  --accent2-light: #eef3ff;
+  --accent3: #10a37f;
+  --accent3-light: #eafaf5;
+  --accent4: #8b5cf6;
+  --accent4-light: #f3eeff;
+  --accent5: #e04e8a;
+  --accent5-light: #fef0f5;
+  --accent6: #0ea5c7;
+  --accent6-light: #ecfbff;
+  --border: #e5e2dc;
+  --shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,32px);}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(248,247,244,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:12px 0;
+}
+.nav .container{display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-weight:800;font-size:18px;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.nav-links{display:flex;gap:20px;flex-wrap:wrap;}
+.nav-links a{
+  color:var(--text-secondary);text-decoration:none;font-size:13px;font-weight:500;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--accent);}
+@media(max-width:700px){.nav-links{display:none;}}
+
+/* FADE IN */
+.fade-in{opacity:0;transform:translateY(24px);transition:all 0.7s cubic-bezier(0.22,1,0.36,1);}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* SECTIONS */
+.section{padding:clamp(40px,6vw,80px) 0;}
+.section-label{
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);margin-bottom:8px;
+}
+.section-title{font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-0.02em;line-height:1.2;}
+.section-desc{font-size:clamp(14px,2vw,17px);color:var(--text-secondary);margin-top:8px;max-width:700px;}
+
+/* ===== 1. HERO ===== */
+.hero{padding:clamp(60px,8vw,100px) 0 clamp(40px,6vw,60px);text-align:center;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 18px;background:var(--accent-light);border:1px solid rgba(232,93,38,0.2);
+  border-radius:100px;font-size:13px;color:var(--accent);font-weight:600;
+  margin-bottom:28px;
+}
+.hero h1{
+  font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1.15;
+  margin-bottom:16px;
+}
+.hero h1 span{color:var(--accent);}
+.hero .subtitle{
+  font-size:clamp(15px,2.2vw,19px);color:var(--text-secondary);max-width:680px;
+  margin:0 auto 40px;line-height:1.8;
+}
+.file-tree{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:clamp(20px,3vw,32px);text-align:left;max-width:760px;margin:0 auto;
+  box-shadow:var(--shadow);
+}
+.file-tree-title{font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:12px;letter-spacing:0.05em;}
+.file-tree pre{
+  font-family:'Fira Code',monospace;font-size:clamp(12px,1.6vw,14px);line-height:1.9;
+  overflow-x:auto;color:var(--text);
+}
+.file-tree .comment{color:var(--accent);font-family:'Noto Sans SC',sans-serif;font-size:12px;}
+
+/* ===== 2. ARCHITECTURE ===== */
+.arch-stack{display:flex;flex-direction:column;gap:0;max-width:900px;margin:0 auto;}
+.arch-layer{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:clamp(16px,2vw,24px);margin-top:-10px;position:relative;z-index:1;
+  cursor:pointer;transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+  box-shadow:var(--shadow);
+}
+.arch-layer:first-child{margin-top:0;}
+.arch-layer:hover{transform:translateY(-3px);box-shadow:0 6px 30px rgba(0,0,0,0.09);border-color:rgba(0,0,0,0.12);}
+.arch-layer.expanded{border-color:var(--accent);box-shadow:0 6px 30px rgba(232,93,38,0.12);}
+.layer-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.layer-num{
+  width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.layer-icon{font-size:22px;flex-shrink:0;}
+.layer-title{font-size:clamp(15px,2vw,18px);font-weight:700;flex:1;}
+.layer-brief{font-size:13px;color:var(--text-muted);margin-left:auto;}
+.layer-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.chip{
+  display:inline-block;padding:3px 10px;border-radius:6px;font-family:'Fira Code',monospace;
+  font-size:11px;font-weight:500;background:var(--bg);border:1px solid var(--border);
+  color:var(--text-secondary);
+}
+.layer-detail{
+  max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.22,1,0.36,1),margin 0.3s;
+  margin-top:0;
+}
+.arch-layer.expanded .layer-detail{max-height:400px;margin-top:16px;}
+.layer-detail-inner{
+  padding:16px;background:var(--bg);border-radius:12px;
+  font-size:14px;color:var(--text-secondary);line-height:1.8;
+}
+.arch-connector{
+  display:flex;justify-content:center;z-index:0;position:relative;height:12px;
+}
+.arch-connector svg{color:var(--text-muted);opacity:0.4;}
+
+/* ===== 3. WORKFLOW ===== */
+.flow-scroll{overflow-x:auto;padding-bottom:16px;}
+.flow-phases{display:flex;align-items:flex-start;gap:0;min-width:900px;}
+.flow-phase{
+  display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;
+}
+.phase-circle{
+  width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+}
+.phase-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.phase-desc{font-size:12px;color:var(--text-muted);line-height:1.5;padding:0 8px;}
+.flow-arrow{
+  width:40px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);font-size:20px;margin-top:16px;opacity:0.4;
+}
+@media(max-width:700px){
+  .flow-phases{flex-direction:column;align-items:center;min-width:0;gap:8px;}
+  .flow-arrow{transform:rotate(90deg);margin-top:0;width:auto;}
+  .flow-phase{width:100%;max-width:280px;}
+}
+
+/* ===== 4. CHAT ===== */
+.chat-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.chat-tab{
+  padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;
+  background:var(--bg-card);border:1px solid var(--border);cursor:pointer;
+  transition:all 0.2s;color:var(--text-secondary);
+}
+.chat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.chat-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.chat-scenario{display:none;}
+.chat-scenario.active{display:block;}
+.chat-thread{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:clamp(16px,3vw,28px);box-shadow:var(--shadow);
+  max-width:720px;
+}
+.chat-msg{
+  display:flex;gap:12px;margin-bottom:16px;
+  opacity:0;animation:chatIn 0.4s ease forwards;
+}
+.chat-msg:last-child{margin-bottom:0;}
+.chat-avatar{
+  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;font-weight:700;color:#fff;
+}
+.chat-body{flex:1;}
+.chat-sender{font-size:12px;font-weight:700;margin-bottom:4px;}
+.chat-bubble{
+  display:inline-block;padding:10px 16px;border-radius:12px;
+  font-size:14px;line-height:1.7;max-width:100%;
+  background:var(--bg);border:1px solid var(--border);
+}
+.chat-msg .aside{
+  font-size:12px;color:var(--text-muted);font-style:italic;margin-top:6px;
+  padding-left:12px;border-left:2px solid var(--border);
+}
+@keyframes chatIn{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ===== 5. SAAS ===== */
+.saas-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px;
+}
+.saas-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:clamp(18px,2.5vw,24px);box-shadow:var(--shadow);
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.saas-card:hover{transform:translateY(-3px);box-shadow:0 6px 30px rgba(0,0,0,0.09);}
+.saas-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.saas-icon{font-size:28px;}
+.saas-name{font-size:16px;font-weight:700;}
+.saas-price-tag{
+  margin-left:auto;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;
+}
+.tag-free{background:var(--accent3-light);color:var(--accent3);}
+.tag-paid{background:#fef9ec;color:#b45309;}
+.tag-freemium{background:var(--accent2-light);color:var(--accent2);}
+.saas-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;}
+.saas-meta{font-size:12px;color:var(--text-muted);line-height:2;}
+.saas-meta strong{color:var(--text-secondary);font-weight:600;}
+.saas-footer{
+  margin-top:12px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--text-muted);
+}
+
+/* ===== 6. GLOSSARY ===== */
+.glossary-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;
+}
+.glossary-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--shadow);
+  transition:all 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.glossary-card:hover{transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+.glossary-term{
+  font-family:'Fira Code',monospace;font-size:14px;font-weight:600;
+  margin-bottom:6px;
+}
+.glossary-def{font-size:13px;color:var(--text-secondary);line-height:1.7;}
+
+/* ===== 7. FOOTER ===== */
+.footer{
+  padding:40px 0;border-top:1px solid var(--border);margin-top:40px;text-align:center;
+}
+.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:16px;flex-wrap:wrap;}
+.footer-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;}
+.footer-links a:hover{color:var(--accent);}
+.footer-copy{font-size:13px;color:var(--text-muted);}
+
+/* Tip tooltip */
+.tip{
+  position:relative;border-bottom:1px dashed var(--accent);cursor:help;
+  color:var(--accent);font-weight:500;
+}
+.tip:hover::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);padding:8px 14px;background:var(--text);color:#fff;
+  border-radius:8px;font-size:12px;font-weight:400;white-space:nowrap;max-width:280px;
+  white-space:normal;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Term links */
+.term-link{
+  color:var(--accent);font-weight:600;text-decoration:none;
+  border-bottom:1.5px dashed rgba(232,93,38,0.4);
+  cursor:pointer;transition:all 0.2s;
+  padding:0 1px;border-radius:2px;
+  position:relative;
+}
+.term-link:hover{
+  background:var(--accent-light);border-bottom-color:var(--accent);
+}
+.term-link.active{
+  background:var(--accent-light);border-bottom-color:var(--accent);
+}
+
+/* Floating popover */
+.term-popover{
+  position:fixed;z-index:200;
+  width:min(360px, calc(100vw - 32px));
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px 20px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  opacity:0;transform:translateY(6px) scale(0.97);
+  transition:opacity 0.2s cubic-bezier(0.22,1,0.36,1), transform 0.2s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.term-popover.visible{
+  opacity:1;transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+.term-popover::before{
+  content:'';position:absolute;
+  width:12px;height:12px;background:var(--bg-card);
+  border-left:1px solid var(--border);border-top:1px solid var(--border);
+  transform:rotate(45deg);
+}
+.term-popover.arrow-top::before{
+  top:-7px;left:24px;
+}
+.term-popover.arrow-bottom::before{
+  bottom:-7px;left:24px;
+  border-left:none;border-top:none;
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.popover-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.popover-term{
+  font-family:'Fira Code',monospace;font-size:14px;font-weight:600;
+  color:var(--accent);
+}
+.popover-close{
+  width:24px;height:24px;border-radius:6px;border:none;
+  background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);transition:all 0.15s;
+  font-size:16px;line-height:1;
+}
+.popover-close:hover{background:var(--bg);color:var(--text);}
+.popover-body{
+  font-size:13px;color:var(--text-secondary);line-height:1.75;
+}
+
+/* Popover backdrop overlay (invisible, just catches clicks) */
+.popover-backdrop{
+  position:fixed;inset:0;z-index:199;
+  display:none;
+}
+.popover-backdrop.visible{display:block;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+<div class="container">
+  <div class="nav-logo">&#129438; OpenClaw</div>
+  <div class="nav-links">
+    <a href="#arch">架构</a>
+    <a href="#flow">工作流</a>
+    <a href="#chat">组件对话</a>
+    <a href="#saas">工具箱</a>
+    <a href="#glossary">术语表</a>
+  </div>
+</div>
+</nav>
+
+<div class="container">
+
+<!-- ===== 1. HERO ===== -->
+<section class="hero fade-in">
+  <div class="hero-badge">GitHub 开源项目解读</div>
+  <h1><span>OpenClaw</span> 到底是什么东西？</h1>
+  <p class="subtitle">
+    想象你有一个永远在线的私人助手，它同时帮你回 WhatsApp、Telegram、Discord、Slack、Email......所有消息。
+    OpenClaw 就是这样一个开源 AI 助手框架 -- 它跑在你自己的设备上，数据完全归你，还能通过 5700+ 个"技能"学会各种新本事。
+    在 GitHub 上拿了 25.8 万颗星，比大部分明星项目都火。
+  </p>
+  <div class="file-tree">
+    <div class="file-tree-title">PROJECT STRUCTURE</div>
+    <pre>
+openclaw/
+├── src/                <span class="comment">&lt;- 大脑和神经系统，所有核心逻辑都在这</span>
+│   ├── gateway/        <span class="comment">&lt;- 总调度中心，像机场的塔台</span>
+│   ├── agents/         <span class="comment">&lt;- AI 智能体，真正干活的那位</span>
+│   ├── channels/       <span class="comment">&lt;- 各平台的"翻译官"</span>
+│   ├── cli/            <span class="comment">&lt;- 命令行遥控器</span>
+│   ├── browser/        <span class="comment">&lt;- 帮 AI 上网冲浪的浏览器</span>
+│   └── canvas-host/    <span class="comment">&lt;- AI 画画板，能渲染交互界面</span>
+├── apps/               <span class="comment">&lt;- 手机和电脑上的配套 App</span>
+│   ├── macos/          <span class="comment">&lt;- macOS 菜单栏小助手</span>
+│   ├── ios/            <span class="comment">&lt;- iPhone 版</span>
+│   └── android/        <span class="comment">&lt;- 安卓版</span>
+├── extensions/         <span class="comment">&lt;- 插件商店，30+ 个扩展</span>
+├── skills/             <span class="comment">&lt;- 技能库，教 AI 新本事的配方</span>
+├── ui/                 <span class="comment">&lt;- 网页版控制面板</span>
+├── docs/               <span class="comment">&lt;- 说明书</span>
+├── Dockerfile          <span class="comment">&lt;- 集装箱打包方案，到哪都能跑</span>
+└── package.json        <span class="comment">&lt;- 项目身份证和依赖清单</span>
+</pre>
+  </div>
+</section>
+
+<!-- ===== 2. ARCHITECTURE ===== -->
+<section class="section fade-in" id="arch">
+  <div class="section-label">Architecture</div>
+  <h2 class="section-title">架构全景：从上到下六层积木</h2>
+  <p class="section-desc">点击每一层查看详细解读。整个系统像一栋六层大楼，从用户触达到 AI 模型调用，每层各司其职。</p>
+</section>
+<div class="arch-stack fade-in">
+
+  <!-- Layer 1 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent);">1</div>
+      <div class="layer-icon">&#128241;</div>
+      <div class="layer-title">用户触达层 -- 消息从哪里来</div>
+      <div class="layer-brief">20+ 个聊天平台</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">WhatsApp</span><span class="chip">Telegram</span><span class="chip">Discord</span>
+      <span class="chip">Slack</span><span class="chip">Signal</span><span class="chip">iMessage</span>
+      <span class="chip">Teams</span><span class="chip">Matrix</span><span class="chip">Email</span>
+      <span class="chip">Google Chat</span><span class="chip">LINE</span><span class="chip">Feishu</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      这一层就像一个超级前台 -- 不管客人从哪扇门进来（WhatsApp、Telegram、还是 Email），前台都能听懂他们说的话，然后翻译成统一的格式往里传。每个平台都有一个专属的"翻译官"（Channel Adapter），它负责把平台特有的消息格式转换成 OpenClaw 内部通用的格式。核心代码在 <code>src/channels/</code> 和 <code>extensions/</code> 里，支持的平台超过 20 个。
+    </div></div>
+  </div>
+
+  <div class="arch-connector"><svg width="24" height="16" viewBox="0 0 24 16"><path d="M12 0v16M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <!-- Layer 2 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent2);">2</div>
+      <div class="layer-icon">&#9889;</div>
+      <div class="layer-title">Gateway 网关层 -- 总调度塔台</div>
+      <div class="layer-brief">实时通信控制中枢</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">server.impl.ts</span><span class="chip">server-http.ts</span>
+      <span class="chip">server-channels.ts</span><span class="chip">auth.ts</span>
+      <span class="chip">protocol/</span><span class="chip">node-registry.ts</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      Gateway 是整个系统的心脏，像机场的塔台一样指挥一切。所有消息进来先经过它，所有 App 连接也走它。它使用 WebSocket 技术（一种让设备和服务器保持"电话连线"的方式）保持实时通信。它负责身份验证（谁可以连？）、消息路由（这条消息该给哪个 AI？）、Session 管理（之前聊了什么？），以及设备配对（你的 iPhone 要先"握手"才能用）。代码在 <code>src/gateway/</code>，是整个项目最庞大的模块。
+    </div></div>
+  </div>
+
+  <div class="arch-connector"><svg width="24" height="16" viewBox="0 0 24 16"><path d="M12 0v16M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <!-- Layer 3 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent3);">3</div>
+      <div class="layer-icon">&#129504;</div>
+      <div class="layer-title">Agent 智能体层 -- AI 真正干活的地方</div>
+      <div class="layer-brief">AI 思考 + 执行任务</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">pi-embedded-runner/</span><span class="chip">pi-tools.ts</span>
+      <span class="chip">bash-tools.ts</span><span class="chip">skills/</span>
+      <span class="chip">system-prompt.ts</span><span class="chip">model-auth.ts</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      这是 AI 大脑所在的楼层。Agent 基于 Pi SDK（AI 建造工具包）构建，能调用各种工具 -- 执行电脑命令、上网查资料、操控浏览器、生成网页界面，还能根据你装的 Skills 学会新技能。每次对话开始前，它会先写一份"身份说明"告诉 AI 大脑"你是谁、你能做什么"。AI 的记忆容量有限（用 Token 计量），记不住太多内容时会自动把旧对话压缩成摘要。任务太复杂？它还能派出"分身"分头处理。
+    </div></div>
+  </div>
+
+  <div class="arch-connector"><svg width="24" height="16" viewBox="0 0 24 16"><path d="M12 0v16M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <!-- Layer 4 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent4);">4</div>
+      <div class="layer-icon">&#128268;</div>
+      <div class="layer-title">服务支撑层 -- 记忆、浏览器、定时任务</div>
+      <div class="layer-brief">记忆 + 浏览器 + 定时任务</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">memory/</span><span class="chip">browser/</span><span class="chip">canvas-host/</span>
+      <span class="chip">cron/</span><span class="chip">tts/</span><span class="chip">media/</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      这一层是 Agent 的"后勤部队"。记忆系统用 SQLite（一种轻量级的本地数据库，像随身笔记本）存储，支持两种查找方式 --"按关键词找"（比如搜索"天气"两个字）和"按意思找"（比如你问"温度"，它能联想到之前聊过的"天气预报"话题）。Playwright（AI 的"机器人手"）能替 AI 操控浏览器上网查资料、填表格。Canvas 让 AI 能画出可交互的网页界面。Cron 是"定时闹钟"，支持定时任务（比如每天早上 8 点给你发天气预报）。TTS（文字转语音）让 AI 能"开口说话"。
+    </div></div>
+  </div>
+
+  <div class="arch-connector"><svg width="24" height="16" viewBox="0 0 24 16"><path d="M12 0v16M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <!-- Layer 5 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent5);">5</div>
+      <div class="layer-icon">&#128187;</div>
+      <div class="layer-title">客户端 App 层 -- 各平台原生体验</div>
+      <div class="layer-brief">macOS + iOS + Android + Web UI</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">apps/macos/ (Swift)</span><span class="chip">apps/ios/ (Swift)</span>
+      <span class="chip">apps/android/ (Kotlin)</span><span class="chip">ui/ (Lit)</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      除了通过第 1 层的 20+ 个聊天平台（WhatsApp、Telegram 等）使用之外，OpenClaw 还开发了自己的专属 App。macOS 版是一个住在屏幕右上角菜单栏里的小助手，随时点击就能对话；iOS 和 Android 都有独立的 OpenClaw App，装在手机上就能直接跟你家里的 Gateway 通信。另外还有一个网页版控制面板，打开浏览器就能监控和管理 AI 助手的运行状态。更酷的是，这些自家 App 还能让 AI "借用"你手机上的硬件 -- 比如用摄像头拍照、用麦克风录音，这是第三方聊天平台做不到的。
+    </div></div>
+  </div>
+
+  <div class="arch-connector"><svg width="24" height="16" viewBox="0 0 24 16"><path d="M12 0v16M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <!-- Layer 6 -->
+  <div class="arch-layer" onclick="toggleLayer(this)">
+    <div class="layer-header">
+      <div class="layer-num" style="background:var(--accent6);">6</div>
+      <div class="layer-icon">&#9729;</div>
+      <div class="layer-title">外部服务层 -- AI 模型 & 第三方 API</div>
+      <div class="layer-brief">10+ 模型供应商 + 搜索/语音</div>
+    </div>
+    <div class="layer-chips">
+      <span class="chip">OpenAI</span><span class="chip">Anthropic</span><span class="chip">Gemini</span>
+      <span class="chip">Ollama</span><span class="chip">Brave Search</span><span class="chip">ElevenLabs</span>
+      <span class="chip">Deepgram</span><span class="chip">Fly.io</span>
+    </div>
+    <div class="layer-detail"><div class="layer-detail-inner">
+      最底层连接着各种外部服务。AI "大脑"方面支持 10+ 家供应商（OpenAI、Anthropic、Google Gemini 等等），还有自动故障切换功能 -- 就像手机有两张 SIM 卡，一张没信号了自动切换到另一张。每家服务都需要一把"数字钥匙"（API Key）来使用。搜索用 Brave Search，语音转文字用 Deepgram（AI 速记员），文字转语音用 ElevenLabs（AI 配音演员）。部署可以选 Fly.io 云端或者自己用 Docker 在本地跑。
+    </div></div>
+  </div>
+
+</div>
+
+<!-- ===== 3. WORKFLOW ===== -->
+<section class="section fade-in" id="flow">
+  <div class="section-label">Workflow</div>
+  <h2 class="section-title">一条消息的旅程：从发送到回复</h2>
+  <p class="section-desc">当你在 WhatsApp 上给 OpenClaw 发一条消息，背后发生了什么？</p>
+</section>
+<div class="flow-scroll fade-in">
+  <div class="flow-phases">
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent3);">1</div>
+      <div class="phase-title">消息到达</div>
+      <div class="phase-desc">你在 WhatsApp / Telegram / Discord 上发了一条消息</div>
+    </div>
+    <div class="flow-arrow">&#10132;</div>
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent2);">2</div>
+      <div class="phase-title">翻译官接手</div>
+      <div class="phase-desc">Channel Adapter 把平台特有格式翻译成统一内部格式</div>
+    </div>
+    <div class="flow-arrow">&#10132;</div>
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent);">3</div>
+      <div class="phase-title">Gateway 路由</div>
+      <div class="phase-desc">验证身份、加载历史对话、找到对应的 Session</div>
+    </div>
+    <div class="flow-arrow">&#10132;</div>
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent4);">4</div>
+      <div class="phase-title">Agent 思考</div>
+      <div class="phase-desc">AI 读取上下文，决定要不要用工具，开始生成回复</div>
+    </div>
+    <div class="flow-arrow">&#10132;</div>
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent5);">5</div>
+      <div class="phase-title">工具执行</div>
+      <div class="phase-desc">如果需要，Agent 会调用 bash、浏览器、搜索等工具</div>
+    </div>
+    <div class="flow-arrow">&#10132;</div>
+    <div class="flow-phase">
+      <div class="phase-circle" style="background:var(--accent6);">6</div>
+      <div class="phase-title">回复送达</div>
+      <div class="phase-desc">回复经 Gateway 回到原渠道，你看到消息，整个旅程完成</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. CHAT ===== -->
+<section class="section fade-in" id="chat">
+  <div class="section-label">Behind the Scenes</div>
+  <h2 class="section-title">组件之间怎么"聊天"的？</h2>
+  <p class="section-desc">如果 OpenClaw 的各个组件是同事，它们在工作群里是怎么协作的？</p>
+</section>
+
+<div class="fade-in">
+  <div class="chat-tabs">
+    <div class="chat-tab active" onclick="switchChat('s1',this)">场景一：收到一条 WhatsApp 消息</div>
+    <div class="chat-tab" onclick="switchChat('s2',this)">场景二：Agent 需要上网查资料</div>
+    <div class="chat-tab" onclick="switchChat('s3',this)">场景三：手机拍照指令</div>
+  </div>
+
+  <!-- Scenario 1 -->
+  <div class="chat-scenario active" id="s1">
+    <div class="chat-thread">
+      <div class="chat-msg" style="animation-delay:0.1s;">
+        <div class="chat-avatar" style="background:var(--accent3);">WA</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent3);">WhatsApp 翻译官</div>
+          <div class="chat-bubble">报告！刚收到一条消息，来自 +86 138****1234："明天北京天气怎么样？"。已经翻译成统一格式了，交给你处理。</div>
+          <div class="aside">WhatsApp 连接工具（Baileys）收到消息后，翻译官把 WhatsApp 的专用格式转换成 OpenClaw 内部通用格式</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.4s;">
+        <div class="chat-avatar" style="background:var(--accent2);">GW</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent2);">Gateway 塔台</div>
+          <div class="chat-bubble">收到！让我先查一下......这个号码在允许列表里，验证通过。Session Key 是 <code>main:whatsapp:+8613800001234</code>，上次聊天记录已加载。Agent，轮到你了！</div>
+          <div class="aside">Gateway 检查这个号码是否在"允许名单"里，然后加载之前的聊天记录文件，把历史对话一起打包给 AI</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.7s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">好的，我先看看有没有天气相关的 Skill......没有。那我用 web_fetch 工具去查一下天气预报网站。稍等！</div>
+          <div class="aside">Agent 先检查自己有没有天气相关的技能，没有就决定直接上网去查</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:1.0s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">查到了！北京明天多云转晴，最高温 18 度，最低温 6 度。我把回复组织好了，Gateway 帮我发回去吧。</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:1.3s;">
+        <div class="chat-avatar" style="background:var(--accent2);">GW</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent2);">Gateway 塔台</div>
+          <div class="chat-bubble">搞定！已经通过 WhatsApp 翻译官发回去了，用户那边应该已经看到回复了。Session 已保存。</div>
+          <div class="aside">回复经 Gateway 送回 WhatsApp 翻译官，再通过 WhatsApp 连接工具发出去，聊天记录自动保存到历史文件中</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="chat-scenario" id="s2">
+    <div class="chat-thread">
+      <div class="chat-msg" style="animation-delay:0.1s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">用户让我帮忙查一下 React 19 的新特性。这个我需要上网看看最新资料。浏览器同学，出动！</div>
+          <div class="aside">Agent 判断这个问题需要最新信息，决定让"机器人手"（Playwright）帮忙上网查</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.4s;">
+        <div class="chat-avatar" style="background:var(--accent6);">BR</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent6);">Playwright 机器人手</div>
+          <div class="chat-bubble">好嘞！我在后台悄悄打开了一个浏览器（不用显示画面的那种），访问了 react.dev 官网。我不截图 -- 我直接读取页面的"文字骨架"（Accessibility Tree），信息一样全但省钱 100 倍。内容拿到了，给你！</div>
+          <div class="aside">Playwright（AI 的机器人手）启动了一个"隐形浏览器"（Chromium），通过读取网页的文字结构而非截图来获取内容，极大节省费用</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.7s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">太好了，信息很全。让我整理一下......React 19 主要有 Server Components 正式版、Actions API、use() Hook 等新特性。我把总结写好了，发给用户吧。</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:1.0s;">
+        <div class="chat-avatar" style="background:#888;">MEM</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:#888;">Memory 记忆模块</div>
+          <div class="chat-bubble">我把这次查到的 React 19 信息存进"记忆笔记本"了。下次用户再问相关问题，我能直接翻笔记本找到，不用再上网查。</div>
+          <div class="aside">Memory 模块把信息存入本地数据库（SQLite），下次类似的问题可以按"意思"联想检索，不需要关键词完全匹配</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="chat-scenario" id="s3">
+    <div class="chat-thread">
+      <div class="chat-msg" style="animation-delay:0.1s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">用户说"帮我拍张照片"。这个需要用到手机摄像头......Gateway，有哪些 Node 在线？</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.4s;">
+        <div class="chat-avatar" style="background:var(--accent2);">GW</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent2);">Gateway 塔台</div>
+          <div class="chat-bubble">让我查一下 Node Registry......找到了！用户的 iPhone 15 Pro 在线，注册了 camera 能力。我把拍照请求路由过去。</div>
+          <div class="aside">Gateway 在"设备花名册"里查找哪些已配对的设备有摄像头能力</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:0.7s;">
+        <div class="chat-avatar" style="background:var(--accent5);">IP</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent5);">iPhone Node</div>
+          <div class="chat-bubble">收到拍照指令！正在打开后置摄像头......咔嚓！照片拍好了，JPEG 数据通过 WebSocket 回传给 Gateway。</div>
+          <div class="aside">iPhone 上的 App 收到拍照指令后，调用手机摄像头拍照，然后把照片通过实时连接传回 Gateway</div>
+        </div>
+      </div>
+      <div class="chat-msg" style="animation-delay:1.0s;">
+        <div class="chat-avatar" style="background:var(--accent4);">AI</div>
+        <div class="chat-body">
+          <div class="chat-sender" style="color:var(--accent4);">Pi Agent</div>
+          <div class="chat-bubble">照片收到了！已经发给用户了。如果用户需要，我还能分析照片内容。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5. SAAS TOOLBOX ===== -->
+<section class="section fade-in" id="saas">
+  <div class="section-label">SaaS Toolbox</div>
+  <h2 class="section-title">第三方服务 & 依赖工具箱</h2>
+  <p class="section-desc">OpenClaw 连接了哪些外部服务？要花多少钱？什么时候需要升级？</p>
+</section>
+
+<div class="saas-grid fade-in">
+
+  <!-- OpenAI -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#129302;</div>
+      <div class="saas-name">OpenAI</div>
+      <span class="saas-price-tag tag-paid">付费</span>
+    </div>
+    <div class="saas-desc">提供 GPT-4o、GPT-5 等 AI "大脑"。OpenClaw 可以租用它家的大脑来思考和回答问题，就像请了一个远程外脑。回复是一个字一个字"流"出来的，所以你能看到 AI 在实时打字。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>AI 模型供应商<br>
+      <strong>免费额度：</strong>新用户 $5 额度<br>
+      <strong>价格：</strong>GPT-4o 约每百万字 $2.5（输入）/ $10（输出）<br>
+      <strong>何时升级：</strong>每天跟 AI 聊天超过 50 轮时，需要升级账户等级来获得更快的响应速度
+    </div>
+    <div class="saas-footer">关联：Agent 层 / model-auth.ts</div>
+  </div>
+
+  <!-- Anthropic -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128172;</div>
+      <div class="saas-name">Anthropic</div>
+      <span class="saas-price-tag tag-paid">付费</span>
+    </div>
+    <div class="saas-desc">Claude 系列 AI "大脑"的供应商。就像 OpenAI 提供 GPT，Anthropic 提供 Claude -- 也是 AI 界的"大脑工厂"之一。OpenClaw 支持同时对接多家，哪个合适用哪个。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>AI 模型供应商<br>
+      <strong>免费额度：</strong>无公开免费额度<br>
+      <strong>价格：</strong>Claude Sonnet 约每百万字 $3（输入）/ $15（输出）<br>
+      <strong>何时升级：</strong>需要 AI 记住更多内容或进行更深层的思考推理时，可选更高级的 Opus 版本
+    </div>
+    <div class="saas-footer">关联：Agent 层 / Pi SDK</div>
+  </div>
+
+  <!-- Google Gemini -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#10024;</div>
+      <div class="saas-name">Google Gemini</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">Google 出品的 AI 大脑。它的特长是能同时看懂文字、图片和视频（不像有些 AI 只能读文字），而且"记忆力"超好，一次能读完一整本书的内容都不忘。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>AI 模型供应商<br>
+      <strong>免费额度：</strong>Gemini Flash 每分钟 15 次免费<br>
+      <strong>价格：</strong>Gemini Pro 约每百万字 $1.25（输入）/ $5（输出）<br>
+      <strong>何时升级：</strong>需要分析超长文档，或者需要 AI 看懂图片和视频时
+    </div>
+    <div class="saas-footer">关联：Agent 层 / google-gemini-cli-auth</div>
+  </div>
+
+  <!-- Brave Search -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128269;</div>
+      <div class="saas-name">Brave Search</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">一个注重隐私保护的搜索引擎（类似百度、Google）。AI 助手需要帮你上网查资料时，就是通过 Brave 的搜索接口去找信息的，相当于 AI 的"搜索入口"。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>网页搜索<br>
+      <strong>免费额度：</strong>每月 2,000 次查询<br>
+      <strong>价格：</strong>$3/1000 次查询<br>
+      <strong>何时升级：</strong>AI 助手每天帮你搜索超过 60 次时需要付费计划
+    </div>
+    <div class="saas-footer">关联：Agent 工具 / web_search</div>
+  </div>
+
+  <!-- ElevenLabs -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#127908;</div>
+      <div class="saas-name">ElevenLabs</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">AI "配音演员"。它能把文字变成非常自然的人声，让你的 AI 助手不只会打字，还能开口说话。甚至能模仿特定的声音，说多种语言，听起来几乎像真人。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>文字转语音 (TTS)<br>
+      <strong>免费额度：</strong>每月 10,000 字符（约 10 分钟）<br>
+      <strong>价格：</strong>Starter $5/月（30K 字符），Pro $99/月（500K 字符）<br>
+      <strong>何时升级：</strong>每天语音回复超过 3 分钟就该考虑 Starter 了
+    </div>
+    <div class="saas-footer">关联：TTS 模块 / src/tts/</div>
+  </div>
+
+  <!-- Deepgram -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#127897;</div>
+      <div class="saas-name">Deepgram</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">AI "速记员"。你对着手机说话，它能飞快地把你说的内容变成文字，几乎没有延迟。这样你就可以用语音跟 AI 助手聊天，不用打字。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>语音转文字 (STT)<br>
+      <strong>免费额度：</strong>$200 新用户赠金（约 433 小时）<br>
+      <strong>价格：</strong>$0.0043/分钟（批量），$0.0077/分钟（实时）<br>
+      <strong>何时升级：</strong>免费额度用完后按量付费，成本极低，大部分用户无需升级
+    </div>
+    <div class="saas-footer">关联：语音识别 / Voice 模块</div>
+  </div>
+
+  <!-- Playwright -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#127912;</div>
+      <div class="saas-name">Playwright</div>
+      <span class="saas-price-tag tag-free">免费</span>
+    </div>
+    <div class="saas-desc">AI 的"机器人手"，能替 AI 操控浏览器上网。就像你自己用鼠标点网页一样，Playwright 能帮 AI 打开网站、点按钮、填表格、读取页面内容 -- 只不过速度快得多，而且不需要真的有一块屏幕。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>浏览器自动化<br>
+      <strong>免费额度：</strong>完全免费开源<br>
+      <strong>价格：</strong>$0（MIT License）<br>
+      <strong>何时升级：</strong>无需升级，永久免费
+    </div>
+    <div class="saas-footer">关联：服务支撑层 / src/browser/</div>
+  </div>
+
+  <!-- SQLite + sqlite-vec -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128451;</div>
+      <div class="saas-name">SQLite + sqlite-vec</div>
+      <span class="saas-price-tag tag-free">免费</span>
+    </div>
+    <div class="saas-desc">AI 的"记忆笔记本"。SQLite 是一个随身携带的小型数据库（不用联网，数据就存在本地文件里），sqlite-vec 给它加上了"联想能力" -- 不只能按关键词查找，还能按意思查找（比如你问"天气"，它能联想到之前聊过的"下雨"话题）。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>本地数据库 + 向量存储<br>
+      <strong>免费额度：</strong>完全免费开源<br>
+      <strong>价格：</strong>$0<br>
+      <strong>何时升级：</strong>记忆数据超过 10GB（约等于几百万条对话）时可考虑换更大容量的方案
+    </div>
+    <div class="saas-footer">关联：Memory 模块 / 向量检索</div>
+  </div>
+
+  <!-- Fly.io -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#9992;</div>
+      <div class="saas-name">Fly.io</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">云端"服务器出租"平台。如果你不想 AI 助手只在电脑开着时才能用，可以把它搬到 Fly.io 的云端服务器上 -- 就像把店铺从家里搬到商场。这样即使你关了电脑，AI 助手也能 24 小时在线帮你回消息。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>云服务器部署<br>
+      <strong>免费额度：</strong>3 个共享 CPU 实例<br>
+      <strong>价格：</strong>$1.94/月起（dedicated CPU）<br>
+      <strong>何时升级：</strong>需要 AI 助手 7x24 小时稳定在线，或者同时运行多个 AI 助手时
+    </div>
+    <div class="saas-footer">关联：fly.toml / Dockerfile</div>
+  </div>
+
+  <!-- Tailscale -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128274;</div>
+      <div class="saas-name">Tailscale</div>
+      <span class="saas-price-tag tag-freemium">Freemium</span>
+    </div>
+    <div class="saas-desc">给你的设备建"私密隧道"的工具。比如 AI 助手跑在家里电脑上，你出门在外想用它怎么办？Tailscale 帮你建一条加密通道，手机在咖啡店也能安全连回家里，完全不需要任何技术配置。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>安全远程访问<br>
+      <strong>免费额度：</strong>100 台设备免费<br>
+      <strong>价格：</strong>Personal Pro $48/年<br>
+      <strong>何时升级：</strong>个人使用永远不需要升级，免费额度完全够用
+    </div>
+    <div class="saas-footer">关联：Gateway 远程访问</div>
+  </div>
+
+  <!-- Baileys -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128172;</div>
+      <div class="saas-name">Baileys (WhatsApp)</div>
+      <span class="saas-price-tag tag-free">免费</span>
+    </div>
+    <div class="saas-desc">一个让程序能收发 WhatsApp 消息的工具。WhatsApp 官方不提供这种接口给个人开发者，但 Baileys 通过"破解" WhatsApp 网页版的通信方式实现了同样的效果 -- 相当于让你的 AI 助手也有了一个 WhatsApp 账号。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>WhatsApp 消息通道<br>
+      <strong>免费额度：</strong>完全免费开源<br>
+      <strong>价格：</strong>$0（但有被封号风险）<br>
+      <strong>何时升级：</strong>无付费版，注意避免高频消息以降低封号风险
+    </div>
+    <div class="saas-footer">关联：通道层 / src/whatsapp/</div>
+  </div>
+
+  <!-- Node.js -->
+  <div class="saas-card">
+    <div class="saas-header">
+      <div class="saas-icon">&#128154;</div>
+      <div class="saas-name">Node.js 22+</div>
+      <span class="saas-price-tag tag-free">免费</span>
+    </div>
+    <div class="saas-desc">JavaScript 运行时环境，OpenClaw 的底层引擎。就像汽车的发动机，没它整个项目跑不起来。</div>
+    <div class="saas-meta">
+      <strong>角色：</strong>运行时环境<br>
+      <strong>免费额度：</strong>完全免费开源<br>
+      <strong>价格：</strong>$0<br>
+      <strong>何时升级：</strong>跟随 OpenClaw 版本要求升级即可
+    </div>
+    <div class="saas-footer">关联：全局基础设施</div>
+  </div>
+
+</div>
+
+<!-- ===== 6. GLOSSARY ===== -->
+<section class="section fade-in" id="glossary">
+  <div class="section-label">Glossary</div>
+  <h2 class="section-title">术语速查词典</h2>
+  <p class="section-desc">页面上出现的所有技术术语，用最简单的话解释给你听。</p>
+</section>
+
+<div class="glossary-grid fade-in">
+  <div class="glossary-card" id="term-gateway">
+    <div class="glossary-term" style="color:var(--accent);">Gateway</div>
+    <div class="glossary-def">整个系统的"总调度塔台"。所有消息进出、App 连接、Agent 调度都经过它。就像机场的控制塔，所有飞机的起降都归它管。默认跑在本地 18789 端口。</div>
+  </div>
+  <div class="glossary-card" id="term-websocket">
+    <div class="glossary-term" style="color:var(--accent2);">WebSocket</div>
+    <div class="glossary-def">一种实时双向通信协议。普通 HTTP 像发短信（你问一句我答一句），WebSocket 像打电话（双方随时都能说话）。Gateway 用它来保持跟所有客户端的实时连接。</div>
+  </div>
+  <div class="glossary-card" id="term-agent">
+    <div class="glossary-term" style="color:var(--accent3);">Agent</div>
+    <div class="glossary-def">AI 智能体，就是那个真正"思考"和"干活"的角色。它能读懂你的消息、决定要不要使用工具、然后生成回复。可以理解为一个有自主判断力的 AI 员工。</div>
+  </div>
+  <div class="glossary-card" id="term-channel-adapter">
+    <div class="glossary-term" style="color:var(--accent4);">Channel Adapter</div>
+    <div class="glossary-def">消息平台的"翻译官"。每个聊天平台（WhatsApp、Telegram......）说的"方言"不一样，翻译官把它们统一翻译成 OpenClaw 能懂的"普通话"。</div>
+  </div>
+  <div class="glossary-card" id="term-session">
+    <div class="glossary-term" style="color:var(--accent5);">Session</div>
+    <div class="glossary-def">一次对话的上下文记录。就像你跟朋友的聊天记录 -- 它记住了你们之前说了什么，这样 AI 才能理解"上次提到的那个"指的是什么。存在 JSONL 文件里。</div>
+  </div>
+  <div class="glossary-card" id="term-skill">
+    <div class="glossary-term" style="color:var(--accent6);">Skill</div>
+    <div class="glossary-def">Agent 的"技能配方"。就像游戏角色学的技能 -- 每个 Skill 教会 Agent 做一件特定的事（比如操作 GitHub、查 1Password 密码）。可以从 ClawHub 市场下载。</div>
+  </div>
+  <div class="glossary-card" id="term-pi-sdk">
+    <div class="glossary-term" style="color:var(--accent);">Pi SDK</div>
+    <div class="glossary-def">OpenClaw 用来建造 AI 助手的"建筑工具包"（SDK 就是"软件开发工具包"的缩写）。它把对话管理、工具调用、AI 大脑对接这些复杂的事情打包好了，开发者只需要拼积木就行。就像盖房子不用自己烧砖，直接用预制构件搭建。</div>
+  </div>
+  <div class="glossary-card" id="term-node">
+    <div class="glossary-term" style="color:var(--accent2);">Node</div>
+    <div class="glossary-def">连接到 Gateway 的设备（你的手机、电脑等）。不只是被动接收消息，还能主动"贡献"自己的能力 -- 比如手机可以贡献摄像头拍照、麦克风录音。AI 助手需要时就能"借用"你手机上的这些硬件。</div>
+  </div>
+  <div class="glossary-card" id="term-pairing">
+    <div class="glossary-term" style="color:var(--accent3);">Pairing</div>
+    <div class="glossary-def">设备配对，类似蓝牙耳机第一次连手机时要"配对"。新设备想连你的 Gateway，需要你批准一个配对码，防止陌生人偷偷连上来。</div>
+  </div>
+  <div class="glossary-card" id="term-context-window">
+    <div class="glossary-term" style="color:var(--accent4);">Context Window</div>
+    <div class="glossary-def">AI 模型一次能"看到"的信息量上限，用 Token 计算。就像人的短期记忆容量 -- 塞太多东西就记不住了。OpenClaw 会自动压缩旧对话来节省空间。</div>
+  </div>
+  <div class="glossary-card" id="term-failover">
+    <div class="glossary-term" style="color:var(--accent5);">Failover</div>
+    <div class="glossary-def">故障自动切换。一个 API Key 用完了或者挂了？没关系，自动切换到下一个。就像你有好几张电话卡，一张没信号了就换一张。</div>
+  </div>
+  <div class="glossary-card" id="term-accessibility-tree">
+    <div class="glossary-term" style="color:var(--accent6);">Accessibility Tree</div>
+    <div class="glossary-def">网页的"文字版简历"。一个网页有图片、颜色、动画等花花绿绿的元素，但 Accessibility Tree 把这些都去掉，只保留纯文字结构 -- 比如"这里有个按钮叫'登录'"、"这里有个标题叫'新闻'"。AI 读这个比看截图快 100 倍，还省钱（省 Token）。</div>
+  </div>
+  <div class="glossary-card" id="term-jsonl">
+    <div class="glossary-term" style="color:var(--accent);">JSONL</div>
+    <div class="glossary-def">一种简单的数据存储格式。JSON 是计算机界的"通用数据语言"（就像 Excel 是给人看的表格，JSON 是给程序看的表格），而 JSONL 就是"每行一条 JSON"。OpenClaw 用它来存对话历史 -- 像日记本一样，每次对话往后面追加一行。</div>
+  </div>
+  <div class="glossary-card" id="term-docker">
+    <div class="glossary-term" style="color:var(--accent2);">Docker</div>
+    <div class="glossary-def">把软件打包进"标准集装箱"的工具。不管你的电脑是 Mac、Linux 还是 Windows，集装箱里的东西到哪都能原样运行。一行命令启动整个 OpenClaw。</div>
+  </div>
+  <div class="glossary-card" id="term-clawhub">
+    <div class="glossary-term" style="color:var(--accent3);">ClawHub</div>
+    <div class="glossary-def">OpenClaw 的"技能市场"，有 5,700+ 个社区制作的 Skill 可以下载安装。就像手机的 App Store，但装的是 AI 能力而不是 App。</div>
+  </div>
+  <div class="glossary-card" id="term-tailscale">
+    <div class="glossary-term" style="color:var(--accent4);">Tailscale</div>
+    <div class="glossary-def">给设备建"私密隧道"的工具。你在咖啡店也能安全连回家里的 Gateway，不用开端口、不用折腾路由器。就像给你的手机和家里电脑之间挖了一条只有你能走的地下通道。</div>
+  </div>
+  <div class="glossary-card" id="term-playwright">
+    <div class="glossary-term" style="color:var(--accent5);">Playwright</div>
+    <div class="glossary-def">AI 的"机器人手"，能替 AI 操控浏览器。就像你自己用鼠标打开网页、点按钮、填表格一样，Playwright 能代替 AI 做这些事 -- 只不过速度快得多，而且不需要真的有一块屏幕显示出来。</div>
+  </div>
+  <div class="glossary-card" id="term-api-key">
+    <div class="glossary-term" style="color:var(--accent6);">API Key</div>
+    <div class="glossary-def">一把"数字钥匙"。当 OpenClaw 想要使用 OpenAI、Anthropic 这些外部服务时，需要出示这把钥匙来证明身份并计费。就像进健身房要刷会员卡 -- 没有卡就进不了门，刷了卡才知道该扣谁的钱。</div>
+  </div>
+  <div class="glossary-card" id="term-token">
+    <div class="glossary-term" style="color:var(--accent);">Token</div>
+    <div class="glossary-def">AI 读取和生成文字的计量单位，大约 1 个中文字 = 1-2 个 Token。AI 服务商按 Token 数量收费，就像手机流量按 MB 计费一样。AI 的"记忆力"（上下文窗口）也用 Token 衡量 -- 记得住多少字，取决于 Token 上限。</div>
+  </div>
+  <div class="glossary-card" id="term-cron">
+    <div class="glossary-term" style="color:var(--accent2);">Cron</div>
+    <div class="glossary-def">"定时闹钟"系统。你可以设置让 AI 助手在固定时间自动做某件事，比如每天早上 8 点发天气预报、每周五下午提醒你写周报。就像手机上的重复闹钟，到点自动响。</div>
+  </div>
+  <div class="glossary-card" id="term-tts">
+    <div class="glossary-term" style="color:var(--accent3);">TTS (Text-to-Speech)</div>
+    <div class="glossary-def">"文字转语音"技术。就是让 AI 能"开口说话" -- 把文字内容变成真人般的语音朗读出来。就像导航软件里的语音播报，但声音更自然、更像真人。</div>
+  </div>
+  <div class="glossary-card" id="term-chromium">
+    <div class="glossary-term" style="color:var(--accent4);">Chromium</div>
+    <div class="glossary-def">Google Chrome 浏览器的"开源版本"。你平时用的 Chrome 就是基于 Chromium 开发的。OpenClaw 在后台用它来帮 AI 浏览网页，只不过是"无头模式"运行 -- 也就是不显示窗口画面，只在后台默默干活。</div>
+  </div>
+  <div class="glossary-card" id="term-canvas">
+    <div class="glossary-term" style="color:var(--accent5);">Canvas</div>
+    <div class="glossary-def">AI 的"画板"。普通 AI 只能回复文字，但通过 Canvas，OpenClaw 的 AI 助手能画出真正可以点击、可以交互的网页界面 -- 比如给你画一个待办清单、一个图表、或者一个小工具。就像 AI 有了一块白板，能边聊天边画给你看。</div>
+  </div>
+  <div class="glossary-card" id="term-baileys">
+    <div class="glossary-term" style="color:var(--accent6);">Baileys</div>
+    <div class="glossary-def">一个让程序能收发 WhatsApp 消息的开源工具。WhatsApp 官方不提供这种接口给个人开发者，Baileys 通过"破解"WhatsApp 网页版的通信方式实现了同样的效果 -- 相当于让你的 AI 助手也有了一个 WhatsApp 账号。</div>
+  </div>
+  <div class="glossary-card" id="term-system-prompt">
+    <div class="glossary-term" style="color:var(--accent);">System Prompt</div>
+    <div class="glossary-def">给 AI 的"岗位说明书"。在你跟 AI 对话之前，系统会先悄悄告诉 AI 一段话，内容大致是"你是谁、你能做什么、你不能做什么"。就像新员工入职第一天收到的岗位职责说明，它决定了 AI 的性格和行为边界。</div>
+  </div>
+</div>
+
+<!-- ===== 7. FOOTER ===== -->
+<footer class="footer fade-in">
+  <div class="footer-links">
+    <a href="https://github.com/openclaw/openclaw" target="_blank">GitHub Repo</a>
+    <a href="https://openclaw.ai" target="_blank">Official Website</a>
+    <a href="https://docs.openclaw.ai" target="_blank">Documentation</a>
+    <a href="https://github.com/openclaw/clawhub" target="_blank">ClawHub</a>
+  </div>
+  <div class="footer-copy">
+    OpenClaw &middot; MIT License &middot; 258K Stars<br>
+    This page is a visual codebase interpretation, not an official product of the OpenClaw team.
+  </div>
+</footer>
+
+</div><!-- /container -->
+
+<script>
+// Scroll fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Architecture layer expand/collapse
+function toggleLayer(el) {
+  const wasExpanded = el.classList.contains('expanded');
+  document.querySelectorAll('.arch-layer.expanded').forEach(l => l.classList.remove('expanded'));
+  if (!wasExpanded) el.classList.add('expanded');
+}
+
+// Chat tab switching
+function switchChat(id, btn) {
+  document.querySelectorAll('.chat-scenario').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  // Re-trigger animations
+  const msgs = document.getElementById(id).querySelectorAll('.chat-msg');
+  msgs.forEach(m => { m.style.animation = 'none'; m.offsetHeight; m.style.animation = ''; });
+}
+
+// ====== TERM POPOVER SYSTEM ======
+
+// Term -> glossary card ID mapping
+const termMap = {
+  'Gateway': 'term-gateway',
+  'WebSocket': 'term-websocket',
+  'Agent': 'term-agent',
+  'Channel Adapter': 'term-channel-adapter',
+  'Session': 'term-session',
+  'Skill': 'term-skill',
+  'Skills': 'term-skill',
+  'Pi SDK': 'term-pi-sdk',
+  'Pi Agent': 'term-pi-sdk',
+  'Node': 'term-node',
+  'Pairing': 'term-pairing',
+  'Context Window': 'term-context-window',
+  'Failover': 'term-failover',
+  'Accessibility Tree': 'term-accessibility-tree',
+  'JSONL': 'term-jsonl',
+  'Docker': 'term-docker',
+  'ClawHub': 'term-clawhub',
+  'Tailscale': 'term-tailscale',
+  'Playwright': 'term-playwright',
+  'API Key': 'term-api-key',
+  'Token': 'term-token',
+  'Cron': 'term-cron',
+  'TTS': 'term-tts',
+  'Chromium': 'term-chromium',
+  'System Prompt': 'term-system-prompt',
+  'Baileys': 'term-baileys',
+  'Canvas': 'term-canvas',
+};
+
+// Create popover & backdrop elements once
+const popover = document.createElement('div');
+popover.className = 'term-popover';
+popover.innerHTML = '<div class="popover-header"><span class="popover-term"></span><button class="popover-close" aria-label="Close">&times;</button></div><div class="popover-body"></div>';
+document.body.appendChild(popover);
+
+const backdrop = document.createElement('div');
+backdrop.className = 'popover-backdrop';
+document.body.appendChild(backdrop);
+
+let activeLink = null;
+
+function closePopover() {
+  popover.classList.remove('visible');
+  backdrop.classList.remove('visible');
+  if (activeLink) { activeLink.classList.remove('active'); activeLink = null; }
+}
+
+function showPopover(linkEl, termId) {
+  // If clicking the same term, toggle off
+  if (activeLink === linkEl) { closePopover(); return; }
+  closePopover();
+
+  // Get definition from glossary card
+  const card = document.getElementById(termId);
+  if (!card) return;
+  const termName = card.querySelector('.glossary-term').textContent;
+  const termDef = card.querySelector('.glossary-def').textContent;
+
+  popover.querySelector('.popover-term').textContent = termName;
+  popover.querySelector('.popover-body').textContent = termDef;
+
+  // Position: try below the link first, if no room then above
+  const rect = linkEl.getBoundingClientRect();
+  const popW = Math.min(360, window.innerWidth - 32);
+  const gap = 10;
+
+  // Horizontal: try to align left edge with the link, but keep on screen
+  let left = rect.left;
+  if (left + popW > window.innerWidth - 16) left = window.innerWidth - 16 - popW;
+  if (left < 16) left = 16;
+
+  // Arrow offset relative to popover left edge
+  const arrowLeft = Math.max(20, Math.min(rect.left + rect.width / 2 - left, popW - 20));
+
+  // Vertical: prefer below
+  popover.style.width = popW + 'px';
+  popover.classList.remove('arrow-top', 'arrow-bottom');
+
+  // Temporarily show to measure height
+  popover.style.visibility = 'hidden';
+  popover.style.display = 'block';
+  popover.classList.add('visible');
+  const popH = popover.offsetHeight;
+  popover.classList.remove('visible');
+  popover.style.visibility = '';
+  popover.style.display = '';
+
+  let top;
+  if (rect.bottom + gap + popH < window.innerHeight) {
+    // Below
+    top = rect.bottom + gap;
+    popover.classList.add('arrow-top');
+  } else {
+    // Above
+    top = rect.top - gap - popH;
+    popover.classList.add('arrow-bottom');
+  }
+
+  popover.style.left = left + 'px';
+  popover.style.top = top + 'px';
+  popover.querySelector('.term-popover::before, .popover-header')
+  // Set arrow position
+  const arrow = popover.querySelector('::before'); // can't query pseudo, use CSS var
+  popover.style.setProperty('--arrow-left', arrowLeft + 'px');
+
+  // Show
+  activeLink = linkEl;
+  linkEl.classList.add('active');
+  backdrop.classList.add('visible');
+  requestAnimationFrame(() => { popover.classList.add('visible'); });
+}
+
+// Dynamic arrow positioning via CSS override
+const arrowStyle = document.createElement('style');
+arrowStyle.textContent = '.term-popover::before { left: var(--arrow-left, 24px) !important; }';
+document.head.appendChild(arrowStyle);
+
+// Close handlers
+popover.querySelector('.popover-close').addEventListener('click', (e) => { e.stopPropagation(); closePopover(); });
+backdrop.addEventListener('click', closePopover);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopover(); });
+// Close on scroll (optional - keeps it clean)
+let scrollTimer;
+window.addEventListener('scroll', () => {
+  if (!popover.classList.contains('visible')) return;
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(closePopover, 150);
+}, { passive: true });
+
+// Auto-link terms in content areas (runs once on page load)
+function autoLinkTerms() {
+  const scanAreas = document.querySelectorAll(
+    '.layer-detail-inner, .phase-desc, .chat-bubble, .chat-msg .aside, .section-desc, .saas-desc, .hero .subtitle'
+  );
+  const sortedTerms = Object.keys(termMap).sort((a, b) => b.length - a.length);
+  const termRegex = new RegExp('(' + sortedTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
+
+  scanAreas.forEach(area => {
+    const walker = document.createTreeWalker(area, NodeFilter.SHOW_TEXT, null, false);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+    textNodes.forEach(node => {
+      const text = node.textContent;
+      if (!termRegex.test(text)) return;
+      termRegex.lastIndex = 0;
+      if (node.parentElement && node.parentElement.classList.contains('term-link')) return;
+
+      const frag = document.createDocumentFragment();
+      let lastIdx = 0;
+      let match;
+      termRegex.lastIndex = 0;
+      const linked = new Set();
+      while ((match = termRegex.exec(text)) !== null) {
+        const term = match[1];
+        if (linked.has(termMap[term])) continue;
+        linked.add(termMap[term]);
+        if (match.index > lastIdx) {
+          frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+        }
+        const link = document.createElement('a');
+        link.className = 'term-link';
+        link.href = 'javascript:void(0)';
+        link.textContent = term;
+        const tid = termMap[term];
+        link.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); showPopover(this, tid); });
+        frag.appendChild(link);
+        lastIdx = match.index + term.length;
+      }
+      if (lastIdx === 0) return;
+      if (lastIdx < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      }
+      node.parentNode.replaceChild(frag, node);
+    });
+  });
+}
+
+autoLinkTerms();
+</script>
+</body>
+</html>
