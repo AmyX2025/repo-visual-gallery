@@ -95,62 +95,31 @@ body{
   padding:3px 10px;border-radius:8px;
 }
 
-/* Add Card */
-.card-add{
-  border:2px dashed var(--border);background:transparent;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:260px;cursor:default;
-  transition:all 0.3s;
+/* Search */
+.search-wrap{
+  max-width:480px;margin:0 auto 32px;position:relative;
 }
-.card-add:hover{
-  border-color:var(--accent);background:var(--accent-light);
-  transform:none;box-shadow:none;
+.search-input{
+  width:100%;padding:12px 18px 12px 44px;
+  border:1px solid var(--border);border-radius:12px;
+  background:var(--bg-card);font-size:14px;font-family:inherit;
+  color:var(--text);outline:none;
+  transition:border-color 0.2s, box-shadow 0.2s;
 }
-.card-add .plus{
-  width:48px;height:48px;border-radius:50%;
-  background:var(--accent-light);color:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;font-weight:300;margin-bottom:12px;
+.search-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-light);
 }
-.card-add p{font-size:13px;color:var(--text-muted);text-align:center;padding:0 20px;line-height:1.7;}
-.card-add p strong{color:var(--text-secondary);}
-
-/* How-to Section */
-.howto{
-  margin-top:60px;padding:36px;
-  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
-  box-shadow:var(--shadow);
+.search-input::placeholder{color:var(--text-muted);}
+.search-icon{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  color:var(--text-muted);font-size:16px;pointer-events:none;
 }
-.howto h2{
-  font-size:18px;font-weight:700;margin-bottom:20px;
-  display:flex;align-items:center;gap:8px;
+.no-results{
+  text-align:center;padding:48px 20px;color:var(--text-muted);
+  font-size:14px;display:none;
 }
-.howto h2 .icon{
-  width:28px;height:28px;border-radius:8px;
-  background:var(--accent-light);color:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;
-}
-.steps{counter-reset:step;}
-.step{
-  counter-increment:step;
-  padding:14px 0 14px 44px;position:relative;
-  border-left:2px solid var(--border);margin-left:13px;
-}
-.step:last-child{border-left-color:transparent;}
-.step::before{
-  content:counter(step);position:absolute;left:-14px;top:12px;
-  width:28px;height:28px;border-radius:50%;
-  background:var(--accent);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;
-}
-.step-title{font-size:14px;font-weight:600;margin-bottom:4px;}
-.step-desc{font-size:13px;color:var(--text-secondary);line-height:1.7;}
-.step-desc code{
-  background:#f0efec;padding:2px 6px;border-radius:4px;
-  font-family:'Fira Code',monospace;font-size:12px;
-}
+.card.hidden{display:none;}
 
 /* Footer */
 .footer{
@@ -168,7 +137,11 @@ body{
 </div>
 
 <div class="container">
-  <div class="grid">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input class="search-input" type="text" placeholder="搜索项目名称、描述、标签..." id="searchInput">
+  </div>
+  <div class="grid" id="projectGrid">
 
     <!-- ====== 项目卡片 1: OpenClaw ====== -->
     <a class="card" href="./openclaw/index.html">
@@ -190,74 +163,28 @@ body{
       </div>
     </a>
 
-    <!--
-    ====== 复制下面这个模板来添加新项目 ======
-
-    <a class="card" href="./项目文件夹名/index.html">
-      <div class="card-banner" style="background:linear-gradient(135deg,#颜色1,#颜色2);">
-        <span>表情符号</span>
-        <div class="card-date">解读日期</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">
-          项目名称
-          <span class="card-stars">Stars 数</span>
-        </div>
-        <div class="card-desc">一句话描述这个项目是干什么的。</div>
-        <div class="card-meta">
-          <span class="card-tag">编程语言</span>
-          <span class="card-tag">分类</span>
-          <span class="card-tag">许可证</span>
-        </div>
-      </div>
-    </a>
-
-    ====== 模板结束 ======
-    -->
-
-    <!-- 占位卡片：下一个项目 -->
-    <div class="card card-add">
-      <div class="plus">+</div>
-      <p><strong>下一个项目</strong><br>把新的解读页面放进来就行</p>
-    </div>
-
   </div>
-
-  <!-- 使用说明 -->
-  <div class="howto">
-    <h2><span class="icon">?</span> 怎么把新项目加进来？</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-title">在电脑上建好文件夹</div>
-        <div class="step-desc">
-          在你喜欢的位置新建一个文件夹，比如叫 <code>我的开源项目解读</code>，把这个首页文件（<code>my-repo-gallery.html</code>）放进去。
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-title">每个项目单独一个子文件夹</div>
-        <div class="step-desc">
-          比如 OpenClaw 的解读页面就放在 <code>我的开源项目解读/openclaw/index.html</code>。下一个项目比如叫 Foobar，就放在 <code>我的开源项目解读/foobar/index.html</code>。
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-title">用文本编辑器打开这个首页</div>
-        <div class="step-desc">
-          右键点击 <code>my-repo-gallery.html</code>，选"用记事本打开"（Windows）或"用文本编辑打开"（Mac），找到上面写着"复制下面这个模板来添加新项目"的位置。
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-title">复制模板、改几个字、保存</div>
-        <div class="step-desc">
-          把注释里的卡片模板复制一份，改掉项目名称、描述、文件夹路径、日期就行了。保存后刷新浏览器，新卡片就出现了。也可以把这个首页文件发给我，让我帮你加。
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="no-results" id="noResults">没有找到匹配的项目</div>
 </div>
 
 <div class="footer">
-  用浏览器直接打开这个文件就能用，不需要联网，不需要任何软件。
+  Powered by HappyCapy &middot; Repo Visual Gallery
 </div>
+
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+  const query = this.value.toLowerCase().trim();
+  const cards = document.querySelectorAll('#projectGrid .card');
+  let visibleCount = 0;
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    const match = !query || text.includes(query);
+    card.classList.toggle('hidden', !match);
+    if (match) visibleCount++;
+  });
+  document.getElementById('noResults').style.display = (visibleCount === 0 && query) ? 'block' : 'none';
+});
+</script>
 
 </body>
 </html>
