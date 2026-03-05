@@ -3,1498 +3,1135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>frontend-slides 项目地图 | 用聊天对话生成幻灯片演示</title>
+<title>Frontend Slides -- 项目可视化解读</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --bg: #f8f7f4;
-  --bg-card: #ffffff;
-  --text: #1a1a1a;
-  --text-secondary: #555;
-  --text-muted: #888;
-  --accent: #e85d26;
-  --accent-light: #fff3ed;
-  --accent2: #3b6df0;
-  --accent2-light: #eef2ff;
-  --accent3: #10a37f;
-  --accent3-light: #edfaf6;
-  --accent4: #8b5cf6;
-  --accent4-light: #f3f0ff;
-  --accent5: #d97706;
-  --accent5-light: #fffbeb;
-  --border: #e5e2dc;
-  --border-light: #f0ede8;
-  --shadow: 0 2px 20px rgba(0,0,0,.06);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,.08);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --font-sans: 'Noto Sans SC', system-ui, sans-serif;
-  --font-mono: 'Fira Code', monospace;
-}
-
-body {
-  font-family: var(--font-sans);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Hero Section */
-.hero {
-  padding: 80px 0 100px;
-  text-align: center;
-  background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent2-light) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(232,93,38,0.1) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -40%;
-  left: -15%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(59,109,240,0.08) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.hero .container {
-  position: relative;
-  z-index: 1;
-}
-
-.hero h1 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 20px;
-  letter-spacing: -0.02em;
-}
-
-.hero .subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: var(--text-secondary);
-  margin-bottom: 32px;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero .meta {
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 28px;
-}
-
-.hero .meta-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  background: var(--bg-card);
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
-}
-
-.hero .meta-icon {
-  font-size: 1.1rem;
-}
-
-/* Section Headers */
-.section {
-  padding: 80px 0;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 56px;
-}
-
-.section-header h2 {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 12px;
-}
-
-.section-header .desc {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-/* Architecture Diagram */
-.arch-diagram {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 48px 32px;
-  box-shadow: var(--shadow);
-  margin-bottom: 48px;
-}
-
-.arch-layers {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.arch-layer {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.arch-layer:hover {
-  transform: translateX(6px);
-}
-
-.layer-number {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: white;
-}
-
-.layer-number.l1 { background: var(--accent); }
-.layer-number.l2 { background: var(--accent2); }
-.layer-number.l3 { background: var(--accent3); }
-.layer-number.l4 { background: var(--accent4); }
-.layer-number.l5 { background: var(--accent5); }
-
-.layer-content {
-  flex: 1;
-}
-
-.layer-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-.layer-detail {
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.layer-detail-inner {
-  padding-left: 16px;
-  border-left: 2px solid var(--border-light);
-  margin-top: 10px;
-}
-
-@media (max-width: 768px) {
-  .layer-detail-inner {
-    padding-left: 12px;
-  }
-}
-
-/* Workflow */
-.workflow {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  overflow-x: auto;
-  padding-bottom: 16px;
-}
-
-.flow-phase {
-  flex: 1;
-  min-width: 200px;
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  padding: 24px 20px;
-  box-shadow: var(--shadow);
-  position: relative;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s;
-}
-
-.flow-phase:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.flow-phase::after {
-  content: '→';
-  position: absolute;
-  right: -24px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  z-index: 1;
-}
-
-.flow-phase:last-child::after {
-  display: none;
-}
-
-.flow-number {
-  display: inline-block;
-  background: var(--accent-light);
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin-bottom: 12px;
-}
-
-.flow-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-
-.flow-phase p {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-  .workflow {
-    flex-direction: column;
-  }
-
-  .flow-phase::after {
-    content: '↓';
-    right: 50%;
-    top: auto;
-    bottom: -32px;
-    transform: translateX(50%);
-  }
-}
-
-/* Chat Conversations */
-.chat-tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 32px;
-  border-bottom: 2px solid var(--border);
-  overflow-x: auto;
-}
-
-.chat-tab {
-  background: none;
-  border: none;
-  padding: 12px 20px;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-
-.chat-tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-.chat-tab:hover {
-  color: var(--text);
-}
-
-.chat-content {
-  display: none;
-}
-
-.chat-content.active {
-  display: block;
-}
-
-.chat-conversation {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 32px;
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
-}
-
-.chat-message {
-  margin-bottom: 24px;
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-}
-
-.chat-avatar {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-
-.chat-avatar.user {
-  background: var(--accent2-light);
-  color: var(--accent2);
-}
-
-.chat-avatar.ai {
-  background: var(--accent3-light);
-  color: var(--accent3);
-}
-
-.chat-bubble {
-  flex: 1;
-  background: var(--bg);
-  padding: 16px 20px;
-  border-radius: 12px;
-  font-size: 0.92rem;
-  line-height: 1.7;
-}
-
-.chat-bubble .aside {
-  margin-top: 12px;
-  padding: 12px;
-  background: var(--accent4-light);
-  border-left: 3px solid var(--accent4);
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-style: italic;
-}
-
-.chat-bubble code {
-  font-family: var(--font-mono);
-  background: var(--accent-light);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.88em;
-  color: var(--accent);
-}
-
-/* SaaS Toolbox */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
-}
-
-.tool-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  padding: 28px;
-  box-shadow: var(--shadow);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s;
-}
-
-.tool-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.tool-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.tool-icon {
-  font-size: 2rem;
-}
-
-.tool-name {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.tool-role {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-.tool-desc {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 16px;
-}
-
-.tool-price {
-  display: inline-block;
-  background: var(--accent3-light);
-  color: var(--accent3);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-family: var(--font-mono);
-}
-
-.tool-price.free {
-  background: var(--accent3-light);
-  color: var(--accent3);
-}
-
-.tool-price.paid {
-  background: var(--accent5-light);
-  color: var(--accent5);
-}
-
-/* Glossary */
-.glossary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.glossary-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s;
-  scroll-margin-top: 80px;
-}
-
-.glossary-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-
-.glossary-term {
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--accent2);
-  margin-bottom: 8px;
-}
-
-.glossary-def {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-/* Term Links and Popover */
-.term-link {
-  color: var(--accent);
-  font-weight: 600;
-  border-bottom: 1.5px dashed var(--accent);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.term-link:hover,
-.term-link.active {
-  background: var(--accent-light);
-}
-
-.term-popover {
-  position: fixed;
-  z-index: 200;
-  width: min(360px, calc(100vw - 32px));
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 12px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
-  opacity: 0;
-  transform: scale(.97);
-  transition: opacity .25s cubic-bezier(.22,1,.36,1), transform .25s cubic-bezier(.22,1,.36,1);
-  pointer-events: none;
-}
-
-.term-popover.show {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-}
-
-.term-popover::before {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border);
-  border-left: 1px solid var(--border);
-  left: var(--arrow-left, 24px);
-}
-
-.term-popover.below::before {
-  top: -7px;
-  transform: rotate(45deg);
-}
-
-.term-popover.above::before {
-  bottom: -7px;
-  transform: rotate(-135deg);
-}
-
-.popover-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px 8px;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.popover-term {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--accent2);
-  font-size: .85rem;
-}
-
-.popover-close {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0 4px;
-  line-height: 1;
-}
-
-.popover-close:hover {
-  color: var(--text);
-}
-
-.popover-body {
-  padding: 12px 16px;
-  font-size: .84rem;
-  line-height: 1.65;
-  color: var(--text-secondary);
-}
-
-.popover-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 199;
-  display: none;
-}
-
-.popover-backdrop.show {
-  display: block;
-}
-
-/* Footer */
-.footer {
-  background: var(--text);
-  color: var(--bg);
-  padding: 48px 0 32px;
-  text-align: center;
-}
-
-.footer a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer p {
-  margin-bottom: 12px;
-  font-size: 0.92rem;
-}
-
-/* ===== Enhanced Responsive ===== */
-
-/* Hero decorative circles: cap at viewport width */
-.hero::before { width: min(600px, 80vw); height: min(600px, 80vw); }
-.hero::after { width: min(500px, 70vw); height: min(500px, 70vw); }
-
-/* Grid minmax: prevent overflow on narrow screens */
-.tools-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-.glossary-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+/* ========== RESET & BASE ========== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8f7f4;
+  --bg-card:#ffffff;
+  --bg-card-alt:#faf9f6;
+  --text:#1a1a1a;
+  --text-secondary:#555;
+  --text-muted:#888;
+  --accent:#e85d26;
+  --accent-light:#fff3ed;
+  --accent2:#3b6df0;
+  --accent2-light:#eef2ff;
+  --accent3:#10a37f;
+  --accent3-light:#edfaf6;
+  --accent4:#8b5cf6;
+  --accent4-light:#f3f0ff;
+  --border:#e5e2dc;
+  --border-light:#f0ede8;
+  --shadow:0 2px 20px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.08);
+  --radius:16px;
+  --radius-sm:10px;
+  --font-sans:'Noto Sans SC',system-ui,sans-serif;
+  --font-mono:'Fira Code',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ========== NAV ========== */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(248,247,244,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-light);
+  padding:0 clamp(1rem,4vw,3rem);
+}
+.topnav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.topnav .logo{font-weight:700;font-size:1rem;color:var(--text);display:flex;align-items:center;gap:8px}
+.topnav .logo span{background:var(--accent);color:#fff;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:500;letter-spacing:0.5px}
+.nav-links{display:flex;gap:clamp(0.8rem,2vw,1.5rem);font-size:0.85rem;font-weight:500;flex-wrap:wrap}
+.nav-links a{color:var(--text-secondary);transition:color 0.2s}
+.nav-links a:hover{color:var(--accent);text-decoration:none}
+
+/* ========== LAYOUT ========== */
+.container{max-width:1100px;margin:0 auto;padding:0 clamp(1rem,4vw,3rem)}
+section{padding:clamp(3rem,8vw,6rem) 0}
+
+/* ========== HERO ========== */
+.hero{text-align:center;padding-top:clamp(4rem,10vw,8rem);padding-bottom:clamp(3rem,6vw,5rem)}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent-light);color:var(--accent);
+  font-size:0.8rem;font-weight:600;padding:6px 16px;border-radius:99px;
+  margin-bottom:1.5rem;
+}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.2rem);
+  font-weight:900;line-height:1.25;
+  margin-bottom:1rem;
+  letter-spacing:-0.02em;
+}
+.hero h1 em{font-style:normal;color:var(--accent);position:relative}
+.hero .subtitle{
+  font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--text-secondary);max-width:640px;margin:0 auto 2rem;
+  font-weight:400;
+}
+.hero-file-tree{
+  display:inline-block;text-align:left;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.2rem 1.5rem;
+  font-family:var(--font-mono);font-size:0.8rem;
+  color:var(--text-secondary);line-height:2;
+  box-shadow:var(--shadow);
+}
+.hero-file-tree .file{color:var(--text);font-weight:500}
+.hero-file-tree .comment{color:var(--text-muted);font-size:0.72rem}
+
+/* ========== SECTION HEADERS ========== */
+.section-header{text-align:center;margin-bottom:clamp(2rem,4vw,3.5rem)}
+.section-header .tag{
+  display:inline-block;
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  padding:4px 14px;border-radius:6px;margin-bottom:0.8rem;
+}
+.section-header h2{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem}
+.section-header p{font-size:clamp(0.9rem,1.5vw,1.05rem);color:var(--text-secondary);max-width:600px;margin:0 auto}
+
+/* ========== ARCHITECTURE LAYERS ========== */
+.arch-stack{
+  display:flex;flex-direction:column;gap:0;
+  max-width:780px;margin:0 auto;
+  perspective:800px;
+}
+.arch-layer{
+  background:var(--bg-card);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:clamp(1rem,2vw,1.5rem) clamp(1.2rem,3vw,2rem);
+  position:relative;
+  transition:all 0.4s cubic-bezier(0.22,1,0.36,1);
+  cursor:pointer;
+  box-shadow:var(--shadow);
+}
+.arch-layer:not(:first-child){margin-top:-12px}
+.arch-layer:nth-child(1){z-index:6;transform:translateZ(50px)}
+.arch-layer:nth-child(2){z-index:5;margin-left:16px;margin-right:16px;transform:translateZ(40px)}
+.arch-layer:nth-child(3){z-index:4;margin-left:32px;margin-right:32px;transform:translateZ(30px)}
+.arch-layer:nth-child(4){z-index:3;margin-left:48px;margin-right:48px;transform:translateZ(20px)}
+.arch-layer:nth-child(5){z-index:2;margin-left:64px;margin-right:64px;transform:translateZ(10px)}
+.arch-layer:hover{
+  transform:translateY(-4px) scale(1.01);
+  box-shadow:var(--shadow-lg);
+  z-index:10 !important;
+  border-color:var(--accent);
+}
+.arch-layer .layer-num{
+  position:absolute;top:-10px;left:20px;
+  background:var(--accent);color:#fff;
+  font-size:0.65rem;font-weight:700;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.arch-layer.layer-blue .layer-num{background:var(--accent2)}
+.arch-layer.layer-green .layer-num{background:var(--accent3)}
+.arch-layer.layer-purple .layer-num{background:var(--accent4)}
+.arch-layer .layer-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.arch-layer .layer-icon{font-size:1.3rem}
+.arch-layer .layer-title{font-weight:700;font-size:clamp(0.9rem,1.5vw,1.05rem)}
+.arch-layer .layer-desc{font-size:0.85rem;color:var(--text-secondary);line-height:1.6}
+.arch-layer .layer-files{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;
+}
+.arch-layer .file-chip{
+  font-family:var(--font-mono);font-size:0.7rem;
+  background:var(--bg);border:1px solid var(--border);
+  padding:3px 10px;border-radius:6px;color:var(--text-secondary);
+}
+.arch-layer.layer-blue .file-chip{background:var(--accent2-light);border-color:transparent;color:var(--accent2)}
+.arch-layer.layer-green .file-chip{background:var(--accent3-light);border-color:transparent;color:var(--accent3)}
+.arch-layer.layer-purple .file-chip{background:var(--accent4-light);border-color:transparent;color:var(--accent4)}
+
+/* connector arrows between layers */
+.arch-connector{
+  text-align:center;color:var(--text-muted);font-size:0.75rem;
+  padding:4px 0;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.arch-connector::before,.arch-connector::after{content:'';flex:1;max-width:60px;height:1px;background:var(--border)}
+
+/* ========== EXPAND/COLLAPSE DETAILS ========== */
+.layer-detail{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.22,1,0.36,1),opacity 0.3s;
+  opacity:0;
+}
+.arch-layer.expanded .layer-detail{max-height:600px;opacity:1;margin-top:12px}
+.layer-detail-inner{
+  background:var(--bg);border-radius:var(--radius-sm);
+  padding:1rem 1.2rem;font-size:0.84rem;line-height:1.7;
+  color:var(--text-secondary);
+}
+.layer-detail-inner .term{
+  display:inline;
+  background:var(--accent-light);color:var(--accent);
+  padding:1px 7px;border-radius:4px;font-weight:600;font-size:0.8rem;
+  cursor:help;position:relative;
+}
+
+/* ========== CHAT CONVERSATIONS ========== */
+.chat-scenarios{display:flex;flex-direction:column;gap:2.5rem}
+.chat-scenario{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.chat-scenario-header{
+  padding:1rem 1.5rem;
+  border-bottom:1px solid var(--border-light);
+  display:flex;align-items:center;gap:10px;
+}
+.chat-scenario-header .scenario-num{
+  font-size:0.65rem;font-weight:700;color:#fff;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.chat-scenario-header h3{font-size:1rem;font-weight:700}
+.chat-scenario-header p{font-size:0.8rem;color:var(--text-muted);margin-left:auto}
+.chat-body{padding:1.2rem 1.5rem;display:flex;flex-direction:column;gap:14px}
+.chat-msg{
+  display:flex;gap:10px;align-items:flex-start;
+  animation:chatIn 0.4s ease both;
+}
+.chat-msg:nth-child(1){animation-delay:0.1s}
+.chat-msg:nth-child(2){animation-delay:0.3s}
+.chat-msg:nth-child(3){animation-delay:0.5s}
+.chat-msg:nth-child(4){animation-delay:0.7s}
+.chat-msg:nth-child(5){animation-delay:0.9s}
+.chat-msg:nth-child(6){animation-delay:1.1s}
+.chat-msg:nth-child(7){animation-delay:1.3s}
+.chat-msg:nth-child(8){animation-delay:1.5s}
+.chat-msg:nth-child(9){animation-delay:1.7s}
+.chat-msg:nth-child(10){animation-delay:1.9s}
+@keyframes chatIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.chat-avatar{
+  width:32px;height:32px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;flex-shrink:0;font-weight:700;
+  color:#fff;
+}
+.chat-bubble{
+  background:var(--bg);border-radius:12px;
+  padding:8px 14px;font-size:0.84rem;line-height:1.6;
+  max-width:85%;position:relative;
+}
+.chat-bubble .sender{font-weight:700;font-size:0.78rem;margin-bottom:2px}
+.chat-bubble code{
+  font-family:var(--font-mono);font-size:0.76rem;
+  background:rgba(0,0,0,0.05);padding:1px 6px;border-radius:4px;
+}
+.chat-bubble .aside{
+  font-size:0.76rem;color:var(--text-muted);
+  font-style:italic;margin-top:4px;
+}
+/* color variants for different actors */
+.av-user{background:#e85d26}
+.av-claude{background:#1a1a1a}
+.av-skill{background:#3b6df0}
+.av-style{background:#8b5cf6}
+.av-css{background:#10a37f}
+.av-html{background:#d97706}
+.av-python{background:#306998}
+.av-pptx{background:#c43e1c}
+.av-browser{background:#4285f4}
+.av-font{background:#ea4335}
+
+/* ========== TOOLBOX GRID ========== */
+.toolbox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:1.2rem}
+.tool-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;
+  transition:all 0.3s ease;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.tool-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.tool-card .tool-icon{font-size:2rem;margin-bottom:0.8rem}
+.tool-card h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.tool-card .tool-role{font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.5}
+.tool-card .tool-meta{display:flex;flex-direction:column;gap:8px;font-size:0.8rem}
+.tool-meta-row{display:flex;align-items:baseline;gap:6px}
+.tool-meta-label{font-weight:600;color:var(--text-muted);white-space:nowrap;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.5px}
+.tool-meta-val{color:var(--text)}
+.price-tag{
+  display:inline-block;
+  padding:3px 10px;border-radius:6px;font-weight:600;font-size:0.78rem;
+}
+.price-free{background:#dcfce7;color:#15803d}
+.price-paid{background:#fef3c7;color:#a16207}
+.tool-card .connects-to{
+  margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);
+  font-size:0.78rem;color:var(--text-muted);
+}
+.tool-card .connects-to strong{color:var(--text-secondary)}
+
+/* ========== GLOSSARY ========== */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1rem}
+.glossary-item{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:1.2rem 1.4rem;
+  transition:all 0.3s ease;
+}
+.glossary-item:hover{border-color:var(--accent2);box-shadow:var(--shadow)}
+.glossary-term{
+  font-family:var(--font-mono);font-size:0.82rem;font-weight:600;
+  color:var(--accent2);margin-bottom:6px;
+}
+.glossary-explain{font-size:0.84rem;color:var(--text-secondary);line-height:1.65}
+
+/* ========== FLOW DIAGRAM ========== */
+.flow-phases{
+  display:flex;gap:0;overflow-x:auto;
+  padding:1rem 0 1.5rem;
+  scroll-snap-type:x mandatory;
+}
+.flow-phase{
+  min-width:180px;flex:1;
+  scroll-snap-align:start;
+  text-align:center;position:relative;
+  padding:1.2rem 0.8rem;
+}
+.flow-phase::after{
+  content:'';position:absolute;top:36px;right:-10px;
+  width:20px;height:2px;background:var(--border);
+}
+.flow-phase:last-child::after{display:none}
+.flow-phase .phase-num{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.82rem;margin:0 auto 8px;
+  color:#fff;
+}
+.flow-phase h4{font-size:0.85rem;font-weight:700;margin-bottom:4px}
+.flow-phase p{font-size:0.76rem;color:var(--text-muted);line-height:1.5}
+
+/* ========== FOOTER ========== */
+.site-footer{
+  border-top:1px solid var(--border-light);
+  text-align:center;padding:2rem 0;
+  font-size:0.8rem;color:var(--text-muted);
+}
+
+/* ========== RESPONSIVE ========== */
 
 /* Tablet */
-@media (max-width: 1024px) {
-  .container { padding: 0 20px; }
-  .hero { padding: 64px 0 72px; }
-  .section { padding: 60px 0; }
-  .section-header { margin-bottom: 40px; }
+@media(max-width:900px){
+  .toolbox-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+  .glossary-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
 }
 
 /* Mobile */
-@media (max-width: 768px) {
-  .container { padding: 0 16px; }
-  .hero { padding: 48px 0 56px; }
-  .hero .meta { gap: 10px; }
-  .hero .meta-item { padding: 6px 12px; font-size: 0.85rem; }
+@media(max-width:700px){
+  /* Nav */
+  .nav-links{display:none}
+  .topnav-inner{height:48px}
 
-  .section { padding: 48px 0; }
-  .section-header { margin-bottom: 32px; }
+  /* Hero */
+  .hero{padding-top:clamp(2.5rem,6vw,4rem);padding-bottom:clamp(2rem,4vw,3rem)}
+  .hero-badge{font-size:0.72rem;padding:5px 12px;margin-bottom:1rem}
+  .hero-file-tree{font-size:0.7rem;padding:1rem 1.2rem;line-height:1.8;max-width:100%;overflow-x:auto}
+  .hero-file-tree .comment{font-size:0.62rem}
 
-  .arch-diagram { padding: 24px 16px; }
-  .arch-layer { gap: 14px; }
+  /* Sections */
+  section{padding:clamp(2rem,5vw,3.5rem) 0}
+  .section-header{margin-bottom:clamp(1.5rem,3vw,2rem)}
 
-  .chat-conversation { padding: 20px 16px; }
-  .chat-message { gap: 10px; }
-  .chat-avatar { width: 32px; height: 32px; font-size: 0.75rem; }
-  .chat-bubble { padding: 14px 16px; font-size: 0.88rem; }
+  /* Architecture: collapse indentation */
+  .arch-layer:nth-child(2),.arch-layer:nth-child(3),
+  .arch-layer:nth-child(4),.arch-layer:nth-child(5){margin-left:0!important;margin-right:0!important}
+  .arch-layer{padding:clamp(0.8rem,2vw,1.2rem) clamp(0.8rem,2vw,1rem)}
+  .arch-layer .layer-files{gap:4px}
+  .arch-layer .file-chip{font-size:0.64rem;padding:2px 8px}
+  .layer-detail-inner{padding:0.8rem 1rem;font-size:0.8rem}
 
-  .tools-grid { grid-template-columns: 1fr; }
-  .tool-card { padding: 22px 18px; }
-  .glossary-grid { grid-template-columns: 1fr; }
-  .glossary-card { padding: 16px; }
+  /* Workflow: vertical */
+  .flow-phases{flex-direction:column;padding:0.5rem 0 1rem}
+  .flow-phase{min-width:0}
+  .flow-phase::after{display:none}
 
-  .footer { padding: 36px 0 24px; }
+  /* Chat */
+  .scenario-tabs{gap:6px}
+  .scenario-tab{padding:7px 14px;font-size:0.78rem}
+  .chat-body{padding:1rem}
+  .chat-msg{gap:8px}
+  .chat-avatar{width:28px;height:28px;border-radius:8px;font-size:0.75rem}
+  .chat-bubble{padding:7px 12px;font-size:0.8rem;max-width:90%}
+  .chat-bubble .sender{font-size:0.72rem}
+  .chat-bubble .aside{font-size:0.7rem}
+  .chat-scenario-header{padding:0.8rem 1rem;flex-wrap:wrap;gap:6px}
+  .chat-scenario-header h3{font-size:0.9rem}
+  .chat-scenario-header p{font-size:0.72rem;margin-left:0}
 
-  /* Popover: better touch target */
-  .popover-close { padding: 8px 12px; font-size: 1.4rem; }
-  .term-link { padding: 2px 0; }
+  /* Toolbox */
+  .toolbox-grid{grid-template-columns:1fr;gap:1rem}
+  .tool-card{padding:1.2rem}
+  .tool-card .tool-icon{font-size:1.6rem;margin-bottom:0.5rem}
+  .tool-card h3{font-size:0.92rem}
+  .tool-card .tool-role{font-size:0.78rem}
+  .tool-meta-row{font-size:0.76rem}
+
+  /* Glossary */
+  .glossary-grid{grid-template-columns:1fr;gap:0.8rem}
+  .glossary-item{padding:1rem 1.1rem}
+
+  /* Footer */
+  .site-footer{padding:1.5rem 0;font-size:0.75rem}
+
+  /* Tooltip: show on tap via focus (touch can't hover) */
+  .tip::after{max-width:min(280px,calc(100vw - 48px))}
 }
 
 /* Small phone */
-@media (max-width: 400px) {
-  .container { padding: 0 12px; }
-  .hero { padding: 36px 0 44px; }
-  .hero .meta { flex-direction: column; align-items: center; gap: 8px; }
-  .section { padding: 36px 0; }
-  .arch-diagram { padding: 20px 12px; }
-  .chat-conversation { padding: 16px 12px; }
-  .chat-bubble { padding: 12px 14px; }
-  .tool-card { padding: 18px 14px; }
+@media(max-width:400px){
+  .container{padding:0 clamp(0.75rem,3vw,1rem)}
+  .hero-file-tree{font-size:0.64rem;padding:0.8rem 1rem}
+  .hero-file-tree .comment{display:none}
+  .chat-bubble{max-width:95%}
+  .arch-layer{padding:0.7rem 0.75rem}
+  .tool-card{padding:1rem 0.9rem}
 }
 
-/* Touch device: disable hover lift effects */
-@media (hover: none) {
-  .arch-layer:hover { transform: none; }
-  .flow-phase:hover { transform: none; box-shadow: var(--shadow); }
-  .tool-card:hover { transform: none; box-shadow: var(--shadow); }
-  .glossary-card:hover { transform: none; box-shadow: var(--shadow); }
+/* Touch device: disable hover lift */
+@media(hover:none){
+  .arch-layer:hover{transform:none;box-shadow:var(--shadow)}
+  .flow-phase:hover{transform:none;box-shadow:var(--shadow)}
+  .tool-card:hover{transform:none;box-shadow:var(--shadow)}
+  .glossary-item:hover{transform:none;box-shadow:none}
 }
+
+/* ========== SCROLL ANIMATIONS ========== */
+.fade-in{opacity:0;transform:translateY(24px);transition:all 0.7s cubic-bezier(0.22,1,0.36,1)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ========== TOOLTIP for terms ========== */
+.tip{
+  position:relative;
+  border-bottom:1.5px dashed var(--accent2);
+  cursor:help;color:var(--accent2);font-weight:500;
+}
+.tip::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(0.95);
+  background:var(--text);color:#fff;
+  font-size:0.76rem;font-weight:400;line-height:1.5;
+  padding:8px 12px;border-radius:8px;
+  width:max-content;max-width:280px;
+  opacity:0;pointer-events:none;
+  transition:all 0.25s ease;z-index:50;
+  white-space:normal;
+}
+.tip:hover::after{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* active tab for chat scenarios */
+.scenario-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center}
+.scenario-tab{
+  padding:8px 18px;border-radius:99px;font-size:0.82rem;font-weight:600;
+  border:1.5px solid var(--border);background:var(--bg-card);
+  cursor:pointer;transition:all 0.25s ease;color:var(--text-secondary);
+}
+.scenario-tab:hover{border-color:var(--accent);color:var(--accent)}
+.scenario-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.chat-scenario{display:none}
+.chat-scenario.active{display:block}
 </style>
 </head>
 <body>
 
-<!-- Hero Section -->
-<section class="hero">
-  <div class="container">
-    <h1>frontend-slides</h1>
-    <div class="subtitle">
-      一个 Claude Code 技能插件，让 AI 通过对话就能生成零依赖的幻灯片演示文件 — 单个文件包含样式、动画和交互逻辑，十年后也能打开
+<!-- ==================== NAV ==================== -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo">Frontend Slides <span>Skill</span></div>
+    <div class="nav-links">
+      <a href="#architecture">架构</a>
+      <a href="#workflow">工作流</a>
+      <a href="#conversations">对话</a>
+      <a href="#toolbox">工具箱</a>
+      <a href="#glossary">术语</a>
     </div>
-    <div class="meta">
-      <div class="meta-item">
-        <span class="meta-icon">📁</span>
-        <span>6 个核心文件</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">🎨</span>
-        <span>12 种风格预设</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">⚡</span>
-        <span>零依赖输出</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">🔗</span>
-        <span><a href="https://github.com/zarazhangrui/frontend-slides" style="color: var(--accent); text-decoration: none;">GitHub 仓库</a></span>
-      </div>
-    </div>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero container">
+  <div class="hero-badge">GitHub 开源项目解读</div>
+  <h1>Frontend Slides<br>到底是个<em>什么东西</em>？</h1>
+  <p class="subtitle">一句话版本：它是一个 AI 助手的「技能插件」，能帮完全不会写代码的人，用对话做出漂亮的网页版 PPT。不需要装任何软件，最后生成一个 HTML 文件，双击就能打开。</p>
+  <div class="hero-file-tree">
+    <div><span class="file">SKILL.md</span> <span class="comment">&larr; 大脑，指挥一切的总地图</span></div>
+    <div><span class="file">STYLE_PRESETS.md</span> <span class="comment">&larr; 12 套设计风格的「服装店」</span></div>
+    <div><span class="file">viewport-base.css</span> <span class="comment">&larr; 保证不会出滚动条的安全网</span></div>
+    <div><span class="file">html-template.md</span> <span class="comment">&larr; HTML 骨架的图纸</span></div>
+    <div><span class="file">animation-patterns.md</span> <span class="comment">&larr; 动画特效的菜谱</span></div>
+    <div><span class="file">scripts/extract-pptx.py</span> <span class="comment">&larr; PowerPoint 的翻译官</span></div>
   </div>
 </section>
 
-<!-- Architecture Section -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2>系统架构</h2>
-      <div class="desc">从用户输入到浏览器展示，一共经过五层处理流程</div>
-    </div>
-
-    <div class="arch-diagram">
-      <div class="arch-layers">
-        <div class="arch-layer">
-          <div class="layer-number l1">1</div>
-          <div class="layer-content">
-            <div class="layer-title">用户层</div>
-            <div class="layer-detail">
-              在终端输入 <code>/frontend-slides</code> 命令，就像点了个开关
-              <div class="layer-detail-inner">
-                用户只需要描述想法，比如"给团队做个技术分享 PPT"或者"把这个 PowerPoint 转成网页版"
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-layer">
-          <div class="layer-number l2">2</div>
-          <div class="layer-content">
-            <div class="layer-title">AI 引擎</div>
-            <div class="layer-detail">
-              Claude Code（AI 助手）开始工作，像个项目经理一样读取操作手册
-              <div class="layer-detail-inner">
-                它会自动判断你想做什么，然后逐步引导对话 — 有点像填表格，但比填表格自然多了
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-layer">
-          <div class="layer-number l3">3</div>
-          <div class="layer-content">
-            <div class="layer-title">操作手册与资源库</div>
-            <div class="layer-detail">
-              SKILL.md 是大脑（告诉 AI 该做什么），配套文件是工具箱
-              <div class="layer-detail-inner">
-                <strong>SKILL.md</strong> — 180 行工作流指令，定义了 AI 的每一步行为<br>
-                <strong>STYLE_PRESETS.md</strong> — 12 套风格预设，像服装店的试穿间<br>
-                <strong>viewport-base.css</strong> — 必备基础样式，确保每张幻灯片正好填满一屏<br>
-                <strong>html-template.md</strong> — 文件结构蓝图，定义键盘导航、触摸滑动等功能<br>
-                <strong>animation-patterns.md</strong> — 动画图鉴，根据情绪匹配动画效果<br>
-                <strong>extract-pptx.py</strong> — PowerPoint 解析脚本，能读取 .pptx 文件内容
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-layer">
-          <div class="layer-number l4">4</div>
-          <div class="layer-content">
-            <div class="layer-title">代码生成</div>
-            <div class="layer-detail">
-              AI 根据你的选择，组装 HTML、CSS、JavaScript 代码
-              <div class="layer-detail-inner">
-                所有代码写进一个文件，字体从 Google Fonts 或 Fontshare 加载，除此之外零外部依赖 — 不需要 npm install，不需要 node_modules 文件夹
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-layer">
-          <div class="layer-number l5">5</div>
-          <div class="layer-content">
-            <div class="layer-title">浏览器展示</div>
-            <div class="layer-detail">
-              生成的 HTML 文件可以直接用浏览器打开，支持键盘翻页、触摸滑动、进度条显示
-              <div class="layer-detail-inner">
-                文件可以永久保存，十年后依然能打开 — 因为它只用浏览器原生功能，不依赖任何会过时的第三方库
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- ==================== ARCHITECTURE ==================== -->
+<section id="architecture" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:var(--accent-light);color:var(--accent)">技术架构</div>
+    <h2>这个项目的「楼层图」</h2>
+    <p>从上到下，每一层干不同的活。点击任意一层看详细说明。</p>
   </div>
-</section>
 
-<!-- Workflow Section -->
-<section class="section" style="background: white;">
-  <div class="container">
-    <div class="section-header">
-      <h2>工作流程</h2>
-      <div class="desc">AI 按照五个阶段逐步完成任务，每个阶段都有明确目标</div>
-    </div>
-
-    <div class="workflow">
-      <div class="flow-phase">
-        <div class="flow-number">Phase 0</div>
-        <div class="flow-title">判断模式</div>
-        <p>检测用户想做什么：从零创建、转换已有的 PowerPoint、还是修改现有演示文稿</p>
+  <div class="arch-stack fade-in">
+    <!-- Layer 1: User -->
+    <div class="arch-layer" onclick="toggleLayer(this)">
+      <div class="layer-num">1</div>
+      <div class="layer-head">
+        <span class="layer-icon">&#x1f9d1;</span>
+        <span class="layer-title">你（用户）</span>
       </div>
-
-      <div class="flow-phase">
-        <div class="flow-number">Phase 1</div>
-        <div class="flow-title">了解需求</div>
-        <p>询问演示目的、预计长度、内容是否准备好、是否需要可编辑的幻灯片备注</p>
-      </div>
-
-      <div class="flow-phase">
-        <div class="flow-number">Phase 2</div>
-        <div class="flow-title">选风格</div>
-        <p>生成 3 个单页预览供用户挑选 — 不问"你想要什么风格"，而是直接展示选项让你选</p>
-      </div>
-
-      <div class="flow-phase">
-        <div class="flow-number">Phase 3</div>
-        <div class="flow-title">生成代码</div>
-        <p>读取 HTML 模板、基础样式和动画库，组装成完整的演示文稿代码</p>
-      </div>
-
-      <div class="flow-phase">
-        <div class="flow-number">Phase 4</div>
-        <div class="flow-title">交付成品</div>
-        <p>保存文件、自动打开浏览器预览，并建议可能的后续定制选项</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Chat Conversations Section -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2>对话场景</h2>
-      <div class="desc">看看用户和 AI 的真实对话流程</div>
-    </div>
-
-    <div class="chat-tabs">
-      <button class="chat-tab active" data-tab="scenario1">从零做 PPT</button>
-      <button class="chat-tab" data-tab="scenario2">转换 PowerPoint</button>
-      <button class="chat-tab" data-tab="scenario3">选风格的秘密</button>
-    </div>
-
-    <!-- Scenario 1: 从零做 PPT -->
-    <div class="chat-content active" id="scenario1">
-      <div class="chat-conversation">
-        <div class="chat-message">
-          <div class="chat-avatar user">你</div>
-          <div class="chat-bubble">
-            /frontend-slides
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            好的！我来帮你做幻灯片演示。先问几个问题：<br>
-            1. 这个演示的主题或目的是什么？<br>
-            2. 大概需要多少张幻灯片？<br>
-            3. 内容准备好了吗，还是需要我帮你构思？
-            <div class="aside">
-              （此时 AI 读取了 SKILL.md 文件，进入 Phase 1 内容发现阶段）
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar user">你</div>
-          <div class="chat-bubble">
-            给团队做个技术分享，讲讲前端性能优化，大概 10 张左右，内容我自己写
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            明白了！现在让我展示 3 种风格给你选，看看哪个最适合技术分享的氛围。
-            <div class="aside">
-              （AI 读取 STYLE_PRESETS.md，根据"技术分享"这个场景，挑选了"Swiss Modern（极简瑞士）"、"Bold Signal（大胆信号）"和"Paper & Ink（纸墨）"三个预设，生成三个单页预览 HTML）
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar user">你</div>
-          <div class="chat-bubble">
-            第二个看起来不错，就用 Bold Signal
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            好的！现在开始生成完整的演示文稿...
-            <div class="aside">
-              （AI 进入 Phase 3，读取 html-template.md、viewport-base.css 和 animation-patterns.md，组装成一个完整的 HTML 文件，包含键盘导航、触摸手势、进度条等功能）
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            完成！文件已保存到 <code>presentation.html</code>，浏览器预览已自动打开。你可以用键盘左右箭头翻页，或者在手机上左右滑动。需要调整的话随时告诉我！
-            <div class="aside">
-              （AI 完成 Phase 4 交付阶段，文件保存并打开浏览器）
-            </div>
-          </div>
+      <div class="layer-desc">打开终端，输入 <code>/frontend-slides</code>，告诉 AI 你想做什么样的 PPT。</div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          你不需要会写代码，不需要懂设计。你只需要有想法 -- 比如「帮我做一个创业融资演讲」或者「把这个 PPT 文件转成网页版」。AI 会像一个耐心的设计师一样，一步步问你问题，给你看样式预览，最后帮你生成成品。
         </div>
       </div>
     </div>
 
-    <!-- Scenario 2: 转换 PowerPoint -->
-    <div class="chat-content" id="scenario2">
-      <div class="chat-conversation">
-        <div class="chat-message">
-          <div class="chat-avatar user">你</div>
-          <div class="chat-bubble">
-            /frontend-slides<br>
-            我有个 PowerPoint 文件想转成网页版
-          </div>
-        </div>
+    <div class="arch-connector">&#8595;</div>
 
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            好的！请把 .pptx 文件路径告诉我，我来提取内容。
-            <div class="aside">
-              （AI 进入 Phase 0，检测到是"转换模式"）
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar user">你</div>
-          <div class="chat-bubble">
-            ./slides/product-intro.pptx
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            正在读取文件内容...
-            <div class="aside">
-              （AI 运行 extract-pptx.py 脚本，脚本内部调用 python-pptx 库解析 PowerPoint 文件，提取每页的标题、正文、图片路径等信息，输出为结构化数据）
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            成功提取了 8 张幻灯片内容！现在让我展示 3 种风格供你选择...
-            <div class="aside">
-              （回到 Phase 2 风格选择流程，后续步骤与"从零做 PPT"相同）
-            </div>
-          </div>
+    <!-- Layer 2: Claude Code -->
+    <div class="arch-layer layer-blue" onclick="toggleLayer(this)">
+      <div class="layer-num">2</div>
+      <div class="layer-head">
+        <span class="layer-icon">&#x1f916;</span>
+        <span class="layer-title">Claude Code（AI 引擎）</span>
+      </div>
+      <div class="layer-desc">Anthropic 公司出品的 AI 编程助手，负责读懂技能文件、执行指令、生成代码。</div>
+      <div class="layer-files">
+        <span class="file-chip">claude.ai/claude-code</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          把 Claude Code 想象成一个<b>超级实习生</b> -- 它能读懂文档、写 HTML/CSS/JavaScript 代码、运行 Python 脚本、打开浏览器预览文件。它本身不知道怎么做幻灯片，但读了 SKILL.md 这份「操作手册」之后，就变成了一个幻灯片专家。这就像一个聪明的新员工，看完公司手册就能上岗。
         </div>
       </div>
     </div>
 
-    <!-- Scenario 3: 选风格的秘密 -->
-    <div class="chat-content" id="scenario3">
-      <div class="chat-conversation">
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            <strong>为什么不直接问"你想要什么风格"？</strong><br><br>
-            因为大多数人说不清楚自己想要什么风格。你可能会说"简洁一点"、"专业一点"、"酷一点"，但这些词太模糊了 — 我生成的东西可能跟你脑子里想的完全不一样。<br><br>
-            所以项目采用"先给选项，再让你挑"的方式。我会根据你的场景（技术分享、产品介绍、学术报告等），从 STYLE_PRESETS.md 的 12 个预设里挑 3 个最合适的，直接生成预览页面给你看。
-            <div class="aside">
-              （SKILL.md 的核心哲学："Show don't tell" — 展示选项比询问偏好更有效）
-            </div>
-          </div>
-        </div>
+    <div class="arch-connector">&#8595;</div>
 
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            <strong>STYLE_PRESETS.md 里有什么？</strong><br><br>
-            12 套精心设计的风格预设，每个包含：<br>
-            • 字体搭配（从 Google Fonts 和 Fontshare 挑选）<br>
-            • 配色方案（主色、辅助色、背景色）<br>
-            • 情绪标签（比如"冷静专业"、"活力创新"、"优雅复古"）<br>
-            • 适用场景建议<br><br>
-            比如"Neon Cyber（霓虹赛博）"适合科技产品发布，"Paper & Ink（纸墨）"适合学术报告，"Dark Botanical（暗黑植物）"适合艺术设计展示。
-            <div class="aside">
-              （STYLE_PRESETS.md 用"情绪 + 视觉元素"的方式描述风格，AI 能快速匹配用户场景）
-            </div>
-          </div>
+    <!-- Layer 3: SKILL.md -->
+    <div class="arch-layer" onclick="toggleLayer(this)">
+      <div class="layer-num">3</div>
+      <div class="layer-head">
+        <span class="layer-icon">&#x1f9e0;</span>
+        <span class="layer-title">SKILL.md（大脑 / 总地图）</span>
+      </div>
+      <div class="layer-desc">只有约 180 行的精炼指令，像一张地图一样告诉 AI：先做什么、再做什么、什么时候该去读哪个文件。</div>
+      <div class="layer-files">
+        <span class="file-chip">SKILL.md</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          这是整个项目最核心的设计理念：<b>给地图，不给百科全书</b>。SKILL.md 不会一口气把所有信息塞给 AI，而是说「你现在需要选风格？去读 STYLE_PRESETS.md」「要生成代码？去读 html-template.md 和 viewport-base.css」。这叫做<span class="term">渐进式加载</span> -- 用到什么才读什么，就像你点外卖不会一次把菜单全背下来。
         </div>
+      </div>
+    </div>
 
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            <strong>viewport-base.css 的作用</strong><br><br>
-            这是个"安全网"。它确保无论你的内容有多长、浏览器窗口多大，每张幻灯片都正好占满一屏，不会出现滚动条或者内容溢出。<br><br>
-            里面用了 viewport 单位（vh 和 vw）、scroll-snap 属性（让翻页有吸附效果）、clamp() 函数（让字体大小在不同屏幕上都合适）。所有生成的幻灯片都必须包含这个基础样式。
-            <div class="aside">
-              （viewport-base.css 是强制规则，防止生成的幻灯片在不同设备上显示异常）
-            </div>
-          </div>
+    <div class="arch-connector">&#8595;</div>
+
+    <!-- Layer 4: Supporting Files -->
+    <div class="arch-layer layer-green" onclick="toggleLayer(this)">
+      <div class="layer-num">4</div>
+      <div class="layer-head">
+        <span class="layer-icon">&#x1f4da;</span>
+        <span class="layer-title">辅助参考文件（按需加载）</span>
+      </div>
+      <div class="layer-desc">风格预设、CSS 安全网、HTML 模板、动画菜谱 -- AI 需要哪个就读哪个，而不是一次全塞进去。</div>
+      <div class="layer-files">
+        <span class="file-chip">STYLE_PRESETS.md</span>
+        <span class="file-chip">viewport-base.css</span>
+        <span class="file-chip">html-template.md</span>
+        <span class="file-chip">animation-patterns.md</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          <b>STYLE_PRESETS.md</b> -- 12 套精心设计的视觉风格，从「霓虹赛博」到「手账本风」都有，每套包含字体搭配、配色方案和标志性元素。<br><br>
+          <b>viewport-base.css</b> -- 一段必须被复制到每个演示文稿里的<span class="term">CSS</span>代码。它的作用是确保每一页幻灯片刚好填满屏幕，不会出现烦人的滚动条。<br><br>
+          <b>html-template.md</b> -- 生成 HTML 文件的「图纸」，规定了文件结构、键盘导航、触摸滑动、进度条等功能怎么实现。<br><br>
+          <b>animation-patterns.md</b> -- 各种动画效果的代码片段，并且标注了每种动画适合什么「情绪」。
         </div>
+      </div>
+    </div>
 
-        <div class="chat-message">
-          <div class="chat-avatar ai">AI</div>
-          <div class="chat-bubble">
-            <strong>animation-patterns.md 如何工作</strong><br><br>
-            它是个"情绪 → 动画"的映射表。比如：<br>
-            • 严肃正式的场景 → 用淡入效果，避免花哨动画<br>
-            • 活力创新的场景 → 用弹性动画、滑动进入<br>
-            • 优雅艺术的场景 → 用缓慢渐现、视差滚动<br><br>
-            AI 会根据你选的风格预设，自动匹配对应的动画模式。还会考虑 prefers-reduced-motion 设置，尊重用户的动画偏好。
-            <div class="aside">
-              （animation-patterns.md 确保动画效果与内容氛围一致，不是为了炫技而加动画）
-            </div>
-          </div>
+    <div class="arch-connector">&#8595;</div>
+
+    <!-- Layer 5: Output -->
+    <div class="arch-layer layer-purple" onclick="toggleLayer(this)">
+      <div class="layer-num">5</div>
+      <div class="layer-head">
+        <span class="layer-icon">&#x1f3a8;</span>
+        <span class="layer-title">输出成品（一个 HTML 文件）</span>
+      </div>
+      <div class="layer-desc">所有的代码、样式、动画、字体都打包在一个文件里。双击就能在浏览器打开，十年后照样能用。</div>
+      <div class="layer-files">
+        <span class="file-chip">presentation.html</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          最终产出是一个<b>零依赖</b>的 HTML 文件 -- 不需要安装任何软件，不需要联网（除了加载字体），不需要 npm、webpack 或者任何构建工具。项目的哲学是「<b>依赖就是债务</b>」：一个单独的 HTML 文件十年后还能打开，但一个 2019 年的 React 项目？祝你好运。这个文件里包含了键盘导航（方向键翻页）、触摸滑动（手机上手指左右滑）、进度条、导航圆点等全部功能。
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SaaS Toolbox Section -->
-<section class="section" style="background: white;">
-  <div class="container">
-    <div class="section-header">
-      <h2>工具箱</h2>
-      <div class="desc">项目用到的第三方服务和工具，以及它们的计费方式</div>
+<!-- ==================== WORKFLOW / PHASES ==================== -->
+<section id="workflow" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:var(--accent2-light);color:var(--accent2)">工作流程</div>
+    <h2>从「我要做 PPT」到「成品出炉」</h2>
+    <p>整个过程分 5 个阶段，就像去定制西装一样：先量体、选面料、再裁剪。</p>
+  </div>
+
+  <div class="flow-phases fade-in">
+    <div class="flow-phase">
+      <div class="phase-num" style="background:var(--accent)">0</div>
+      <h4>判断模式</h4>
+      <p>你是想从零开始做？还是把现有 PPT 转成网页版？还是想改进已有的？</p>
+    </div>
+    <div class="flow-phase">
+      <div class="phase-num" style="background:var(--accent2)">1</div>
+      <h4>了解需求</h4>
+      <p>AI 问你：做什么用？多少页？内容准备好了吗？要不要在线编辑功能？</p>
+    </div>
+    <div class="flow-phase">
+      <div class="phase-num" style="background:var(--accent4)">2</div>
+      <h4>选风格</h4>
+      <p>生成 3 个单页预览。你说不清楚喜欢什么？没关系，看到再选就行。</p>
+    </div>
+    <div class="flow-phase">
+      <div class="phase-num" style="background:var(--accent3)">3</div>
+      <h4>生成代码</h4>
+      <p>AI 读取模板和样式，一口气生成完整的 HTML 演示文稿。</p>
+    </div>
+    <div class="flow-phase">
+      <div class="phase-num" style="background:#d97706">4</div>
+      <h4>交付成品</h4>
+      <p>清理临时文件，自动打开浏览器预览，告诉你怎么自定义。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAT CONVERSATIONS ==================== -->
+<section id="conversations" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:var(--accent3-light);color:var(--accent3)">服务通信</div>
+    <h2>它们之间怎么「传话」的？</h2>
+    <p>用群聊对话的方式，看看核心功能场景中各个组件是怎么配合的。</p>
+  </div>
+
+  <div class="scenario-tabs fade-in">
+    <button class="scenario-tab active" onclick="switchScenario('s1',this)">从零做 PPT</button>
+    <button class="scenario-tab" onclick="switchScenario('s2',this)">转换 PowerPoint</button>
+    <button class="scenario-tab" onclick="switchScenario('s3',this)">选风格的秘密</button>
+  </div>
+
+  <div class="chat-scenarios fade-in">
+    <!-- Scenario 1: Creating from scratch (MOST IMPORTANT) -->
+    <div class="chat-scenario active" id="s1">
+      <div class="chat-scenario-header">
+        <div class="scenario-num" style="background:var(--accent)">1</div>
+        <h3>核心场景：从零创建演示文稿</h3>
+        <p>最常用的功能</p>
+      </div>
+      <div class="chat-body">
+        <div class="chat-msg">
+          <div class="chat-avatar av-user">你</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent)">你</div>
+            /frontend-slides<br>帮我做一个 AI 创业公司的融资演讲。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            收到！让我先读一下操作手册......<br>
+            <div class="aside">（此时 Claude Code 加载了 SKILL.md，就像新员工翻开了工作手册第一页）</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md</div>
+            这是「新建演示文稿」模式。先进入阶段 1，问用户四个问题：用途、长度、内容准备情况、要不要在线编辑。<b>一次性全部问完</b>，别一个一个问，那样太烦了。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            好的！<br>1. 这个演讲是什么用途？（融资演讲 / 教学 / 会议 / 内部汇报）<br>2. 大概多少页？<br>3. 内容准备好了吗？<br>4. 需要在浏览器里直接编辑文字吗？
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-user">你</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent)">你</div>
+            融资演讲，10 页左右，内容都准备好了，不需要在线编辑。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md</div>
+            进入阶段 2。现在去读 <code>STYLE_PRESETS.md</code>，根据用户的「情绪偏好」挑 3 个风格，生成单页预览让用户选。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-style">风格</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent4)">STYLE_PRESETS.md</div>
+            融资演讲要「自信、专业」的感觉？推荐这三个：Bold Signal（大胆橙色卡片）、Electric Studio（黑白撞色）、Dark Botanical（暗色优雅路线）。每个都有现成的字体、配色、标志性元素。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            我做了 3 个单页预览，自动帮你在浏览器打开了。你喜欢哪个？
+            <div class="aside">（AI 生成了 style-a.html、style-b.html、style-c.html 三个预览文件）</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-user">你</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent)">你</div>
+            选 B，那个黑白撞色的！
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md</div>
+            进入阶段 3。现在去读三个文件：<code>html-template.md</code>（HTML 骨架怎么搭）、<code>viewport-base.css</code>（防溢出的 CSS 必须全部复制进去！）、<code>animation-patterns.md</code>（选合适的动画效果）。然后生成完整的演示文稿。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            搞定了！生成了 <code>presentation.html</code>，已经在你浏览器里打开了。用方向键翻页，手机上可以滑动。所有代码、样式、动画都在这一个文件里，不依赖任何东西。
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="tools-grid">
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">🤖</div>
-          <div class="tool-name">Claude Code</div>
-        </div>
-        <div class="tool-role">你的 AI 编程搭档 — 就像一个读完操作手册就能上岗的超级实习生</div>
-        <div class="tool-desc">Anthropic 出品的官方 AI 终端工具，能理解自然语言指令、读写代码、执行脚本。frontend-slides 就是它的一个技能插件。</div>
-        <div class="tool-price paid">Pro 版 $20/月（Sonnet 模型）<br>Max 5x $100/月 | Max 20x $200/月（Opus 模型）</div>
+    <!-- Scenario 2: PPT Conversion -->
+    <div class="chat-scenario" id="s2">
+      <div class="chat-scenario-header">
+        <div class="scenario-num" style="background:var(--accent2)">2</div>
+        <h3>把 PowerPoint 转成网页版</h3>
+        <p>有现成 PPT 想转换时</p>
       </div>
-
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">🔤</div>
-          <div class="tool-name">Google Fonts</div>
+      <div class="chat-body">
+        <div class="chat-msg">
+          <div class="chat-avatar av-user">你</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent)">你</div>
+            /frontend-slides<br>帮我把 quarterly-report.pptx 转成网页版。
+          </div>
         </div>
-        <div class="tool-role">全球最大的免费字体库 — 像一个永远不打烊的免费字体超市</div>
-        <div class="tool-desc">Google 提供的 1700+ 免费字体服务，通过 CDN 快速加载。frontend-slides 生成的演示文稿从这里引入字体文件，无需本地安装。</div>
-        <div class="tool-price free">完全免费，无使用限制</div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            看到了，是个 PowerPoint 文件。让我读一下操作手册......好的，手册说要先用 Python 脚本提取内容。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md</div>
+            这是「PPT 转换」模式，跳到阶段 4。先运行 <code>extract-pptx.py</code> 提取所有文字、图片和演讲备注，然后回到阶段 2 选风格。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            喂，Python 翻译官！帮我把这个 PPT 拆开。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-python">Py</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:#306998">extract-pptx.py</div>
+            收到。我用 <code>python-pptx</code> 这个库把 PPT 拆开了：发现 15 页幻灯片，每页的标题、正文都提取出来了，还有 8 张图片已经存到 <code>assets/</code> 文件夹。
+            <div class="aside">（Python 脚本把 PPT 里的内容转成了 JSON 格式的清单）</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            我提取了 15 页内容：<br>- 第 1 页：季度报告标题<br>- 第 2 页：业绩亮点（含 2 张图表）<br>- ...<br>内容看起来对吗？接下来帮你选个好看的风格。
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">✍️</div>
-          <div class="tool-name">Fontshare</div>
-        </div>
-        <div class="tool-role">精品字体免费站 — 像个小而美的独立设计师市集</div>
-        <div class="tool-desc">Indian Type Foundry 运营的免费字体平台，质量很高，允许商用。STYLE_PRESETS.md 里有些风格用的是这里的字体。</div>
-        <div class="tool-price free">完全免费，可商用</div>
+    <!-- Scenario 3: Style Selection magic -->
+    <div class="chat-scenario" id="s3">
+      <div class="chat-scenario-header">
+        <div class="scenario-num" style="background:var(--accent4)">3</div>
+        <h3>「看到再选」的设计哲学</h3>
+        <p>为什么不直接让你描述想要的风格？</p>
       </div>
-
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">🐍</div>
-          <div class="tool-name">python-pptx</div>
+      <div class="chat-body">
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md 的设计哲学</div>
+            大多数人<b>说不清楚自己喜欢什么风格</b>。你让他们选「现代」还是「经典」？他们会一脸茫然。但如果你给他们看三个成品，他们会立刻指着其中一个说「就这个！」
+          </div>
         </div>
-        <div class="tool-role">PowerPoint 的"翻译官" — 能把 .pptx 文件拆开，取出里面的文字和图片</div>
-        <div class="tool-desc">开源的 Python 库，用于读写 Microsoft PowerPoint 文件。extract-pptx.py 脚本用它来解析用户上传的 PPT 内容。</div>
-        <div class="tool-price free">MIT 协议开源，免费使用</div>
-      </div>
-
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">🖼️</div>
-          <div class="tool-name">Pillow (PIL)</div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-claude">AI</div>
+          <div class="chat-bubble">
+            <div class="sender">Claude Code</div>
+            明白了。所以我不问「你喜欢什么风格」，而是问「你想让观众有什么<b>感觉</b>」？
+          </div>
         </div>
-        <div class="tool-role">图片处理瑞士军刀 — 能裁剪、缩放、转换各种格式的图片</div>
-        <div class="tool-desc">Python 的图像处理库，extract-pptx.py 用它来提取和处理 PowerPoint 里的图片，转成网页可以用的格式。</div>
-        <div class="tool-price free">开源免费</div>
-      </div>
-
-      <div class="tool-card">
-        <div class="tool-header">
-          <div class="tool-icon">📦</div>
-          <div class="tool-name">GitHub</div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-style">风格</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent4)">STYLE_PRESETS.md</div>
+            没错！我这里有 12 套预设风格，每套都有一个「情绪标签」。比如想让人觉得「被震撼到了」？用 Bold Signal 或 Neon Cyber。想让人「安心、信任」？用 Paper & Ink 或 Swiss Modern。我不只是一个色板表，我是<b>情绪到视觉的翻译器</b>。
+          </div>
         </div>
-        <div class="tool-role">代码的家 — 像一个永远不关门的代码图书馆</div>
-        <div class="tool-desc">前端项目托管在 GitHub 上，公开仓库可以免费使用，支持版本控制、协作开发。</div>
-        <div class="tool-price free">公开仓库完全免费</div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-css">CSS</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent3)">viewport-base.css</div>
+            而且不管选哪个风格，我都会被完整复制到最终文件里。我的工作是确保每一页幻灯片<b>刚好填满屏幕</b>，在任何设备上都不会出现滚动条。我是所有风格共用的「安全网」。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-html">动画</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:#d97706">animation-patterns.md</div>
+            我负责给每种情绪配上合适的动画。想要「戏剧感」？用慢速淡入 + 大比例缩放。想要「科技感」？用霓虹发光 + 文字乱码特效。想要「友好亲切」？用弹性动画 + 浮动效果。不是为了炫技，是为了<b>强化你想传达的感觉</b>。
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar av-skill">手册</div>
+          <div class="chat-bubble">
+            <div class="sender" style="color:var(--accent2)">SKILL.md</div>
+            还有一条铁律：<b>绝对不做「AI 罐头味」的东西</b>。不用 Inter 字体、不用紫色渐变白底、不用千篇一律的卡片网格。每个演示文稿都要像专门为你设计的，不是从模板库里拽出来的。
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Glossary Section -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2>术语表</h2>
-      <div class="desc">项目里出现的技术名词解释，点击正文中的术语可快速查看定义</div>
+<!-- ==================== SAAS TOOLBOX ==================== -->
+<section id="toolbox" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:var(--accent4-light);color:var(--accent4)">SaaS 工具箱</div>
+    <h2>这个项目用到了哪些「外部服务」？</h2>
+    <p>有的是付费平台，有的是免费库。看看它们各自扮演什么角色。</p>
+  </div>
+
+  <div class="toolbox-grid fade-in">
+    <!-- Claude Code -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x1f916;</div>
+      <h3>Claude Code</h3>
+      <div class="tool-role">项目的「心脏」。它是 Anthropic 公司出品的 AI 编程助手，在终端里运行。它读取技能文件，和你对话，生成代码。没有它，这个项目就是一堆静态文档。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">AI 引擎 + 代码生成器</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">免费版无法使用 Claude Code 功能</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-paid">Pro $20/月起</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">套餐</span>
+          <span class="tool-meta-val">Pro $20/月 (Sonnet 模型) | Max 5x $100/月 | Max 20x $200/月 (含 Opus 模型)</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">Pro 版够日常用。如果你天天做演示文稿或者需要更强的 Opus 模型，考虑 Max 5x。</span>
+        </div>
+      </div>
+      <div class="connects-to">关联: <strong>SKILL.md</strong>（读取技能文件）、<strong>浏览器</strong>（预览成品）、<strong>Python</strong>（运行 PPT 提取脚本）</div>
     </div>
 
-    <div class="glossary-grid">
-      <div class="glossary-card" id="term-html">
-        <div class="glossary-term">HTML</div>
-        <div class="glossary-def">超文本标记语言，网页的骨架。用标签（比如 &lt;h1&gt;、&lt;p&gt;、&lt;div&gt;）来描述内容结构，浏览器读懂后就知道该显示什么。</div>
+    <!-- Google Fonts -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x1f520;</div>
+      <h3>Google Fonts</h3>
+      <div class="tool-role">Google 提供的免费字体 CDN。演示文稿用到的那些好看字体（Archivo Black、Cormorant、Fraunces 等）大部分来自这里。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">字体供应商（让文字变好看）</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">全部免费，无限制，可商用</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-free">完全免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">永远不需要。1700+ 免费字体任你挑。</span>
+        </div>
       </div>
+      <div class="connects-to">关联: <strong>生成的 HTML 文件</strong>（通过 link 标签加载字体）</div>
+    </div>
 
-      <div class="glossary-card" id="term-css">
-        <div class="glossary-term">CSS</div>
-        <div class="glossary-def">层叠样式表，网页的化妆师。决定元素的颜色、字体、布局、动画效果。viewport-base.css 就是一个 CSS 文件。</div>
+    <!-- Fontshare -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x2712;</div>
+      <h3>Fontshare</h3>
+      <div class="tool-role">印度字体铸造厂 (ITF) 提供的免费字体平台。项目里的 Clash Display、Satoshi 等字体来自这里，风格比 Google Fonts 更有设计感。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">高质量设计字体供应商</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">全部免费，可商用</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-free">完全免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">不需要升级。所有字体都免费。</span>
+        </div>
       </div>
+      <div class="connects-to">关联: <strong>生成的 HTML 文件</strong>（Neon Cyber 等风格的字体来源）</div>
+    </div>
 
-      <div class="glossary-card" id="term-javascript">
-        <div class="glossary-term">JavaScript</div>
-        <div class="glossary-def">网页的行为控制器，让页面能响应用户操作。比如按键盘左右箭头翻页、点击按钮触发动画，都是 JavaScript 实现的。</div>
+    <!-- python-pptx -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x1f40d;</div>
+      <h3>python-pptx</h3>
+      <div class="tool-role">一个 Python 库，专门用来拆解 PowerPoint 文件。它能把 .pptx 里的文字、图片、演讲备注全部提取出来，交给 AI 去生成网页版。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">PowerPoint 的「翻译官」</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">开源免费，MIT 协议</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-free">完全免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">不需要。开源软件，社区维护。</span>
+        </div>
       </div>
+      <div class="connects-to">关联: <strong>extract-pptx.py</strong>（被这个脚本调用来解析 PPT 文件）</div>
+    </div>
 
-      <div class="glossary-card" id="term-viewport">
-        <div class="glossary-term">viewport</div>
-        <div class="glossary-def">视口，就是浏览器窗口里能看到内容的那块区域。viewport-base.css 确保每张幻灯片正好占满一个视口，不多不少。</div>
+    <!-- Pillow -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x1f5bc;</div>
+      <h3>Pillow (PIL)</h3>
+      <div class="tool-role">Python 的图片处理瑞士军刀。如果你的 PPT 里有图片太大或者需要裁剪成圆形（比如 logo），就由它来处理。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">图片处理（缩放、裁切、格式转换）</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">开源免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-free">完全免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">不需要。功能齐全，无限制。</span>
+        </div>
       </div>
+      <div class="connects-to">关联: <strong>Claude Code</strong>（在图片需要处理时被 AI 调用）</div>
+    </div>
 
-      <div class="glossary-card" id="term-clamp">
-        <div class="glossary-term">clamp()</div>
-        <div class="glossary-def">CSS 函数，用来限制数值范围。比如 clamp(16px, 2vw, 24px) 表示"字体大小随屏幕宽度变化，但最小 16px，最大 24px"，让文字在不同设备上都合适。</div>
+    <!-- GitHub -->
+    <div class="tool-card">
+      <div class="tool-icon">&#x1f4e6;</div>
+      <h3>GitHub</h3>
+      <div class="tool-role">代码的「家」。这个项目的所有文件都存放在 GitHub 上，任何人都可以下载、使用和修改。</div>
+      <div class="tool-meta">
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">角色</span>
+          <span class="tool-meta-val">代码托管 + 版本管理</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">免费额度</span>
+          <span class="tool-meta-val">公开仓库完全免费，不限数量</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">价格</span>
+          <span class="price-tag price-free">公开项目免费</span>
+        </div>
+        <div class="tool-meta-row">
+          <span class="tool-meta-label">何时升级</span>
+          <span class="tool-meta-val">只有需要私有仓库高级功能时才需要付费（$4/月起），这个项目用不着。</span>
+        </div>
       </div>
-
-      <div class="glossary-card" id="term-intersection-observer">
-        <div class="glossary-term">Intersection Observer</div>
-        <div class="glossary-def">浏览器提供的 API，用来检测元素是否进入视口。常用于"滚动到某个位置才触发动画"的效果，比监听滚动事件更高效。</div>
-      </div>
-
-      <div class="glossary-card" id="term-scroll-snap">
-        <div class="glossary-term">scroll-snap</div>
-        <div class="glossary-def">CSS 属性，让滚动有"吸附"效果。比如翻页时，页面会自动吸附到最近的一张完整幻灯片，不会停在中间位置。</div>
-      </div>
-
-      <div class="glossary-card" id="term-zero-dependency">
-        <div class="glossary-term">零依赖</div>
-        <div class="glossary-def">指生成的 HTML 文件不依赖任何第三方 JavaScript 库（比如 React、Vue、jQuery），只用浏览器原生功能。好处是文件小、加载快、永远不会因为库过时而打不开。</div>
-      </div>
-
-      <div class="glossary-card" id="term-cdn">
-        <div class="glossary-term">CDN</div>
-        <div class="glossary-def">内容分发网络，把文件部署到全球各地的服务器上，用户访问时自动选最近的服务器下载，速度更快。Google Fonts 和 Fontshare 都用 CDN 分发字体文件。</div>
-      </div>
-
-      <div class="glossary-card" id="term-mit-license">
-        <div class="glossary-term">MIT 协议</div>
-        <div class="glossary-def">一种非常宽松的开源许可证，允许你自由使用、修改、商用代码，唯一要求是保留原作者的版权声明。python-pptx 就用这个协议。</div>
-      </div>
-
-      <div class="glossary-card" id="term-progressive-loading">
-        <div class="glossary-term">渐进式加载</div>
-        <div class="glossary-def">SKILL.md 的核心策略 — 不是一开始就把所有文件都读进来，而是根据对话进度，只在需要时才加载对应的文件。就像"给地图，不给百科全书"。</div>
-      </div>
-
-      <div class="glossary-card" id="term-prefers-reduced-motion">
-        <div class="glossary-term">prefers-reduced-motion</div>
-        <div class="glossary-def">浏览器提供的用户偏好设置，有些人会因为动画感到不适（比如眩晕），他们可以在系统设置里打开"减少动画"。网页可以通过 CSS 检测这个设置，自动关闭或简化动画。</div>
-      </div>
-
-      <div class="glossary-card" id="term-claude-code">
-        <div class="glossary-term">Claude Code</div>
-        <div class="glossary-def">Anthropic 公司出品的 AI 编程助手，能在终端里运行，理解自然语言、读写代码、执行命令。frontend-slides 是它的一个技能插件。</div>
-      </div>
-
-      <div class="glossary-card" id="term-skill">
-        <div class="glossary-term">Skill（技能插件）</div>
-        <div class="glossary-def">Claude Code 的扩展机制，就像给 AI 装上专用工具。一个 Skill 包含指令文件（SKILL.md）和配套资源，告诉 AI 如何完成特定任务。</div>
-      </div>
-
-
-
+      <div class="connects-to">关联: <strong>所有项目文件</strong>（存储和分发源代码）</div>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <p>frontend-slides 项目地图 | 数据生成于 2026 年 3 月</p>
-    <p>GitHub: <a href="https://github.com/zarazhangrui/frontend-slides">zarazhangrui/frontend-slides</a></p>
-    <p style="margin-top: 20px; color: #999; font-size: 0.85rem;">本页面使用零依赖 HTML 生成，可永久保存</p>
+<!-- ==================== GLOSSARY ==================== -->
+<section id="glossary" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:#fef3c7;color:#a16207">术语词典</div>
+    <h2>那些「听着很唬人」的技术词</h2>
+    <p>每个术语用大白话解释一遍，不装、不绕。</p>
   </div>
+
+  <div class="glossary-grid fade-in">
+    <div class="glossary-item">
+      <div class="glossary-term">HTML</div>
+      <div class="glossary-explain">网页的「骨架」。就像盖房子时的砖头和框架，决定了页面上有什么内容（标题、段落、图片），但不管好不好看。你双击打开的那个 .html 文件，就是这个东西。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CSS</div>
+      <div class="glossary-explain">网页的「化妆师」。HTML 负责内容，CSS 负责好看 -- 颜色、字体、间距、动画效果全靠它。项目里的 viewport-base.css 就是一段 CSS 代码。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">JavaScript (JS)</div>
+      <div class="glossary-explain">网页的「行为能力」。键盘按方向键能翻页、手指滑动能切换、进度条会跟着走 -- 这些互动功能都是 JavaScript 实现的。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">viewport (视口)</div>
+      <div class="glossary-explain">你的屏幕能看到的那个「窗口区域」。项目里反复强调「每页幻灯片必须刚好填满 viewport」，意思就是不能出现滚动条，一屏就是一页。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">clamp()</div>
+      <div class="glossary-explain">一个 CSS 函数，像「智能弹簧」。你给它一个最小值、一个理想值、一个最大值，它会根据屏幕大小自动调节。比如字号在手机上小一点、在大屏上大一点，不用你操心。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Intersection Observer</div>
+      <div class="glossary-explain">浏览器内置的一个「哨兵」。它蹲在那里看：这个元素进入屏幕了吗？进了就触发动画。比翻页时整页「淡入」效果就是靠它实现的，而且比老方法省电。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">scroll-snap</div>
+      <div class="glossary-explain">「吸附式滚动」。普通网页你滚到哪是哪，但幻灯片需要翻一页就精确停在下一页的开头。scroll-snap 就是让页面自动「咔哒」一声对齐的功能。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">零依赖 (Zero Dependencies)</div>
+      <div class="glossary-explain">不需要安装任何额外软件或框架就能运行。就像一份纸质文件，不需要专门的阅读器。这个项目生成的 HTML 文件就是零依赖的 -- 双击就打开，十年后依然能用。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CDN</div>
+      <div class="glossary-explain">Content Delivery Network，内容分发网络。就像快递公司在全国各地都有仓库，Google Fonts 把字体文件存在世界各地的服务器上，你的浏览器会自动从最近的仓库取货，加载更快。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MIT 协议 (MIT License)</div>
+      <div class="glossary-explain">一种超级宽松的开源协议。简单说就是「随便用，商用也行，改了也行，唯一要求是保留版权声明」。这个项目和它用到的 python-pptx 库都是 MIT 协议。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">渐进式加载 (Progressive Loading)</div>
+      <div class="glossary-explain">需要什么才加载什么，不一口气全塞进来。就像去图书馆查资料，你不会把整个图书馆搬回家，而是需要哪本书才借哪本。这个项目的 AI 只在需要时才读取辅助文件。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">prefers-reduced-motion</div>
+      <div class="glossary-explain">一个「礼貌的询问」。有些人对闪烁的动画敏感（比如有前庭障碍的用户），他们可以在系统设置里关掉动画。这段代码就是说：「如果用户不想要动画，我就把动画关掉」。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site-footer container">
+  <p>Frontend Slides by <a href="https://github.com/zarazhangrui" target="_blank">@zarazhangrui</a> -- MIT License</p>
+  <p style="margin-top:4px">本页面是对 <a href="https://github.com/zarazhangrui/frontend-slides" target="_blank">github.com/zarazhangrui/frontend-slides</a> 代码库的可视化解读</p>
 </footer>
 
-<!-- Term Popover -->
-<div class="term-popover">
-  <div class="popover-header">
-    <span class="popover-term"></span>
-    <button class="popover-close">&times;</button>
-  </div>
-  <div class="popover-body"></div>
-</div>
-<div class="popover-backdrop"></div>
-
+<!-- ==================== SCRIPTS ==================== -->
 <script>
-// Tab switching
-document.querySelectorAll('.chat-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const targetId = tab.dataset.tab;
+// ===== Toggle architecture layer details =====
+function toggleLayer(el){
+  const wasExpanded = el.classList.contains('expanded');
+  document.querySelectorAll('.arch-layer').forEach(l=>l.classList.remove('expanded'));
+  if(!wasExpanded) el.classList.add('expanded');
+}
 
-    document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.chat-content').forEach(c => c.classList.remove('active'));
+// ===== Switch chat scenarios =====
+function switchScenario(id, btn){
+  document.querySelectorAll('.chat-scenario').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.scenario-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  // Re-trigger chat animations
+  const msgs = document.getElementById(id).querySelectorAll('.chat-msg');
+  msgs.forEach(m=>{
+    m.style.animation='none';
+    m.offsetHeight; // trigger reflow
+    m.style.animation='';
+  });
+}
 
-    tab.classList.add('active');
-    document.getElementById(targetId).classList.add('active');
+// ===== Scroll-triggered fade-in =====
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+},{threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// ===== Smooth scroll for nav links =====
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
   });
 });
-
-// Term Auto-Linking System
-(function() {
-  // Map term strings to glossary card IDs (sorted longest-first to match longer terms first)
-  const termMap = {
-    'prefers-reduced-motion': 'term-prefers-reduced-motion',
-    'Intersection Observer': 'term-intersection-observer',
-    'Skill（技能插件）': 'term-skill',
-    'keyboard navigation': 'term-keyboard-nav',
-    'Claude Code': 'term-claude-code',
-    'scroll-snap': 'term-scroll-snap',
-    'JavaScript': 'term-javascript',
-    'MIT 协议': 'term-mit-license',
-    'Markdown': 'term-markdown',
-    'viewport': 'term-viewport',
-    'clamp()': 'term-clamp',
-    'Python': 'term-python',
-    'python-pptx': 'term-pptx',
-    'Pillow': 'term-pptx',
-    'Google Fonts': 'term-cdn',
-    'Fontshare': 'term-cdn',
-    'GitHub': 'term-git',
-    'HTML': 'term-html',
-    'CSS': 'term-css',
-    'CDN': 'term-cdn',
-    'PPTX': 'term-pptx',
-    '零依赖': 'term-zero-dependency',
-    '开源': 'term-open-source',
-    '渐进式加载': 'term-progressive-loading',
-    '键盘导航': 'term-keyboard-nav',
-    '触摸滑动': 'term-touch-swipe',
-    '进度条': 'term-progress-bar',
-    'API': 'term-api',
-    '响应式设计': 'term-responsive',
-    'Git': 'term-git'
-  };
-
-  // Get all glossary definitions for popover
-  const glossaryDefs = {};
-  document.querySelectorAll('.glossary-card').forEach(card => {
-    const id = card.id;
-    const term = card.querySelector('.glossary-term').textContent;
-    const def = card.querySelector('.glossary-def').textContent;
-    glossaryDefs[id] = { term, def };
-  });
-
-  // Containers to search for terms in
-  const searchSelectors = [
-    '.layer-detail-inner',
-    '.chat-bubble',
-    '.hero .subtitle',
-    '.tool-role',
-    '.flow-phase p'
-  ];
-
-  // Track which terms have been linked in each container
-  const linkedTermsPerContainer = new WeakMap();
-
-  // Process each container
-  searchSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(container => {
-      const linkedTerms = new Set();
-      linkedTermsPerContainer.set(container, linkedTerms);
-
-      // Use TreeWalker to find text nodes
-      const walker = document.createTreeWalker(
-        container,
-        NodeFilter.SHOW_TEXT,
-        {
-          acceptNode: (node) => {
-            // Skip if parent is already a term-link or inside code
-            if (node.parentElement.classList.contains('term-link') ||
-                node.parentElement.classList.contains('aside') ||
-                node.parentElement.tagName === 'CODE') {
-              return NodeFilter.FILTER_REJECT;
-            }
-            return NodeFilter.FILTER_ACCEPT;
-          }
-        }
-      );
-
-      const textNodes = [];
-      let node;
-      while (node = walker.nextNode()) {
-        textNodes.push(node);
-      }
-
-      // Sort terms by length (longest first)
-      const sortedTerms = Object.keys(termMap).sort((a, b) => b.length - a.length);
-
-      // Process each text node
-      textNodes.forEach(textNode => {
-        let text = textNode.textContent;
-        let hasMatch = false;
-        let newHTML = '';
-        let lastIndex = 0;
-
-        // Find all term matches in this text node
-        const matches = [];
-        sortedTerms.forEach(term => {
-          if (linkedTerms.has(term)) return; // Skip if already linked in this container
-
-          const index = text.indexOf(term);
-          if (index !== -1) {
-            matches.push({ term, index, length: term.length });
-          }
-        });
-
-        // Sort matches by position
-        matches.sort((a, b) => a.index - b.index);
-
-        // Build new HTML with term links (only link first occurrence)
-        matches.forEach(match => {
-          if (match.index >= lastIndex) {
-            const termId = termMap[match.term];
-            newHTML += text.slice(lastIndex, match.index);
-            newHTML += `<a class="term-link" data-term-id="${termId}">${match.term}</a>`;
-            lastIndex = match.index + match.length;
-            linkedTerms.add(match.term);
-            hasMatch = true;
-          }
-        });
-
-        if (hasMatch) {
-          newHTML += text.slice(lastIndex);
-          const span = document.createElement('span');
-          span.innerHTML = newHTML;
-          textNode.parentNode.replaceChild(span, textNode);
-
-          // Unwrap the span to keep just the contents
-          while (span.firstChild) {
-            span.parentNode.insertBefore(span.firstChild, span);
-          }
-          span.remove();
-        }
-      });
-    });
-  });
-
-  // Popover elements
-  const popover = document.querySelector('.term-popover');
-  const popoverTerm = document.querySelector('.popover-term');
-  const popoverBody = document.querySelector('.popover-body');
-  const popoverClose = document.querySelector('.popover-close');
-  const backdrop = document.querySelector('.popover-backdrop');
-
-  let currentLink = null;
-
-  // Show popover
-  function showPopover(link) {
-    const termId = link.dataset.termId;
-    const def = glossaryDefs[termId];
-    if (!def) return;
-
-    currentLink = link;
-    link.classList.add('active');
-
-    popoverTerm.textContent = def.term;
-    popoverBody.textContent = def.def;
-
-    // Position popover
-    const rect = link.getBoundingClientRect();
-    const popoverHeight = 200; // Approximate
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
-
-    // Decide if popover goes below or above
-    if (spaceBelow > popoverHeight || spaceBelow > spaceAbove) {
-      popover.classList.add('below');
-      popover.classList.remove('above');
-      popover.style.top = (rect.bottom + 8) + 'px';
-    } else {
-      popover.classList.add('above');
-      popover.classList.remove('below');
-      popover.style.top = (rect.top - popoverHeight - 8) + 'px';
-    }
-
-    // Center popover horizontally relative to link
-    const popoverWidth = 360;
-    let left = rect.left + (rect.width / 2) - (popoverWidth / 2);
-    left = Math.max(16, Math.min(left, window.innerWidth - popoverWidth - 16));
-    popover.style.left = left + 'px';
-
-    // Position arrow
-    const arrowLeft = rect.left + (rect.width / 2) - left;
-    popover.style.setProperty('--arrow-left', arrowLeft + 'px');
-
-    popover.classList.add('show');
-    backdrop.classList.add('show');
-  }
-
-  // Hide popover
-  function hidePopover() {
-    popover.classList.remove('show');
-    backdrop.classList.remove('show');
-    if (currentLink) {
-      currentLink.classList.remove('active');
-      currentLink = null;
-    }
-  }
-
-  // Click on term links
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('.term-link');
-    if (link) {
-      e.preventDefault();
-      if (currentLink === link) {
-        hidePopover();
-      } else {
-        hidePopover();
-        setTimeout(() => showPopover(link), 10);
-      }
-    }
-  });
-
-  // Close popover
-  popoverClose.addEventListener('click', hidePopover);
-  backdrop.addEventListener('click', hidePopover);
-
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') hidePopover();
-  });
-
-  // Close on scroll (debounced)
-  let scrollTimeout;
-  window.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      if (popover.classList.contains('show')) {
-        hidePopover();
-      }
-    }, 150);
-  }, { passive: true });
-})();
 </script>
-
 </body>
 </html>
