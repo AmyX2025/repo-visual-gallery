@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube 转电子书 — 项目全景图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f7f4;--bg-card:#ffffff;
+  --text:#1a1a1a;--text-secondary:#555;--text-muted:#888;
+  --accent:#e85d26;--accent-light:#fff3ed;
+  --accent2:#3b6df0;--accent2-light:#eef2ff;
+  --accent3:#10a37f;--accent3-light:#edfaf6;
+  --accent4:#8b5cf6;--accent4-light:#f3f0ff;
+  --accent5:#d97706;--accent5-light:#fffbeb;
+  --border:#e5e2dc;--border-light:#f0ede8;
+  --shadow:0 2px 20px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.08);
+  --radius:16px;--radius-sm:10px;
+  --font-sans:'Noto Sans SC',system-ui,sans-serif;
+  --font-mono:'Fira Code',monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#e85d26 0%,#d94c1a 100%);color:#fff;padding:120px 0 80px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);border-radius:50%}
+.hero-content{position:relative;z-index:1}
+.hero h1{font-size:3.2rem;font-weight:900;margin-bottom:24px;letter-spacing:-0.02em}
+.hero .subtitle{font-size:1.25rem;font-weight:300;opacity:0.95;max-width:700px;margin:0 auto 32px;line-height:1.8}
+.hero .meta{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-size:0.95rem;opacity:0.9}
+.hero .meta-item{display:flex;align-items:center;gap:8px}
+.hero .meta-icon{font-size:1.3rem}
+
+/* Section */
+.section{padding:80px 0}
+.section-header{text-align:center;margin-bottom:60px}
+.section-title{font-size:2.4rem;font-weight:800;margin-bottom:16px;color:var(--text)}
+.section-subtitle{font-size:1.1rem;color:var(--text-secondary);max-width:600px;margin:0 auto}
+
+/* Architecture */
+.architecture{background:var(--bg-card);padding:80px 0}
+.arch-layers{display:flex;flex-direction:column;gap:20px}
+.arch-layer{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;transition:all 0.3s cubic-bezier(.22,1,.36,1)}
+.arch-layer:hover{box-shadow:var(--shadow-lg);border-color:var(--accent);transform:translateX(4px)}
+.arch-layer[data-level="2"]{margin-left:16px}
+.arch-layer[data-level="3"]{margin-left:32px}
+.arch-layer[data-level="4"]{margin-left:48px}
+.arch-layer[data-level="5"]{margin-left:64px}
+.arch-layer[data-level="6"]{margin-left:80px}
+.layer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.layer-number{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--accent);color:#fff;border-radius:10px;font-weight:700;font-size:1.05rem}
+.layer-title{font-size:1.4rem;font-weight:700;flex:1;margin-left:16px}
+.layer-files{display:flex;gap:8px;flex-wrap:wrap}
+.layer-file{background:var(--accent-light);color:var(--accent);padding:6px 14px;border-radius:20px;font-family:var(--font-mono);font-size:0.82rem;font-weight:500}
+.layer-detail{margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light)}
+.layer-detail-inner{font-size:0.95rem;color:var(--text-secondary);line-height:1.75}
+.layer-brief{display:inline-flex;align-items:center;gap:6px;background:var(--accent2-light);color:var(--accent2);padding:4px 12px;border-radius:16px;font-size:0.85rem;font-weight:500;margin-top:12px}
+
+/* Workflow */
+.workflow{background:var(--bg)}
+.flow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px}
+.flow-phase{background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;position:relative;transition:all 0.3s cubic-bezier(.22,1,.36,1)}
+.flow-phase:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.flow-icon{font-size:3rem;margin-bottom:16px}
+.flow-title{font-size:1.3rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.flow-phase p{font-size:0.9rem;color:var(--text-secondary);line-height:1.6}
+.flow-phase::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:var(--accent);font-weight:700}
+.flow-phase:last-child::after{display:none}
+
+/* Chat */
+.chat-section{background:var(--bg-card);padding:80px 0}
+.chat-tabs{display:flex;justify-content:center;gap:12px;margin-bottom:40px;flex-wrap:wrap}
+.chat-tab{background:transparent;border:2px solid var(--border);color:var(--text-secondary);padding:12px 28px;border-radius:30px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.25s;font-family:var(--font-sans)}
+.chat-tab:hover{border-color:var(--accent);background:var(--accent-light)}
+.chat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chat-container{display:none;max-width:900px;margin:0 auto}
+.chat-container.active{display:block}
+.chat-messages{display:flex;flex-direction:column;gap:24px}
+.chat-message{display:flex;gap:16px;align-items:flex-start}
+.chat-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.chat-message.user .chat-avatar{background:var(--accent2-light)}
+.chat-message.assistant .chat-avatar{background:var(--accent3-light)}
+.chat-bubble{background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:18px 22px;flex:1;font-size:0.96rem;line-height:1.75;position:relative}
+.chat-bubble .aside{display:block;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);font-size:0.87rem;color:var(--text-muted);font-style:normal;line-height:1.65}
+.chat-bubble code{background:var(--accent4-light);color:var(--accent4);padding:3px 8px;border-radius:6px;font-family:var(--font-mono);font-size:0.88rem}
+.chat-bubble strong{font-weight:700;color:var(--text)}
+
+/* SaaS Toolbox */
+.saas-section{background:var(--bg);padding:80px 0}
+.saas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px}
+.saas-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;transition:all 0.3s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.saas-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--card-accent,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform 0.3s cubic-bezier(.22,1,.36,1)}
+.saas-card:hover::before{transform:scaleX(1)}
+.saas-card:hover{box-shadow:var(--shadow-lg);border-color:var(--card-accent,var(--accent));transform:translateY(-4px)}
+.saas-card[data-accent="accent2"]{--card-accent:var(--accent2)}
+.saas-card[data-accent="accent3"]{--card-accent:var(--accent3)}
+.saas-card[data-accent="accent4"]{--card-accent:var(--accent4)}
+.saas-card[data-accent="accent5"]{--card-accent:var(--accent5)}
+.saas-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.saas-icon{font-size:2.2rem}
+.saas-title{font-size:1.35rem;font-weight:700;color:var(--text)}
+.tool-role{background:var(--accent-light);color:var(--accent);padding:8px 14px;border-radius:20px;font-size:0.88rem;font-weight:600;margin-bottom:16px;display:inline-block}
+.saas-card[data-accent="accent2"] .tool-role{background:var(--accent2-light);color:var(--accent2)}
+.saas-card[data-accent="accent3"] .tool-role{background:var(--accent3-light);color:var(--accent3)}
+.saas-card[data-accent="accent4"] .tool-role{background:var(--accent4-light);color:var(--accent4)}
+.saas-card[data-accent="accent5"] .tool-role{background:var(--accent5-light);color:var(--accent5)}
+.saas-desc{font-size:0.94rem;color:var(--text-secondary);line-height:1.7;margin-bottom:16px}
+.saas-pricing{background:var(--accent5-light);border-left:3px solid var(--accent5);padding:12px 14px;border-radius:8px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6}
+.saas-pricing strong{color:var(--accent5);font-weight:600}
+
+/* Glossary */
+.glossary-section{background:var(--bg-card);padding:80px 0}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.glossary-card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:20px;transition:all 0.25s}
+.glossary-card:hover{border-color:var(--accent2);box-shadow:var(--shadow)}
+.glossary-term{font-family:var(--font-mono);font-weight:600;font-size:1.05rem;color:var(--accent2);margin-bottom:10px}
+.glossary-def{font-size:0.9rem;color:var(--text-secondary);line-height:1.65}
+
+/* Footer */
+.footer{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);color:#fff;padding:60px 0 32px;text-align:center}
+.footer-content{max-width:800px;margin:0 auto}
+.footer-title{font-size:1.8rem;font-weight:700;margin-bottom:16px}
+.footer-desc{font-size:1.05rem;opacity:0.85;margin-bottom:28px;line-height:1.7}
+.footer-link{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:14px 32px;border-radius:30px;text-decoration:none;font-weight:600;font-size:1.05rem;transition:all 0.25s}
+.footer-link:hover{background:#d94c1a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,93,38,0.4)}
+.footer-meta{margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.9rem;opacity:0.7}
+
+/* Term links and popover */
+.term-link{color:var(--accent);font-weight:600;border-bottom:1.5px dashed var(--accent);cursor:pointer;text-decoration:none}
+.term-link:hover,.term-link.active{background:var(--accent-light)}
+.term-popover{position:fixed;z-index:200;width:min(360px,calc(100vw - 32px));background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);opacity:0;transform:scale(.97);transition:opacity .25s cubic-bezier(.22,1,.36,1),transform .25s cubic-bezier(.22,1,.36,1);pointer-events:none}
+.term-popover.show{opacity:1;transform:scale(1);pointer-events:auto}
+.term-popover::before{content:'';position:absolute;width:12px;height:12px;background:var(--bg-card);border-top:1px solid var(--border);border-left:1px solid var(--border);left:var(--arrow-left,24px)}
+.term-popover.below::before{top:-7px;transform:rotate(45deg)}
+.term-popover.above::before{bottom:-7px;transform:rotate(-135deg)}
+.popover-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;border-bottom:1px solid var(--border-light)}
+.popover-term{font-family:var(--font-mono);font-weight:600;color:var(--accent2);font-size:.85rem}
+.popover-close{background:none;border:none;font-size:1.2rem;color:var(--text-muted);cursor:pointer;padding:0 4px;line-height:1}
+.popover-close:hover{color:var(--text)}
+.popover-body{padding:12px 16px;font-size:.84rem;line-height:1.65;color:var(--text-secondary)}
+.popover-backdrop{position:fixed;inset:0;z-index:199;display:none}
+.popover-backdrop.show{display:block}
+
+/* Mobile */
+@media(max-width:768px){
+  .hero h1{font-size:2.2rem}
+  .hero .subtitle{font-size:1.05rem}
+  .section-title{font-size:1.8rem}
+  .arch-layer[data-level="2"],.arch-layer[data-level="3"],.arch-layer[data-level="4"],.arch-layer[data-level="5"],.arch-layer[data-level="6"]{margin-left:0}
+  .flow-steps{grid-template-columns:1fr}
+  .flow-phase::after{display:none}
+  .chat-tabs{flex-direction:column;align-items:stretch}
+  .chat-message{flex-direction:column}
+  .chat-avatar{align-self:flex-start}
+  .saas-grid,.glossary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>YouTube 转电子书</h1>
+    <p class="subtitle">自动监听 YouTube 频道更新，把最新视频字幕改写成杂志风格文章，打包成电子书发到你邮箱 — 每周自动跑一次，再也不用追更了</p>
+    <div class="meta">
+      <div class="meta-item"><span class="meta-icon">🐍</span>Python 流水线</div>
+      <div class="meta-item"><span class="meta-icon">🤖</span>Claude AI 改写</div>
+      <div class="meta-item"><span class="meta-icon">📧</span>EPUB 邮件推送</div>
+      <div class="meta-item"><span class="meta-icon">⏰</span>macOS / GitHub Actions</div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section class="architecture">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">架构分层</h2>
+      <p class="section-subtitle">从用户界面到外部服务，6 层结构让整个系统各司其职</p>
+    </div>
+    <div class="arch-layers">
+
+      <div class="arch-layer" data-level="1">
+        <div class="layer-header">
+          <span class="layer-number">1</span>
+          <h3 class="layer-title">用户层</h3>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">你跟系统打交道的两个入口：一是双击打开仪表盘配置频道和写作风格，二是每周收邮件看电子书</div>
+          <div class="layer-brief">🖥️ 交互入口</div>
+        </div>
+      </div>
+
+      <div class="arch-layer" data-level="2">
+        <div class="layer-header">
+          <span class="layer-number">2</span>
+          <h3 class="layer-title">自动化调度层</h3>
+          <div class="layer-files">
+            <span class="layer-file">com.youtube.newsletter.plist</span>
+            <span class="layer-file">newsletter.yml</span>
+          </div>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">macOS 的 launchd 或 GitHub Actions 按时间表定期启动流水线 — Mac 用户本地跑，其他人可以用云端跑（但 YouTube 可能封云服务器 IP）</div>
+          <div class="layer-brief">⏰ 定时任务调度</div>
+        </div>
+      </div>
+
+      <div class="arch-layer" data-level="3">
+        <div class="layer-header">
+          <span class="layer-number">3</span>
+          <h3 class="layer-title">编排器</h3>
+          <div class="layer-files">
+            <span class="layer-file">main.py</span>
+            <span class="layer-file">video_tracker.py</span>
+          </div>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">main.py 是总指挥，按顺序调用各个模块；video_tracker.py 负责记住哪些视频处理过了，避免重复发送</div>
+          <div class="layer-brief">🎯 流程控制 + 去重追踪</div>
+        </div>
+      </div>
+
+      <div class="arch-layer" data-level="4">
+        <div class="layer-header">
+          <span class="layer-number">4</span>
+          <h3 class="layer-title">流水线模块</h3>
+          <div class="layer-files">
+            <span class="layer-file">get_videos.py</span>
+            <span class="layer-file">get_transcripts.py</span>
+            <span class="layer-file">write_articles.py</span>
+            <span class="layer-file">send_email.py</span>
+          </div>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">四个核心模块接力完成整个过程：抓视频列表 → 扒字幕 → AI 改写 → 打包发邮件。get_videos 会用 HTTP HEAD 请求检查视频 URL 是否重定向到 /shorts/ 来过滤短视频</div>
+          <div class="layer-brief">⚙️ 核心处理流程</div>
+        </div>
+      </div>
+
+      <div class="arch-layer" data-level="5">
+        <div class="layer-header">
+          <span class="layer-number">5</span>
+          <h3 class="layer-title">仪表盘</h3>
+          <div class="layer-files">
+            <span class="layer-file">dashboard.py</span>
+            <span class="layer-file">launch_dashboard.command</span>
+          </div>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">Streamlit 做的网页界面，深色杂志风格，5 个页面：一键生成、频道管理、写作风格、历史归档、定时设置 — 双击 launch_dashboard.command 就能打开</div>
+          <div class="layer-brief">🎨 可视化配置界面</div>
+        </div>
+      </div>
+
+      <div class="arch-layer" data-level="6">
+        <div class="layer-header">
+          <span class="layer-number">6</span>
+          <h3 class="layer-title">外部服务</h3>
+        </div>
+        <div class="layer-detail">
+          <div class="layer-detail-inner">项目依赖四个外部服务：YouTube Data API 查视频列表，Supadata 扒字幕，Claude AI 改写文章，Gmail SMTP 发邮件</div>
+          <div class="layer-brief">🌐 字幕提取服务 + AI 写作助手 + 邮件发送</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Workflow -->
+<section class="workflow">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">工作流程</h2>
+      <p class="section-subtitle">从抓取到发送，5 个步骤全自动完成</p>
+    </div>
+    <div class="flow-steps">
+
+      <div class="flow-phase">
+        <div class="flow-icon">📹</div>
+        <h3 class="flow-title">抓取视频</h3>
+        <p>去 YouTube 查你订阅的频道最新上传了哪些视频，按时间排序，自动过滤掉短视频</p>
+      </div>
+
+      <div class="flow-phase">
+        <div class="flow-icon">📝</div>
+        <h3 class="flow-title">扒字幕</h3>
+        <p>把视频 ID 发给字幕提取服务，拿回完整文字稿 — 每个请求之间等 1 秒避免被限流</p>
+      </div>
+
+      <div class="flow-phase">
+        <div class="flow-icon">✨</div>
+        <h3 class="flow-title">AI 改写</h3>
+        <p>把字幕扔给 Claude AI，让它按照你设定的杂志风格重新写一遍，变成可读性强的文章</p>
+      </div>
+
+      <div class="flow-phase">
+        <div class="flow-icon">📚</div>
+        <h3 class="flow-title">打包电子书</h3>
+        <p>用 ebooklib 把所有文章打包成 EPUB 格式电子书，顺便生成一个 HTML 邮件预览</p>
+      </div>
+
+      <div class="flow-phase">
+        <div class="flow-icon">📧</div>
+        <h3 class="flow-title">发邮件</h3>
+        <p>通过 Gmail SMTP 把电子书作为附件发到你邮箱 — 成功发送后才会标记视频已处理</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Chat Conversations -->
+<section class="chat-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">对话式解读</h2>
+      <p class="section-subtitle">用聊天的方式讲清楚核心机制</p>
+    </div>
+
+    <div class="chat-tabs">
+      <button class="chat-tab active" data-chat="pipeline">一键生成电子书</button>
+      <button class="chat-tab" data-chat="dedup">过滤重复视频</button>
+      <button class="chat-tab" data-chat="shorts">短视频识别秘诀</button>
+    </div>
+
+    <!-- Pipeline Chat -->
+    <div class="chat-container active" id="chat-pipeline">
+      <div class="chat-messages">
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">点击"一键生成"按钮后，系统到底做了什么？</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            <strong>main.py</strong> 会按顺序调用 5 个模块：
+            <br><br>
+            <strong>第一步</strong> — get_videos.py 去 YouTube 查你订阅的频道最新上传了哪些视频，拿到视频 ID、标题、发布时间这些信息
+            <span class="aside">去 YouTube 的视频仓库里查最新上传列表，按时间顺序排好</span>
+            <strong>第二步</strong> — video_tracker.py 检查这些视频 ID 有没有处理过，把新视频筛出来
+            <span class="aside">看看本地的 JSON 记录文件里有没有这些视频的 ID</span>
+            <strong>第三步</strong> — get_transcripts.py 把新视频的 ID 发给字幕提取服务，拿回完整文字稿
+            <span class="aside">每次请求之间停 1 秒，避免请求太快被服务商限流</span>
+            <strong>第四步</strong> — write_articles.py 把字幕发给 Claude AI，让它按照你设定的杂志风格重新写一遍
+            <span class="aside">把字幕和你在仪表盘里设置的写作风格一起发给 AI 模型</span>
+            <strong>第五步</strong> — send_email.py 把所有文章打包成 EPUB 电子书，通过 Gmail 发到你邮箱，成功后才标记视频已处理
+            <span class="aside">用 ebooklib 库生成电子书文件，再用 Gmail 的 SMTP 服务器发送</span>
+          </div>
+        </div>
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">如果中间某一步失败了怎么办？</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            系统只有在<strong>最后发送邮件成功</strong>之后才会标记视频已处理。如果中间任何一步出错（比如 API 限流、网络超时、AI 服务暂时不可用），video_tracker 不会记录这些视频，下次运行时会重新处理它们。这样可以确保你不会漏掉任何一期内容。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dedup Chat -->
+    <div class="chat-container" id="chat-dedup">
+      <div class="chat-messages">
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">系统怎么知道哪些视频发过了，不会重复发送？</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            video_tracker.py 在本地维护了一个 JSON 文件，里面记录了所有<strong>成功发送过邮件</strong>的视频 ID。每次抓到新视频列表后，会先跟这个文件里的记录对比，只处理那些没见过的 ID。
+            <span class="aside">就像一个签到表，发送成功才打勾，下次看到打过勾的就跳过</span>
+          </div>
+        </div>
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">如果我想重新处理某个视频呢？</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            直接编辑或删除本地的 JSON 追踪文件，把对应的视频 ID 去掉就行。下次运行时系统会把它当作新视频重新处理。不过要小心别误删了其他记录。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shorts Chat -->
+    <div class="chat-container" id="chat-shorts">
+      <div class="chat-messages">
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">YouTube Shorts 短视频也会被抓取吗？它们内容太短不适合做成文章</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            系统会自动过滤掉短视频。get_videos.py 用了一个巧妙的方法：对每个视频 URL 发一个轻量级的 HTTP HEAD 请求，检查 YouTube 会不会把它重定向到 <code>/shorts/</code> 路径。如果重定向了，说明这是个短视频，直接跳过不处理。
+            <span class="aside">就像敲门问一句"你是短视频吗"，如果门牌号变成了 /shorts/ 开头，就知道是了</span>
+          </div>
+        </div>
+        <div class="chat-message user">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">为什么不直接看视频时长来判断？</div>
+        </div>
+        <div class="chat-message assistant">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-bubble">
+            因为 YouTube Data API 返回的视频列表里，短视频和普通视频混在一起，API 响应里没有明确的"这是 Shorts"标记。如果要通过时长判断，需要额外调用一次 API 查询视频详情，会消耗更多配额。用 URL 重定向检查只需要一个 HTTP HEAD 请求，速度快、不消耗 API 配额，而且准确度 100%。
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SaaS Toolbox -->
+<section class="saas-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">工具箱</h2>
+      <p class="section-subtitle">支撑整个项目的第三方服务</p>
+    </div>
+    <div class="saas-grid">
+
+      <div class="saas-card" data-accent="accent">
+        <div class="saas-header">
+          <span class="saas-icon">📺</span>
+          <h3 class="saas-title">YouTube Data API v3</h3>
+        </div>
+        <div class="tool-role">你的 YouTube 数据管家 — Google 官方的视频信息查询接口</div>
+        <div class="saas-desc">让你的代码能查频道最新上传了哪些视频、视频标题是什么、什么时候发布的。就像给你开了一个后台查询权限，不用手动刷页面。</div>
+        <div class="saas-pricing">
+          <strong>免费额度：</strong>每天 10,000 配额单位（查询视频列表每次消耗 1 单位，够个人用）<br>
+          <strong>超出后：</strong>需要申请提额或付费，但对于监听几个频道来说基本用不完
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent2">
+        <div class="saas-header">
+          <span class="saas-icon">💬</span>
+          <h3 class="saas-title">Supadata API</h3>
+        </div>
+        <div class="tool-role">你的字幕提取专家 — 专门干"把视频变成文字稿"这件事的服务</div>
+        <div class="saas-desc">你给它视频 ID，它给你完整字幕文本。省去了自己写爬虫或者调用 YouTube 字幕接口的麻烦，而且支持多语言、自动处理时间轴。</div>
+        <div class="saas-pricing">
+          <strong>免费额度：</strong>每月 100 次请求<br>
+          <strong>付费套餐：</strong>每月 $17 可用 3000 次（约每次 0.006 美元）<br>
+          <strong>算笔账：</strong>如果你关注 5 个频道，每周共发 10 个视频，一个月 40 个视频，免费额度够用
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent3">
+        <div class="saas-header">
+          <span class="saas-icon">✨</span>
+          <h3 class="saas-title">Anthropic API (Claude Sonnet 4)</h3>
+        </div>
+        <div class="tool-role">你的私人杂志编辑 — Anthropic 公司做的 AI 写作助手</div>
+        <div class="saas-desc">把口水话满天飞的视频字幕改写成结构清晰、可读性强的杂志文章。你可以设定写作风格（比如"轻松幽默"或"严肃专业"），它会按照你的要求重新组织内容。</div>
+        <div class="saas-pricing">
+          <strong>输入价格：</strong>约每百万字 $4<br>
+          <strong>输出价格：</strong>约每百万字 $20<br>
+          <strong>新用户福利：</strong>注册送 $5 免费额度<br>
+          <strong>算笔账：</strong>一个 10 分钟视频字幕约 2000 字，AI 输出文章约 1500 字，成本不到 $0.01
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent4">
+        <div class="saas-header">
+          <span class="saas-icon">📧</span>
+          <h3 class="saas-title">Gmail SMTP</h3>
+        </div>
+        <div class="tool-role">你的邮递员 — Google 邮箱自带的邮件发送服务</div>
+        <div class="saas-desc">不需要单独买邮件发送服务，直接用你的 Gmail 账号就能发送电子书。需要在 Google 账户设置里生成一个应用专用密码（因为开了两步验证后普通密码不能用于第三方应用）。</div>
+        <div class="saas-pricing">
+          <strong>免费额度：</strong>每天 500 封邮件<br>
+          <strong>限制：</strong>附件大小不能超过 25MB（EPUB 电子书一般几百 KB 到几 MB，完全够用）
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent5">
+        <div class="saas-header">
+          <span class="saas-icon">📚</span>
+          <h3 class="saas-title">ebooklib</h3>
+        </div>
+        <div class="tool-role">你的电子书装订机 — 开源的 EPUB 制作工具</div>
+        <div class="saas-desc">一个 Python 库，把文章内容、标题、封面打包成标准的 EPUB 格式电子书。支持自定义样式、章节结构、元数据，生成的文件可以在 Apple Books、Kindle、其他阅读器里打开。</div>
+        <div class="saas-pricing">
+          <strong>完全免费：</strong>开源项目，没有任何费用<br>
+          <strong>安装：</strong>pip install ebooklib 就能用
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent4">
+        <div class="saas-header">
+          <span class="saas-icon">🎨</span>
+          <h3 class="saas-title">Streamlit</h3>
+        </div>
+        <div class="tool-role">你的网页搭建助手 — 专门给数据科学家用的快速建站工具</div>
+        <div class="saas-desc">用纯 Python 代码就能做出好看的网页界面，不需要写 HTML/CSS/JavaScript。项目用它做了一个仪表盘，可以管理频道订阅、设置写作风格、查看历史记录。</div>
+        <div class="saas-pricing">
+          <strong>本地运行：</strong>完全免费，开源项目<br>
+          <strong>云端部署：</strong>Streamlit Community Cloud 提供免费托管（公开项目）
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent2">
+        <div class="saas-header">
+          <span class="saas-icon">⚙️</span>
+          <h3 class="saas-title">GitHub Actions</h3>
+        </div>
+        <div class="tool-role">你的云端定时任务机器人 — GitHub 自带的自动化执行服务</div>
+        <div class="saas-desc">可以设定每周几点自动运行脚本，不需要自己的电脑一直开着。但是项目作者发现 YouTube 会封禁云服务器 IP，所以现在主要推荐用 macOS 的 launchd 在本地跑。</div>
+        <div class="saas-pricing">
+          <strong>公开仓库：</strong>完全免费，无限分钟<br>
+          <strong>私有仓库：</strong>每月 2000 分钟免费额度（够用）<br>
+          <strong>注意：</strong>YouTube 可能封云端 IP，建议本地运行
+        </div>
+      </div>
+
+      <div class="saas-card" data-accent="accent5">
+        <div class="saas-header">
+          <span class="saas-icon">🖥️</span>
+          <h3 class="saas-title">macOS launchd</h3>
+        </div>
+        <div class="tool-role">你的 Mac 系统管家 — macOS 自带的定时任务系统</div>
+        <div class="saas-desc">类似 Windows 的任务计划程序或 Linux 的 cron，可以设定每周几点自动运行脚本。项目提供了一个 .plist 配置文件，放到指定目录就能让系统定时启动流水线。</div>
+        <div class="saas-pricing">
+          <strong>完全免费：</strong>macOS 系统自带功能<br>
+          <strong>优势：</strong>本地运行，不受云端 IP 封禁影响
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Glossary -->
+<section class="glossary-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">术语表</h2>
+      <p class="section-subtitle">看不懂的词都在这里</p>
+    </div>
+    <div class="glossary-grid">
+
+      <div class="glossary-card" id="term-api">
+        <div class="glossary-term">API</div>
+        <div class="glossary-def">应用程序接口，简单说就是"让不同软件互相说话的规则"。比如你的代码想问 YouTube"某个频道最新上传了啥"，就通过 YouTube 提供的 API 发请求，它回复你数据。</div>
+      </div>
+
+      <div class="glossary-card" id="term-api-key">
+        <div class="glossary-term">API 密钥</div>
+        <div class="glossary-def">用来证明"你有权限调用这个 API"的一串字符。就像门禁卡，服务商给你发一个，你每次请求带上它，对方才认你。一般放在 .env 文件里，不能泄露。</div>
+      </div>
+
+<div class="glossary-card" id="term-smtp">
+        <div class="glossary-term">SMTP</div>
+        <div class="glossary-def">简单邮件传输协议，发邮件用的标准方法。Gmail、Outlook 等邮箱服务都提供 SMTP 服务器地址，你的代码连上去，按协议格式发送，对方就能收到邮件。</div>
+      </div>
+
+      <div class="glossary-card" id="term-token">
+        <div class="glossary-term">Token</div>
+        <div class="glossary-def">AI 模型处理文本的最小单位，可以粗略理解为"字"或"词块"。中文一般 1 个汉字约等于 1.5-2 个 token，英文一个单词约 1-2 个 token。API 计费按 token 数算。</div>
+      </div>
+
+<div class="glossary-card" id="term-env-file">
+        <div class="glossary-term">.env 文件</div>
+        <div class="glossary-def">存放敏感配置信息的文本文件，比如 API 密钥、邮箱密码。文件名以点开头，通常会加到 .gitignore 里防止上传到 GitHub 泄露。程序运行时读取里面的变量。</div>
+      </div>
+
+      <div class="glossary-card" id="term-json">
+        <div class="glossary-term">JSON</div>
+        <div class="glossary-def">一种轻量级的数据格式，用大括号、中括号、冒号、逗号组织数据，人和机器都容易读。项目用 JSON 文件记录处理过的视频 ID。</div>
+      </div>
+
+      <div class="glossary-card" id="term-launchd">
+        <div class="glossary-term">launchd</div>
+        <div class="glossary-def">macOS 系统的任务调度守护进程，负责在特定时间或条件下启动程序。通过 .plist 配置文件告诉它"每周日晚上 8 点运行这个脚本"。</div>
+      </div>
+
+      <div class="glossary-card" id="term-github-actions">
+        <div class="glossary-term">GitHub Actions</div>
+        <div class="glossary-def">GitHub 提供的自动化服务，可以在云端虚拟机里运行你的代码。常用于自动化测试、部署、定时任务。配置文件放在 .github/workflows/ 目录下。</div>
+      </div>
+
+      <div class="glossary-card" id="term-streamlit">
+        <div class="glossary-term">Streamlit</div>
+        <div class="glossary-def">一个 Python 框架，用纯 Python 代码就能做出交互式网页应用，不需要写前端代码。运行后会在本地启动一个网页服务器，浏览器打开就能用。</div>
+      </div>
+
+      <div class="glossary-card" id="term-pipeline">
+        <div class="glossary-term">流水线 (Pipeline)</div>
+        <div class="glossary-def">按顺序执行的一系列处理步骤，前一步的输出是后一步的输入。这个项目的流水线是：抓视频 → 扒字幕 → AI 改写 → 打包 → 发邮件。</div>
+      </div>
+
+<div class="glossary-card" id="term-http-head">
+        <div class="glossary-term">HTTP HEAD 请求</div>
+        <div class="glossary-def">一种轻量级的 HTTP 请求方式，只获取响应头信息，不下载完整内容。用来检查 URL 是否有效、是否重定向、文件大小等，速度快、省流量。</div>
+      </div>
+
+      <div class="glossary-card" id="term-app-password">
+        <div class="glossary-term">应用专用密码</div>
+        <div class="glossary-def">Google 账户开启两步验证后，第三方应用不能用普通密码登录，需要在账户设置里生成专门给应用用的密码。16 位字符，只显示一次，记得保存到 .env 文件里。</div>
+      </div>
+
+      <div class="glossary-card" id="term-youtube-data-api">
+        <div class="glossary-term">YouTube Data API</div>
+        <div class="glossary-def">Google 提供的官方接口，让开发者能查询视频信息、频道信息、播放列表等。需要在 Google Cloud Console 创建项目、启用 API、获取密钥才能用。</div>
+      </div>
+
+      <div class="glossary-card" id="term-supadata">
+        <div class="glossary-term">Supadata</div>
+        <div class="glossary-def">一个第三方服务，专门提供视频字幕提取功能。输入视频 URL 或 ID，返回完整文字稿。比自己写爬虫省事，而且处理了多语言、格式转换等细节。</div>
+      </div>
+
+      <div class="glossary-card" id="term-claude-ai">
+        <div class="glossary-term">Claude AI</div>
+        <div class="glossary-def">Anthropic 公司开发的大语言模型，擅长理解和生成文本。项目用的是 Claude Sonnet 4 版本，用来把口水话字幕改写成结构清晰的文章。</div>
+      </div>
+
+      <div class="glossary-card" id="term-ebooklib">
+        <div class="glossary-term">ebooklib</div>
+        <div class="glossary-def">一个 Python 库，用来读写 EPUB 格式电子书。可以设定章节、样式、元数据、封面等，把文本内容打包成标准的 EPUB 文件。</div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <h3 class="footer-title">想试试吗？</h3>
+      <p class="footer-desc">代码开源在 GitHub，跟着 README 配置好 API 密钥和频道列表，就能收到属于你的定制电子书周刊</p>
+      <a href="https://github.com/zarazhangrui/youtube-to-ebook" target="_blank" class="footer-link">
+        <span>📦</span>
+        <span>去 GitHub 看看</span>
+      </a>
+      <div class="footer-meta">
+        项目可视化 · 数据截至 2026 年 3 月
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Term Popover -->
+<div class="term-popover">
+  <div class="popover-header">
+    <span class="popover-term"></span>
+    <button class="popover-close" aria-label="关闭">&times;</button>
+  </div>
+  <div class="popover-body"></div>
+</div>
+<div class="popover-backdrop"></div>
+
+<script>
+// Chat tabs
+const chatTabs = document.querySelectorAll('.chat-tab');
+const chatContainers = document.querySelectorAll('.chat-container');
+
+chatTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const chatId = tab.dataset.chat;
+
+    chatTabs.forEach(t => t.classList.remove('active'));
+    chatContainers.forEach(c => c.classList.remove('active'));
+
+    tab.classList.add('active');
+    document.getElementById('chat-' + chatId).classList.add('active');
+  });
+});
+
+// Term Auto-Linking System
+(function() {
+  // Build term map from glossary cards
+  const termMap = {};
+  document.querySelectorAll('.glossary-card').forEach(card => {
+    const termId = card.id;
+    const termText = card.querySelector('.glossary-term').textContent.trim();
+    const termDef = card.querySelector('.glossary-def').textContent.trim();
+    termMap[termText] = { id: termId, def: termDef };
+  });
+
+  // Sort terms by length (longest first) to avoid partial matches
+  const sortedTerms = Object.keys(termMap).sort((a, b) => b.length - a.length);
+
+  // Containers to scan
+  const selectors = '.layer-detail-inner, .chat-bubble, .chat-bubble .aside, .hero .subtitle, .tool-role, .flow-phase p';
+  const containers = document.querySelectorAll(selectors);
+
+  // Link terms in each container (only first occurrence per container)
+  containers.forEach(container => {
+    const linkedTerms = new Set();
+
+    const walker = document.createTreeWalker(
+      container,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false
+    );
+
+    const nodesToReplace = [];
+    let node;
+
+    while (node = walker.nextNode()) {
+      // Skip if parent is already a term-link
+      if (node.parentElement.classList.contains('term-link')) continue;
+
+      let text = node.textContent;
+      let replacements = [];
+
+      for (const term of sortedTerms) {
+        // Skip if already linked in this container
+        if (linkedTerms.has(term)) continue;
+
+        const index = text.indexOf(term);
+        if (index !== -1) {
+          replacements.push({ term, index, length: term.length });
+        }
+      }
+
+      // Sort by index to replace from start to end
+      replacements.sort((a, b) => a.index - b.index);
+
+      if (replacements.length > 0) {
+        nodesToReplace.push({ node, replacements });
+        replacements.forEach(r => linkedTerms.add(r.term));
+      }
+    }
+
+    // Apply replacements
+    nodesToReplace.forEach(({ node, replacements }) => {
+      const text = node.textContent;
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+
+      replacements.forEach(({ term, index, length }) => {
+        // Add text before term
+        if (index > lastIndex) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIndex, index)));
+        }
+
+        // Add term link
+        const link = document.createElement('a');
+        link.className = 'term-link';
+        link.dataset.termId = termMap[term].id;
+        link.textContent = term;
+        fragment.appendChild(link);
+
+        lastIndex = index + length;
+      });
+
+      // Add remaining text
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+      }
+
+      node.parentNode.replaceChild(fragment, node);
+    });
+  });
+
+  // Popover functionality
+  const popover = document.querySelector('.term-popover');
+  const popoverBackdrop = document.querySelector('.popover-backdrop');
+  const popoverTerm = document.querySelector('.popover-term');
+  const popoverBody = document.querySelector('.popover-body');
+  const popoverClose = document.querySelector('.popover-close');
+
+  let currentLink = null;
+
+  function showPopover(link) {
+    const termId = link.dataset.termId;
+    const term = link.textContent;
+    const def = termMap[term].def;
+
+    popoverTerm.textContent = term;
+    popoverBody.textContent = def;
+
+    // Position popover
+    const rect = link.getBoundingClientRect();
+    const popoverWidth = 360;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate left position (centered on term, but stay in viewport)
+    let left = rect.left + rect.width / 2 - popoverWidth / 2;
+    if (left < 16) left = 16;
+    if (left + popoverWidth > viewportWidth - 16) left = viewportWidth - popoverWidth - 16;
+
+    // Calculate arrow position relative to popover
+    const arrowLeft = rect.left + rect.width / 2 - left;
+    popover.style.setProperty('--arrow-left', arrowLeft + 'px');
+
+    // Position below or above based on available space
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    popover.classList.remove('below', 'above');
+
+    if (spaceBelow > 250 || spaceBelow > spaceAbove) {
+      // Position below
+      popover.style.left = left + 'px';
+      popover.style.top = (rect.bottom + 12) + 'px';
+      popover.classList.add('below');
+    } else {
+      // Position above
+      popover.style.left = left + 'px';
+      popover.style.bottom = (viewportHeight - rect.top + 12) + 'px';
+      popover.style.top = 'auto';
+      popover.classList.add('above');
+    }
+
+    // Show
+    popover.classList.add('show');
+    popoverBackdrop.classList.add('show');
+    link.classList.add('active');
+    currentLink = link;
+  }
+
+  function hidePopover() {
+    popover.classList.remove('show');
+    popoverBackdrop.classList.remove('show');
+    if (currentLink) {
+      currentLink.classList.remove('active');
+      currentLink = null;
+    }
+  }
+
+  // Click on term links
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('term-link')) {
+      e.preventDefault();
+      if (currentLink === e.target) {
+        hidePopover();
+      } else {
+        if (currentLink) hidePopover();
+        showPopover(e.target);
+      }
+    }
+  });
+
+  // Close buttons
+  popoverClose.addEventListener('click', hidePopover);
+  popoverBackdrop.addEventListener('click', hidePopover);
+
+  // Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popover.classList.contains('show')) {
+      hidePopover();
+    }
+  });
+
+  // Close on scroll (debounced)
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (popover.classList.contains('show')) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(hidePopover, 150);
+    }
+  }, true);
+})();
+</script>
+
+</body>
+</html>
