@@ -337,6 +337,22 @@ section{padding:clamp(3rem,8vw,6rem) 0}
 .style-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
 .style-card.hidden-card{display:none}
 
+/* Collapse: only show featured cards */
+.style-gallery.collapsed .style-card:not([data-featured]){display:none}
+
+/* Expand button */
+.expand-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin:1.5rem auto 0;padding:10px 28px;
+  background:var(--bg-card);border:1.5px solid var(--border);border-radius:99px;
+  font-family:var(--font-sans);font-size:0.85rem;font-weight:600;
+  color:var(--text-secondary);cursor:pointer;
+  transition:all 0.25s ease;
+}
+.expand-btn:hover{border-color:var(--accent);color:var(--accent)}
+.expand-btn .arrow{transition:transform 0.3s ease;font-size:0.7rem}
+.expand-btn.expanded .arrow{transform:rotate(180deg)}
+
 .style-preview{
   height:180px;position:relative;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
@@ -768,16 +784,10 @@ section{padding:clamp(3rem,8vw,6rem) 0}
     <p>每一种风格都模拟了一张幻灯片效果。浅色系适合会议室投屏，深色系视觉冲击力更强。</p>
   </div>
 
-  <div class="scenario-tabs fade-in" style="margin-bottom:1.5rem">
-    <button class="scenario-tab active" onclick="filterStyles('all',this)">全部</button>
-    <button class="scenario-tab" onclick="filterStyles('light',this)">浅色系 · 投屏推荐</button>
-    <button class="scenario-tab" onclick="filterStyles('dark',this)">深色系</button>
-  </div>
+  <div class="style-gallery collapsed fade-in" id="styleGallery">
 
-  <div class="style-gallery fade-in" id="styleGallery">
-
-    <!-- Light: Electric Studio -->
-    <div class="style-card" data-theme="light">
+    <!-- Light: Electric Studio [FEATURED] -->
+    <div class="style-card" data-theme="light" data-featured>
       <div class="style-preview sp-electric-studio">
         <div class="rec-badge">推荐</div>
         <div class="deco-circle"></div><div class="deco-grid deco-grid-dark"></div>
@@ -849,8 +859,8 @@ section{padding:clamp(3rem,8vw,6rem) 0}
       </div>
     </div>
 
-    <!-- Light: Creative Voltage -->
-    <div class="style-card" data-theme="light">
+    <!-- Light: Creative Voltage [FEATURED] -->
+    <div class="style-card" data-theme="light" data-featured>
       <div class="style-preview sp-creative-voltage">
         <div class="deco-circle"></div>
         <div class="mock-tag">述职报告</div>
@@ -954,8 +964,8 @@ section{padding:clamp(3rem,8vw,6rem) 0}
       </div>
     </div>
 
-    <!-- Dark: Neon Cyber -->
-    <div class="style-card" data-theme="dark">
+    <!-- Dark: Neon Cyber [FEATURED] -->
+    <div class="style-card" data-theme="dark" data-featured>
       <div class="style-preview sp-neon-cyber">
         <div class="deco-grid"></div>
         <div class="mock-tag">述职报告</div>
@@ -990,6 +1000,17 @@ section{padding:clamp(3rem,8vw,6rem) 0}
       </div>
     </div>
 
+  </div>
+
+  <button class="expand-btn fade-in" id="expandStylesBtn" onclick="toggleStyleGallery()">
+    <span class="expand-text">查看全部 12 种风格</span>
+    <span class="arrow">&#9660;</span>
+  </button>
+
+  <div class="scenario-tabs fade-in" id="styleFilterTabs" style="display:none;margin-top:1.2rem">
+    <button class="scenario-tab active" onclick="filterStyles('all',this)">全部</button>
+    <button class="scenario-tab" onclick="filterStyles('light',this)">浅色系 · 投屏推荐</button>
+    <button class="scenario-tab" onclick="filterStyles('dark',this)">深色系</button>
   </div>
 </section>
 
@@ -1479,7 +1500,30 @@ const observer = new IntersectionObserver((entries)=>{
 
 document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
 
-// ===== Filter style gallery =====
+// ===== Style gallery expand/collapse =====
+function toggleStyleGallery(){
+  const gallery = document.getElementById('styleGallery');
+  const btn = document.getElementById('expandStylesBtn');
+  const tabs = document.getElementById('styleFilterTabs');
+  const isCollapsed = gallery.classList.contains('collapsed');
+
+  if(isCollapsed){
+    gallery.classList.remove('collapsed');
+    btn.classList.add('expanded');
+    btn.querySelector('.expand-text').textContent = '收起风格画廊';
+    tabs.style.display = '';
+  } else {
+    gallery.classList.add('collapsed');
+    btn.classList.remove('expanded');
+    btn.querySelector('.expand-text').textContent = '查看全部 12 种风格';
+    tabs.style.display = 'none';
+    // Reset filter
+    document.querySelectorAll('#styleFilterTabs .scenario-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('#styleFilterTabs .scenario-tab').classList.add('active');
+    document.querySelectorAll('#styleGallery .style-card').forEach(c => c.classList.remove('hidden-card'));
+  }
+}
+
 function filterStyles(theme, btn){
   const tabs = btn.parentElement.querySelectorAll('.scenario-tab');
   tabs.forEach(t => t.classList.remove('active'));
