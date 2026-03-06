@@ -327,6 +327,115 @@ section{padding:clamp(3rem,8vw,6rem) 0}
 .flow-phase h4{font-size:0.85rem;font-weight:700;margin-bottom:4px}
 .flow-phase p{font-size:0.76rem;color:var(--text-muted);line-height:1.5}
 
+/* ========== STYLE GALLERY ========== */
+.style-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:1.2rem}
+.style-card{
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:all 0.3s ease;
+  border:1px solid var(--border);
+}
+.style-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.style-card.hidden-card{display:none}
+
+.style-preview{
+  height:180px;position:relative;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:24px;overflow:hidden;
+}
+.style-preview .mock-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;opacity:0.7}
+.style-preview .mock-title{font-size:22px;font-weight:800;text-align:center;line-height:1.2;margin-bottom:6px}
+.style-preview .mock-line{width:50px;height:3px;margin:8px auto;border-radius:2px}
+.style-preview .mock-subtitle{font-size:11px;opacity:0.55;text-align:center}
+.style-preview .mock-cards{display:flex;gap:6px;margin-top:12px}
+.style-preview .mock-card{width:56px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.style-preview .deco-circle{position:absolute;border-radius:50%;opacity:0.15;filter:blur(40px)}
+.style-preview .deco-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}
+.style-preview .deco-grid-dark{background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:30px 30px}
+.rec-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:3px 10px;border-radius:16px;font-size:10px;font-weight:700;z-index:2}
+
+.style-info{padding:14px 18px;background:var(--bg-card)}
+.style-info h4{font-size:0.9rem;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.style-info .style-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;background:var(--bg);font-size:0.68rem;font-weight:700;color:var(--text-muted)}
+.style-info .sdesc{font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;line-height:1.5}
+.style-info .palette{display:flex;gap:5px;margin-bottom:6px}
+.style-info .swatch{width:20px;height:20px;border-radius:5px;border:2px solid rgba(0,0,0,0.06)}
+.style-info .best-for{font-size:0.7rem;color:var(--text-muted)}
+.style-tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.62rem;font-weight:600;margin-left:6px}
+.style-tag-rec{background:#dcfce7;color:#15803d}
+.style-tag-dark{background:#fce7f3;color:#be185d}
+
+/* Individual style previews */
+.sp-bold-signal{background:#0f172a;color:#f8fafc}
+.sp-bold-signal .mock-tag{color:#facc15}
+.sp-bold-signal .mock-line{background:#facc15}
+.sp-bold-signal .mock-card{background:rgba(250,204,21,0.15);color:#facc15}
+.sp-bold-signal .deco-circle{background:#facc15;width:160px;height:160px;top:-50px;right:-30px}
+
+.sp-electric-studio{background:linear-gradient(135deg,#f8f9fc,#eef1f8);color:#1a1a2e}
+.sp-electric-studio .mock-tag{color:#6366f1}
+.sp-electric-studio .mock-line{background:linear-gradient(90deg,#6366f1,#06b6d4)}
+.sp-electric-studio .mock-card{background:#fff;color:#6366f1;box-shadow:0 2px 6px rgba(99,102,241,0.1)}
+.sp-electric-studio .deco-circle{background:#6366f1;width:140px;height:140px;bottom:-50px;left:-30px}
+
+.sp-creative-voltage{background:#fefce8;color:#1c1917}
+.sp-creative-voltage .mock-tag{color:#dc2626}
+.sp-creative-voltage .mock-line{background:#dc2626}
+.sp-creative-voltage .mock-card{background:#dc2626;color:#fff;border-radius:4px}
+.sp-creative-voltage .deco-circle{background:#fbbf24;width:180px;height:180px;top:-60px;left:-50px;opacity:0.25}
+
+.sp-dark-botanical{background:linear-gradient(160deg,#1a1a2e,#16213e);color:#e8e0d4}
+.sp-dark-botanical .mock-tag{color:#a7c4a0}
+.sp-dark-botanical .mock-line{background:linear-gradient(90deg,#a7c4a0,#d4a574)}
+.sp-dark-botanical .mock-card{background:rgba(167,196,160,0.12);color:#a7c4a0}
+.sp-dark-botanical .deco-circle{background:#a7c4a0;width:130px;height:130px;bottom:-30px;right:-30px}
+
+.sp-notebook-tabs{background:#faf8f5;color:#2c2c2c;border-left:4px solid #e74c3c}
+.sp-notebook-tabs .mock-tag{color:#e74c3c}
+.sp-notebook-tabs .mock-line{background:#2c2c2c}
+.sp-notebook-tabs .mock-card{background:#fff;color:#2c2c2c;border:2px solid #eee;border-top:3px solid #3498db}
+
+.sp-pastel-geometry{background:linear-gradient(135deg,#fdf2f8,#eff6ff 50%,#f0fdf4);color:#374151}
+.sp-pastel-geometry .mock-tag{color:#8b5cf6}
+.sp-pastel-geometry .mock-line{background:linear-gradient(90deg,#ec4899,#8b5cf6,#06b6d4)}
+.sp-pastel-geometry .mock-card{background:rgba(139,92,246,0.1);color:#8b5cf6;border-radius:10px}
+.sp-pastel-geometry .deco-circle{background:#ec4899;width:120px;height:120px;top:-30px;right:20px;opacity:0.1;filter:blur(30px)}
+
+.sp-split-pastel{background:linear-gradient(135deg,#dbeafe,#fce7f3);color:#1e293b}
+.sp-split-pastel .mock-tag{color:#2563eb}
+.sp-split-pastel .mock-line{background:#2563eb}
+.sp-split-pastel .mock-card{background:#fff;color:#2563eb;box-shadow:0 2px 6px rgba(37,99,235,0.1)}
+
+.sp-vintage-editorial{background:#f5f0e8;color:#2d2d2d}
+.sp-vintage-editorial .mock-tag{color:#c0392b;letter-spacing:3px}
+.sp-vintage-editorial .mock-title{font-style:italic;font-weight:400;font-size:20px}
+.sp-vintage-editorial .mock-line{background:#2d2d2d;height:2px}
+.sp-vintage-editorial .mock-card{background:transparent;color:#2d2d2d;border:2px solid #2d2d2d;border-radius:0}
+
+.sp-neon-cyber{background:#0a0a1a;color:#e0e0ff}
+.sp-neon-cyber .mock-tag{color:#00ffcc;text-shadow:0 0 8px rgba(0,255,204,0.5)}
+.sp-neon-cyber .mock-title{text-shadow:0 0 16px rgba(0,255,204,0.3)}
+.sp-neon-cyber .mock-line{background:#00ffcc;box-shadow:0 0 10px rgba(0,255,204,0.5)}
+.sp-neon-cyber .mock-card{background:rgba(0,255,204,0.08);color:#00ffcc;border:1px solid rgba(0,255,204,0.3)}
+.sp-neon-cyber .deco-grid{background-image:linear-gradient(rgba(0,255,204,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,204,0.05) 1px,transparent 1px);background-size:30px 30px}
+
+.sp-terminal-green{background:#0d1117;color:#c9d1d9}
+.sp-terminal-green .mock-tag{color:#3fb950;font-family:'Courier New',monospace}
+.sp-terminal-green .mock-title{font-family:'Courier New',monospace;font-size:18px;color:#3fb950}
+.sp-terminal-green .mock-line{background:#3fb950}
+.sp-terminal-green .mock-card{background:#161b22;color:#3fb950;border:1px solid #30363d;border-radius:4px;font-family:monospace}
+
+.sp-swiss-modern{background:#fff;color:#111;border:1px solid #eee}
+.sp-swiss-modern .mock-tag{color:#ff0000;font-weight:800}
+.sp-swiss-modern .mock-title{font-weight:900;letter-spacing:-1px}
+.sp-swiss-modern .mock-line{background:#ff0000;height:4px}
+.sp-swiss-modern .mock-card{background:#f5f5f5;color:#111;border-radius:0}
+
+.sp-paper-ink{background:#faf9f6;color:#333}
+.sp-paper-ink .mock-tag{color:#8b7355;letter-spacing:3px}
+.sp-paper-ink .mock-title{font-weight:300;font-size:24px;letter-spacing:1px}
+.sp-paper-ink .mock-line{background:#333;height:1px;width:60px}
+.sp-paper-ink .mock-card{background:transparent;color:#333;border-bottom:1px solid #ddd;border-radius:0}
+
 /* ========== FOOTER ========== */
 .site-footer{
   border-top:1px solid var(--border-light);
@@ -340,6 +449,7 @@ section{padding:clamp(3rem,8vw,6rem) 0}
 @media(max-width:900px){
   .toolbox-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
   .glossary-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+  .style-gallery{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
 }
 
 /* Mobile */
@@ -384,6 +494,16 @@ section{padding:clamp(3rem,8vw,6rem) 0}
   .chat-scenario-header h3{font-size:0.9rem}
   .chat-scenario-header p{font-size:0.72rem;margin-left:0}
 
+  /* Style Gallery */
+  .style-gallery{grid-template-columns:1fr;gap:1rem}
+  .style-preview{height:150px;padding:18px}
+  .style-preview .mock-title{font-size:18px}
+  .style-preview .mock-cards{gap:4px;margin-top:8px}
+  .style-preview .mock-card{width:44px;height:28px;font-size:11px}
+  .style-info{padding:12px 14px}
+  .style-info h4{font-size:0.82rem}
+  .style-info .sdesc{font-size:0.72rem}
+
   /* Toolbox */
   .toolbox-grid{grid-template-columns:1fr;gap:1rem}
   .tool-card{padding:1.2rem}
@@ -419,6 +539,7 @@ section{padding:clamp(3rem,8vw,6rem) 0}
   .flow-phase:hover{transform:none;box-shadow:var(--shadow)}
   .tool-card:hover{transform:none;box-shadow:var(--shadow)}
   .glossary-item:hover{transform:none;box-shadow:none}
+  .style-card:hover{transform:none;box-shadow:var(--shadow)}
 }
 
 /* ========== SCROLL ANIMATIONS ========== */
@@ -467,6 +588,7 @@ section{padding:clamp(3rem,8vw,6rem) 0}
     <div class="nav-links">
       <a href="#architecture">架构</a>
       <a href="#workflow">工作流</a>
+      <a href="#styles">风格</a>
       <a href="#conversations">对话</a>
       <a href="#toolbox">工具箱</a>
       <a href="#glossary">术语</a>
@@ -635,6 +757,239 @@ section{padding:clamp(3rem,8vw,6rem) 0}
       <h4>交付成品</h4>
       <p>清理临时文件，自动打开浏览器预览，告诉你怎么自定义。</p>
     </div>
+  </div>
+</section>
+
+<!-- ==================== STYLE GALLERY ==================== -->
+<section id="styles" class="container">
+  <div class="section-header fade-in">
+    <div class="tag" style="background:var(--accent4-light);color:var(--accent4)">风格画廊</div>
+    <h2>12 种预设风格长什么样？</h2>
+    <p>每一种风格都模拟了一张幻灯片效果。浅色系适合会议室投屏，深色系视觉冲击力更强。</p>
+  </div>
+
+  <div class="scenario-tabs fade-in" style="margin-bottom:1.5rem">
+    <button class="scenario-tab active" onclick="filterStyles('all',this)">全部</button>
+    <button class="scenario-tab" onclick="filterStyles('light',this)">浅色系 · 投屏推荐</button>
+    <button class="scenario-tab" onclick="filterStyles('dark',this)">深色系</button>
+  </div>
+
+  <div class="style-gallery fade-in" id="styleGallery">
+
+    <!-- Light: Electric Studio -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-electric-studio">
+        <div class="rec-badge">推荐</div>
+        <div class="deco-circle"></div><div class="deco-grid deco-grid-dark"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Electric Studio</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">干净专业 / 科技质感 / 蓝紫渐变</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="color:#06b6d4">02</div><div class="mock-card" style="color:#8b5cf6">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">2</span> Electric Studio <span class="style-tag style-tag-rec">推荐</span></h4>
+        <div class="sdesc">浅灰白底 + 靛蓝/青色强调。投屏效果极佳。</div>
+        <div class="palette"><div class="swatch" style="background:#f8f9fc"></div><div class="swatch" style="background:#6366f1"></div><div class="swatch" style="background:#06b6d4"></div><div class="swatch" style="background:#1a1a2e"></div></div>
+        <div class="best-for">适合：专业述职、团队汇报、数据展示</div>
+      </div>
+    </div>
+
+    <!-- Light: Pastel Geometry -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-pastel-geometry">
+        <div class="rec-badge">推荐</div>
+        <div class="deco-circle"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Pastel Geometry</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">柔和渐变 / 亲和力 / 多彩活泼</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="background:rgba(236,72,153,0.1);color:#ec4899">02</div><div class="mock-card" style="background:rgba(6,182,212,0.1);color:#06b6d4">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">6</span> Pastel Geometry <span class="style-tag style-tag-rec">推荐</span></h4>
+        <div class="sdesc">粉蓝绿渐变浅底 + 紫/粉强调色。柔和、友好、现代感强。</div>
+        <div class="palette"><div class="swatch" style="background:#fdf2f8"></div><div class="swatch" style="background:#8b5cf6"></div><div class="swatch" style="background:#ec4899"></div><div class="swatch" style="background:#06b6d4"></div></div>
+        <div class="best-for">适合：产品汇报、年度总结、创意型团队</div>
+      </div>
+    </div>
+
+    <!-- Light: Swiss Modern -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-swiss-modern">
+        <div class="rec-badge">推荐</div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Swiss Modern</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">极简纯白 / 黑红撞色 / 精确有力</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="background:#ff0000;color:#fff">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">11</span> Swiss Modern <span class="style-tag style-tag-rec">推荐</span></h4>
+        <div class="sdesc">纯白底 + 黑色文字 + 红色强调。像苹果发布会风格。</div>
+        <div class="palette"><div class="swatch" style="background:#fff;border-color:rgba(0,0,0,0.15)"></div><div class="swatch" style="background:#111"></div><div class="swatch" style="background:#ff0000"></div><div class="swatch" style="background:#f5f5f5"></div></div>
+        <div class="best-for">适合：高管汇报、数据驱动型述职</div>
+      </div>
+    </div>
+
+    <!-- Light: Split Pastel -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-split-pastel">
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Split Pastel</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">蓝粉渐变 / 活泼现代 / 轻盈</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="color:#ec4899">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">7</span> Split Pastel</h4>
+        <div class="sdesc">蓝色到粉色的柔和渐变底。活泼、现代、有设计感。</div>
+        <div class="palette"><div class="swatch" style="background:#dbeafe"></div><div class="swatch" style="background:#fce7f3"></div><div class="swatch" style="background:#2563eb"></div><div class="swatch" style="background:#1e293b"></div></div>
+        <div class="best-for">适合：创意汇报、品牌展示</div>
+      </div>
+    </div>
+
+    <!-- Light: Creative Voltage -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-creative-voltage">
+        <div class="deco-circle"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Creative Voltage</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">暖黄底 / 红色冲击 / 大胆复古</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="background:#fbbf24;color:#1c1917">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">3</span> Creative Voltage</h4>
+        <div class="sdesc">暖黄色底 + 红色强调。大胆、有冲击力、复古现代混搭。</div>
+        <div class="palette"><div class="swatch" style="background:#fefce8"></div><div class="swatch" style="background:#dc2626"></div><div class="swatch" style="background:#fbbf24"></div><div class="swatch" style="background:#1c1917"></div></div>
+        <div class="best-for">适合：创意型提案、个性化展示</div>
+      </div>
+    </div>
+
+    <!-- Light: Notebook Tabs -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-notebook-tabs">
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Notebook Tabs</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">纸质感 / 分栏标签 / 有条理</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="border-top-color:#e74c3c">02</div><div class="mock-card" style="border-top-color:#f39c12">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">5</span> Notebook Tabs</h4>
+        <div class="sdesc">米白纸感底 + 彩色标签分栏。像高级笔记本，适合信息密集内容。</div>
+        <div class="palette"><div class="swatch" style="background:#faf8f5"></div><div class="swatch" style="background:#e74c3c"></div><div class="swatch" style="background:#3498db"></div><div class="swatch" style="background:#2c2c2c"></div></div>
+        <div class="best-for">适合：项目报告、季度回顾、多章节内容</div>
+      </div>
+    </div>
+
+    <!-- Light: Vintage Editorial -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-vintage-editorial">
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Vintage Editorial</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">杂志感 / 文艺复古 / 有性格</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">8</span> Vintage Editorial</h4>
+        <div class="sdesc">米色底 + 黑色线条 + 红色点缀。杂志排版风格。</div>
+        <div class="palette"><div class="swatch" style="background:#f5f0e8"></div><div class="swatch" style="background:#c0392b"></div><div class="swatch" style="background:#2d2d2d"></div><div class="swatch" style="background:#8b7355"></div></div>
+        <div class="best-for">适合：个人品牌、创意团队</div>
+      </div>
+    </div>
+
+    <!-- Light: Paper & Ink -->
+    <div class="style-card" data-theme="light">
+      <div class="style-preview sp-paper-ink">
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Paper & Ink</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">素雅 / 文学感 / 留白</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">12</span> Paper & Ink</h4>
+        <div class="sdesc">温暖白底 + 深棕/黑色。极致留白、文学气质。</div>
+        <div class="palette"><div class="swatch" style="background:#faf9f6"></div><div class="swatch" style="background:#333"></div><div class="swatch" style="background:#8b7355"></div><div class="swatch" style="background:#ddd"></div></div>
+        <div class="best-for">适合：叙事型汇报、个人陈述</div>
+      </div>
+    </div>
+
+    <!-- Dark: Bold Signal -->
+    <div class="style-card" data-theme="dark">
+      <div class="style-preview sp-bold-signal">
+        <div class="deco-circle"></div><div class="deco-grid"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Bold Signal</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">深蓝黑底 / 金色强调 / 自信有力</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">1</span> Bold Signal <span class="style-tag style-tag-dark">深色</span></h4>
+        <div class="sdesc">深蓝黑底 + 金色强调。自信、高端、有力量感。</div>
+        <div class="palette"><div class="swatch" style="background:#0f172a"></div><div class="swatch" style="background:#facc15"></div><div class="swatch" style="background:#f8fafc"></div><div class="swatch" style="background:#334155"></div></div>
+        <div class="best-for">适合：高管演讲、融资路演</div>
+      </div>
+    </div>
+
+    <!-- Dark: Dark Botanical -->
+    <div class="style-card" data-theme="dark">
+      <div class="style-preview sp-dark-botanical">
+        <div class="deco-circle"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Dark Botanical</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">深蓝底 / 绿棕自然色 / 优雅</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="background:rgba(212,165,116,0.12);color:#d4a574">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">4</span> Dark Botanical <span class="style-tag style-tag-dark">深色</span></h4>
+        <div class="sdesc">深蓝底 + 自然绿棕色调。优雅、高级、自然气息。</div>
+        <div class="palette"><div class="swatch" style="background:#1a1a2e"></div><div class="swatch" style="background:#a7c4a0"></div><div class="swatch" style="background:#d4a574"></div><div class="swatch" style="background:#e8e0d4"></div></div>
+        <div class="best-for">适合：品牌展示、高端产品</div>
+      </div>
+    </div>
+
+    <!-- Dark: Neon Cyber -->
+    <div class="style-card" data-theme="dark">
+      <div class="style-preview sp-neon-cyber">
+        <div class="deco-grid"></div>
+        <div class="mock-tag">述职报告</div>
+        <div class="mock-title">Neon Cyber</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">纯黑底 / 霓虹发光 / 赛博朋克</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card" style="background:rgba(255,0,255,0.08);color:#ff00ff;border:1px solid rgba(255,0,255,0.3)">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">9</span> Neon Cyber <span class="style-tag style-tag-dark">深色</span></h4>
+        <div class="sdesc">纯黑底 + 霓虹青/粉发光。最炫酷的赛博朋克风格。</div>
+        <div class="palette"><div class="swatch" style="background:#0a0a1a"></div><div class="swatch" style="background:#00ffcc"></div><div class="swatch" style="background:#ff00ff"></div><div class="swatch" style="background:#e0e0ff"></div></div>
+        <div class="best-for">适合：科技公司、极客风格、技术分享</div>
+      </div>
+    </div>
+
+    <!-- Dark: Terminal Green -->
+    <div class="style-card" data-theme="dark">
+      <div class="style-preview sp-terminal-green">
+        <div class="deco-grid"></div>
+        <div class="mock-tag">> 述职报告</div>
+        <div class="mock-title">Terminal Green</div>
+        <div class="mock-line"></div>
+        <div class="mock-subtitle">终端黑底 / 代码绿 / 极客</div>
+        <div class="mock-cards"><div class="mock-card">01</div><div class="mock-card">02</div><div class="mock-card">03</div></div>
+      </div>
+      <div class="style-info">
+        <h4><span class="style-num">10</span> Terminal Green <span class="style-tag style-tag-dark">深色</span></h4>
+        <div class="sdesc">终端黑底 + 绿色代码风。开发者专属风格。</div>
+        <div class="palette"><div class="swatch" style="background:#0d1117"></div><div class="swatch" style="background:#3fb950"></div><div class="swatch" style="background:#c9d1d9"></div><div class="swatch" style="background:#161b22"></div></div>
+        <div class="best-for">适合：技术团队内部、开发者述职</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1123,6 +1478,20 @@ const observer = new IntersectionObserver((entries)=>{
 },{threshold:0.1, rootMargin:'0px 0px -40px 0px'});
 
 document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// ===== Filter style gallery =====
+function filterStyles(theme, btn){
+  const tabs = btn.parentElement.querySelectorAll('.scenario-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#styleGallery .style-card').forEach(card => {
+    if(theme === 'all' || card.dataset.theme === theme){
+      card.classList.remove('hidden-card');
+    } else {
+      card.classList.add('hidden-card');
+    }
+  });
+}
 
 // ===== Smooth scroll for nav links =====
 document.querySelectorAll('.nav-links a').forEach(a=>{
