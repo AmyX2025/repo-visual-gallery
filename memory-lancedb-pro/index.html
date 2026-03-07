@@ -767,6 +767,7 @@ function autoLinkTerms() {
   document.querySelectorAll('.term-link').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       showPopover(link, link.dataset.card);
     });
   });
