@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex CLI Dispatch - 项目可视化解读</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f8f7f4;--bg-card:#ffffff;--text:#1a1a1a;--text-secondary:#555;--text-muted:#888;
+  --accent:#e85d26;--accent-light:#fff3ed;
+  --accent2:#3b6df0;--accent2-light:#eef3ff;
+  --accent3:#10a37f;--accent3-light:#e8f8f3;
+  --accent4:#8b5cf6;--accent4-light:#f3eeff;
+  --accent5:#d946ef;--accent5-light:#fdf2ff;
+  --accent6:#0ea5e9;--accent6-light:#ecf9ff;
+  --border:#e5e2dc;
+  --shadow:0 2px 20px rgba(0,0,0,0.06);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans SC',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,40px);}
+
+/* ---- NAV ---- */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(248,247,244,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0;}
+.nav-brand{font-weight:700;font-size:clamp(14px,2vw,16px);color:var(--accent);}
+.nav-links{display:flex;gap:clamp(12px,2vw,24px);flex-wrap:wrap;}
+.nav-links a{
+  color:var(--text-secondary);text-decoration:none;font-size:clamp(12px,1.5vw,14px);
+  font-weight:500;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--accent);}
+@media(max-width:700px){.nav-links{display:none;}}
+
+/* ---- HERO ---- */
+.hero{padding:clamp(48px,8vw,80px) 0 clamp(32px,6vw,56px);}
+.hero-badge{
+  display:inline-block;background:var(--accent-light);color:var(--accent);
+  padding:6px 16px;border-radius:20px;font-size:13px;font-weight:500;margin-bottom:20px;
+}
+.hero h1{
+  font-size:clamp(28px,5vw,48px);font-weight:900;line-height:1.2;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--text) 0%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .subtitle{
+  font-size:clamp(15px,2vw,18px);color:var(--text-secondary);
+  max-width:720px;line-height:1.8;margin-bottom:32px;
+}
+.file-tree{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(16px,3vw,28px);font-family:'Fira Code',monospace;font-size:clamp(12px,1.4vw,14px);
+  line-height:2;overflow-x:auto;box-shadow:var(--shadow);
+}
+.file-tree .comment{color:var(--accent);font-family:'Noto Sans SC',sans-serif;font-weight:400;}
+
+/* ---- SECTION ---- */
+.section{padding:clamp(40px,6vw,72px) 0;}
+.section-header{margin-bottom:clamp(24px,4vw,40px);}
+.section-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;font-weight:700;font-size:14px;
+  margin-right:12px;color:#fff;
+}
+.section-title{
+  font-size:clamp(22px,3.5vw,32px);font-weight:800;display:inline;vertical-align:middle;
+}
+.section-desc{
+  margin-top:12px;font-size:clamp(14px,1.6vw,16px);color:var(--text-secondary);max-width:680px;
+}
+
+/* ---- ARCHITECTURE LAYERS ---- */
+.arch-stack{display:flex;flex-direction:column;gap:0;position:relative;}
+.arch-layer{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(16px,2.5vw,24px);cursor:pointer;
+  transition:all 0.4s cubic-bezier(0.22,1,0.36,1);
+  position:relative;margin-top:-8px;
+  box-shadow:var(--shadow);
+}
+.arch-layer:first-child{margin-top:0;}
+.arch-layer:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1);border-color:var(--accent);}
+.arch-layer.active{border-color:var(--accent);box-shadow:0 8px 30px rgba(232,93,38,0.12);}
+.layer-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.layer-num{
+  width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;color:#fff;flex-shrink:0;
+}
+.layer-icon{font-size:20px;flex-shrink:0;}
+.layer-title{font-weight:700;font-size:clamp(15px,1.8vw,17px);flex:1;min-width:120px;}
+.layer-brief{font-size:13px;color:var(--text-muted);flex-basis:100%;margin-top:4px;}
+.layer-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.layer-chip{
+  background:var(--bg);border:1px solid var(--border);border-radius:6px;
+  padding:2px 10px;font-family:'Fira Code',monospace;font-size:11px;color:var(--text-secondary);
+}
+.layer-detail{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.22,1,0.36,1);}
+.layer-detail-inner{
+  padding-top:16px;margin-top:16px;border-top:1px dashed var(--border);
+  font-size:clamp(13px,1.5vw,15px);color:var(--text-secondary);line-height:1.9;
+}
+.layer-indent-1{margin-left:0;}
+.layer-indent-2{margin-left:clamp(16px,3vw,32px);}
+.layer-indent-3{margin-left:clamp(32px,5vw,56px);}
+.layer-indent-4{margin-left:clamp(48px,7vw,80px);}
+.layer-connector{
+  width:2px;height:16px;background:var(--border);margin:0 auto;position:relative;
+}
+.layer-connector::after{
+  content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--border);
+}
+
+/* ---- WORKFLOW ---- */
+.flow-track{
+  display:flex;gap:0;overflow-x:auto;padding:16px 0 24px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.flow-phase{
+  flex:0 0 clamp(180px,22vw,220px);background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:clamp(16px,2vw,24px);
+  box-shadow:var(--shadow);transition:all 0.3s cubic-bezier(0.22,1,0.36,1);position:relative;
+}
+.flow-phase:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1);}
+.flow-num{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;color:#fff;margin-bottom:12px;
+}
+.flow-title{font-weight:700;font-size:clamp(14px,1.6vw,16px);margin-bottom:8px;}
+.phase-desc{font-size:13px;color:var(--text-secondary);line-height:1.7;}
+.flow-arrow{
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;width:32px;
+  color:var(--border);font-size:20px;
+}
+@media(max-width:700px){
+  .flow-track{flex-direction:column;gap:12px;}
+  .flow-arrow{transform:rotate(90deg);width:auto;height:32px;}
+  .flow-phase{flex:none;width:100%;}
+}
+
+/* ---- CHAT ---- */
+.chat-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.chat-tab{
+  padding:8px 20px;border-radius:20px;border:1px solid var(--border);
+  background:var(--bg-card);font-size:13px;font-weight:500;cursor:pointer;
+  transition:all 0.2s;color:var(--text-secondary);
+}
+.chat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.chat-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.chat-scenario{display:none;}
+.chat-scenario.active{display:block;}
+.chat-thread{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(16px,3vw,28px);box-shadow:var(--shadow);
+}
+.chat-msg{display:flex;gap:12px;margin-bottom:16px;opacity:0;animation:chatIn 0.4s ease forwards;}
+.chat-avatar{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;color:#fff;font-weight:700;
+}
+.chat-body{flex:1;min-width:0;}
+.chat-sender{font-weight:600;font-size:13px;margin-bottom:4px;}
+.chat-bubble{
+  background:var(--bg);border:1px solid var(--border);border-radius:0 12px 12px 12px;
+  padding:10px 14px;font-size:clamp(13px,1.4vw,14px);line-height:1.7;color:var(--text);
+}
+.chat-msg .aside{
+  font-style:italic;font-size:12px;color:var(--text-muted);margin-top:6px;
+  padding-left:12px;border-left:2px solid var(--border);
+}
+@keyframes chatIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---- SAAS TOOLBOX ---- */
+.saas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:20px;}
+.saas-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(18px,2.5vw,24px);box-shadow:var(--shadow);
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);position:relative;overflow:hidden;
+}
+.saas-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1);}
+.saas-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.tool-icon{font-size:24px;}
+.saas-name{font-weight:700;font-size:clamp(15px,1.8vw,17px);}
+.saas-desc{font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:14px;}
+.saas-meta{font-size:12px;color:var(--text-muted);}
+.saas-meta-row{display:flex;gap:8px;margin-bottom:6px;align-items:baseline;}
+.saas-meta-label{font-weight:600;color:var(--text-secondary);flex-shrink:0;min-width:60px;}
+.saas-meta-val{flex:1;}
+.saas-price-tag{
+  position:absolute;top:16px;right:16px;padding:3px 12px;border-radius:12px;
+  font-size:11px;font-weight:600;
+}
+.price-free{background:#dcfce7;color:#16a34a;}
+.price-paid{background:#fef3c7;color:#d97706;}
+.saas-footer{
+  margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);
+  font-size:12px;color:var(--text-muted);
+}
+
+/* ---- GLOSSARY ---- */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;}
+.glossary-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(14px,2vw,20px);box-shadow:var(--shadow);
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.glossary-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.08);}
+.glossary-term{
+  font-family:'Fira Code',monospace;font-weight:600;font-size:clamp(14px,1.6vw,16px);
+  margin-bottom:8px;
+}
+.glossary-def{font-size:13px;color:var(--text-secondary);line-height:1.7;}
+
+/* ---- FOOTER ---- */
+.footer{
+  padding:clamp(32px,5vw,48px) 0;border-top:1px solid var(--border);
+  text-align:center;font-size:13px;color:var(--text-muted);
+}
+.footer a{color:var(--accent);text-decoration:none;}
+.footer a:hover{text-decoration:underline;}
+.footer p{margin-bottom:8px;}
+
+/* ---- TERM LINK ---- */
+.term-link{
+  color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none;
+  border-bottom:1.5px dashed var(--accent);transition:background 0.15s;
+}
+.term-link:hover,.term-link.active{background:var(--accent-light);border-radius:3px;}
+
+/* ---- POPOVER ---- */
+.term-popover{
+  position:fixed;z-index:200;width:min(360px,calc(100vw - 32px));
+  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);
+  opacity:0;transform:scale(0.97);transition:all 0.25s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.term-popover.show{opacity:1;transform:scale(1);pointer-events:auto;}
+.term-popover::before{
+  content:'';position:absolute;top:-7px;left:var(--arrow-left,50%);
+  transform:translateX(-50%);border:7px solid transparent;border-bottom-color:var(--bg-card);
+  filter:drop-shadow(0 -1px 0 var(--border));
+}
+.term-popover.above::before{
+  top:auto;bottom:-7px;border:7px solid transparent;border-top-color:var(--bg-card);
+  filter:drop-shadow(0 1px 0 var(--border));
+}
+.popover-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+}
+.popover-term{font-family:'Fira Code',monospace;font-weight:600;color:var(--accent);font-size:14px;}
+.popover-close{
+  background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);
+  width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;
+}
+.popover-close:hover{background:var(--bg);}
+.popover-body{padding:12px 16px;font-size:13px;line-height:1.7;color:var(--text-secondary);}
+.popover-backdrop{
+  position:fixed;inset:0;z-index:199;display:none;
+}
+.popover-backdrop.show{display:block;}
+
+/* ---- FADE IN ---- */
+.fade-in{opacity:0;transform:translateY(24px);transition:all 0.7s cubic-bezier(0.22,1,0.36,1);}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* ---- TIP ---- */
+.tip{position:relative;cursor:help;border-bottom:1px dotted var(--text-muted);}
+.tip:hover::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--text);color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;
+  white-space:nowrap;z-index:50;pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+<div class="container nav-inner">
+  <span class="nav-brand">Codex CLI Dispatch 解读</span>
+  <div class="nav-links">
+    <a href="#hero">首页</a>
+    <a href="#arch">架构</a>
+    <a href="#flow">流程</a>
+    <a href="#chat">对话</a>
+    <a href="#saas">工具箱</a>
+    <a href="#glossary">术语表</a>
+  </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero container" id="hero">
+  <div class="fade-in">
+    <span class="hero-badge">GitHub 开源项目解读</span>
+    <h1>Codex CLI Dispatch 到底是什么东西？</h1>
+    <p class="subtitle">
+      简单来说，它是一个"任务分发器"——你把编程任务丢给它，它就在后台悄悄让 OpenAI 的 Codex 帮你写代码，
+      写完了自动通过 Telegram 通知你，整个过程不需要你盯着屏幕等。就像你把脏衣服扔进洗衣机，设好程序就可以去做别的事了。
+    </p>
+    <div class="file-tree">
+codex-cli-dispatch/
+├── SKILL.md              <span class="comment">&lt;- 技能说明书，告诉 AI 助手怎么使用这个工具</span>
+├── README.md             <span class="comment">&lt;- 英文使用手册</span>
+├── README_CN.md          <span class="comment">&lt;- 中文使用手册</span>
+├── scripts/
+│   └── dispatch.sh       <span class="comment">&lt;- 核心脚本，整个项目的"大脑"，负责分发任务</span>
+├── LICENSE               <span class="comment">&lt;- 开源许可证，MIT 协议（随便用）</span>
+└── .gitignore            <span class="comment">&lt;- 告诉版本管理工具哪些文件不用跟踪</span>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="section container" id="arch">
+  <div class="section-header fade-in">
+    <span class="section-num" style="background:var(--accent);">1</span>
+    <h2 class="section-title">架构层次</h2>
+    <p class="section-desc">项目的结构像一栋楼，从上往下看，每一层都有各自的职责。点击任意一层查看详情。</p>
+  </div>
+  <div class="arch-stack">
+
+    <!-- Layer 1: User / AI Agent -->
+    <div class="arch-layer layer-indent-1 fade-in" data-layer="1">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent);">1</span>
+        <span class="layer-icon">&#x1F9D1;</span>
+        <span class="layer-title">用户 / AI 助手层</span>
+        <span class="layer-brief">发起任务的人或 AI，就像餐厅里点菜的顾客</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">OpenClaw Agent</span>
+        <span class="layer-chip">终端用户</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          这是最顶层——任务的发起者。可以是你自己在终端里手动输入命令，也可以是你的 AI 助手（比如 OpenClaw 里的小龙虾）自动调用。
+          就像在快餐店点单：你说要什么，后面的厨房就开始忙活。你只需要用 <code>--prompt</code> 告诉它"要做什么"，
+          剩下的事情它全帮你搞定。
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-connector"></div>
+
+    <!-- Layer 2: Dispatch Script -->
+    <div class="arch-layer layer-indent-2 fade-in" data-layer="2">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent2);">2</span>
+        <span class="layer-icon">&#x1F4E6;</span>
+        <span class="layer-title">任务分发层（dispatch.sh）</span>
+        <span class="layer-brief">核心调度员，收到订单后安排一切，就像餐厅经理</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">dispatch.sh</span>
+        <span class="layer-chip">SKILL.md</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          这是整个项目的"大脑"，一个 211 行的 Bash 脚本。它的工作分 7 步：
+          解析你的命令参数、记下任务信息、确保工作目录有版本管理、拼装 Codex 命令、启动 Codex 干活、保存结果、最后通知你。
+          就像一位尽职的餐厅经理：接单、记录、备料、通知厨师开始做、盯着出餐、最后叫服务员上菜。
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-connector"></div>
+
+    <!-- Layer 3: Codex CLI -->
+    <div class="arch-layer layer-indent-3 fade-in" data-layer="3">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent3);">3</span>
+        <span class="layer-icon">&#x1F916;</span>
+        <span class="layer-title">AI 编程引擎层（Codex CLI）</span>
+        <span class="layer-brief">真正写代码的 AI，就像厨房里做菜的大厨</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">codex exec</span>
+        <span class="layer-chip">gpt-5.3-codex</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          这层是 OpenAI 出品的 Codex CLI，一个能在终端里运行的 AI 编程助手。它接收任务指令后，
+          会自动阅读你的代码、理解上下文、然后像一位资深程序员一样写出新代码或修复问题。
+          它在"沙盒"（一个隔离的安全空间）里工作，不会乱动你不让它碰的文件。
+          就像大厨只在自己的工作台上操作，不会跑到收银台去乱按。
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-connector"></div>
+
+    <!-- Layer 4: Data / Results -->
+    <div class="arch-layer layer-indent-3 fade-in" data-layer="4">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent4);">4</span>
+        <span class="layer-icon">&#x1F4BE;</span>
+        <span class="layer-title">数据存储层</span>
+        <span class="layer-brief">保存任务记录和输出结果，就像餐厅的订单记录本</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">latest.json</span>
+        <span class="layer-chip">task-meta.json</span>
+        <span class="layer-chip">task-output.txt</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          每次任务完成后，结果会被整齐地保存在三个文件里：<code>task-meta.json</code> 记录"谁在什么时候派了什么任务"，
+          <code>task-output.txt</code> 保存 AI 写代码时的完整输出，<code>latest.json</code> 是一份精简的结果摘要。
+          就像餐厅每天的流水账：什么时候接了什么单、做了多久、最后出了什么菜。
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-connector"></div>
+
+    <!-- Layer 5: Notification -->
+    <div class="arch-layer layer-indent-2 fade-in" data-layer="5">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent5);">5</span>
+        <span class="layer-icon">&#x1F4E2;</span>
+        <span class="layer-title">通知和唤醒层</span>
+        <span class="layer-brief">任务完成后通知你，还能叫醒 AI 助手继续干活</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">Telegram</span>
+        <span class="layer-chip">Webhook</span>
+        <span class="layer-chip">OpenClaw Hooks</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          这层负责"通知到位"。任务做完后，它会做两件事：
+          第一，通过 Telegram 给你发一条消息，告诉你"活干完了，结果如何"；
+          第二，通过一个叫 Webhook 的机制（就像设了一个闹钟，事件发生了自动响）去叫醒你的 AI 助手，
+          让它知道可以进行下一步了。这样你完全不用盯着屏幕等——做完了它自己会来找你。
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-connector"></div>
+
+    <!-- Layer 6: External Services -->
+    <div class="arch-layer layer-indent-1 fade-in" data-layer="6">
+      <div class="layer-head">
+        <span class="layer-num" style="background:var(--accent6);">6</span>
+        <span class="layer-icon">&#x2601;</span>
+        <span class="layer-title">外部服务层</span>
+        <span class="layer-brief">项目依赖的外部工具和平台</span>
+      </div>
+      <div class="layer-chips">
+        <span class="layer-chip">OpenAI API</span>
+        <span class="layer-chip">Telegram Bot API</span>
+        <span class="layer-chip">Git</span>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-detail-inner">
+          项目本身很轻量，但它依赖几个外部服务来运转：
+          OpenAI 的云端 AI 服务是"大厨的技能来源"，Telegram 的机器人接口是"送信的邮差"，
+          Git 版本管理是"记录每次修改的时光机"。这些服务就像餐厅的水电供应——
+          厨房再好，没水没电也做不出菜。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section class="section container" id="flow">
+  <div class="section-header fade-in">
+    <span class="section-num" style="background:var(--accent2);">2</span>
+    <h2 class="section-title">工作流程</h2>
+    <p class="section-desc">一个任务从发出到完成，经历这 7 个阶段。就像一条流水线，每个环节各司其职。</p>
+  </div>
+  <div class="flow-track fade-in">
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent);">1</div>
+      <div class="flow-title">解析参数</div>
+      <p class="phase-desc">读取你输入的命令参数：要做什么任务、在哪个文件夹、用什么 AI 模型、安全等级多高。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent2);">2</div>
+      <div class="flow-title">记录元数据</div>
+      <p class="phase-desc">把任务信息写进 task-meta.json，相当于在订单本上登记："几点几分，谁派了什么活"。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent3);">3</div>
+      <div class="flow-title">初始化 Git</div>
+      <p class="phase-desc">检查工作目录是否有版本管理。没有的话自动创建，确保 Codex 能正常工作。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent4);">4</div>
+      <div class="flow-title">拼装命令</div>
+      <p class="phase-desc">根据你的参数，拼出完整的 codex exec 命令——模型、沙盒模式、图片附件等全部安排好。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent5);">5</div>
+      <div class="flow-title">执行 Codex</div>
+      <p class="phase-desc">启动 Codex CLI，让 AI 大厨正式开始写代码。输出同时保存到文件里。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent6);">6</div>
+      <div class="flow-title">保存结果</div>
+      <p class="phase-desc">AI 干完活后，更新元数据状态，把精简结果写进 latest.json，方便后续查看。</p>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+
+    <div class="flow-phase">
+      <div class="flow-num" style="background:var(--accent);">7</div>
+      <div class="flow-title">通知 + 唤醒</div>
+      <p class="phase-desc">给 Telegram 发消息通知你，同时通过 Webhook 唤醒你的 AI 助手，让它继续处理后续任务。</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CHAT CONVERSATIONS -->
+<section class="section container" id="chat">
+  <div class="section-header fade-in">
+    <span class="section-num" style="background:var(--accent3);">3</span>
+    <h2 class="section-title">组件对话</h2>
+    <p class="section-desc">用"群聊"的方式，看看各个组件之间是怎么沟通协作的。</p>
+  </div>
+  <div class="fade-in">
+    <div class="chat-tabs">
+      <button class="chat-tab active" data-tab="scenario1">日常派发任务</button>
+      <button class="chat-tab" data-tab="scenario2">任务失败处理</button>
+      <button class="chat-tab" data-tab="scenario3">深度研究模式</button>
+    </div>
+
+    <!-- Scenario 1: Normal dispatch -->
+    <div class="chat-scenario active" id="scenario1">
+      <div class="chat-thread">
+
+        <div class="chat-msg" style="animation-delay:0s;">
+          <div class="chat-avatar" style="background:var(--accent);">&#x1F9D1;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent);">用户</div>
+            <div class="chat-bubble">小龙虾，帮我用 Codex 构建一个 Express API，放到 /projects/my-api 目录下。</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.3s;">
+          <div class="chat-avatar" style="background:var(--accent3);">&#x1F99E;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent3);">OpenClaw 小龙虾</div>
+            <div class="chat-bubble">收到！我来调用 dispatch.sh，把这个任务后台分发给 Codex。</div>
+            <p class="aside">小龙虾用 nohup 在后台启动 dispatch.sh，自己不会被阻塞，可以继续处理其他请求。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.6s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">好的，我先把任务信息登记到 task-meta.json 里......登记好了。然后检查一下 /projects/my-api 有没有 Git 仓库......没有，我帮你初始化一个。</div>
+            <p class="aside">调度脚本用 jq 生成任务元数据，用 git init 初始化版本管理。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.9s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">命令拼好了：codex exec --full-auto --sandbox workspace-write -C /projects/my-api "构建一个 Express API"。Codex 大厨，交给你了！</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:1.2s;">
+          <div class="chat-avatar" style="background:var(--accent4);">&#x1F916;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent4);">Codex CLI</div>
+            <div class="chat-bubble">收到任务！让我先看看目录结构......好，我来创建 package.json、安装 Express、写路由和中间件......搞定了！</div>
+            <p class="aside">Codex CLI 连接 OpenAI 云端 AI 模型，在沙盒环境中自动阅读上下文、生成代码、创建文件。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:1.5s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">Codex 干完了，退出码是 0（意思是成功）。我把结果写进 latest.json，然后通知用户。</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:1.8s;">
+          <div class="chat-avatar" style="background:var(--accent5);">&#x1F4E2;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent5);">Telegram 通知</div>
+            <div class="chat-bubble">叮！Codex CLI 任务完成 -- 任务: express-api，耗时 2m34s，状态: 成功。</div>
+            <p class="aside">调度脚本通过 OpenClaw 的消息通道，调用 Telegram Bot 发送格式化的完成通知。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:2.1s;">
+          <div class="chat-avatar" style="background:var(--accent6);">&#x1F514;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent6);">Webhook 唤醒</div>
+            <div class="chat-bubble">嘿，小龙虾！Codex 活干完了，你可以接着处理后续的事情了。</div>
+            <p class="aside">调度脚本通过 HTTP 请求唤醒 OpenClaw Agent，让它知道 Codex 的任务结果。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scenario 2: Failure -->
+    <div class="chat-scenario" id="scenario2">
+      <div class="chat-thread">
+
+        <div class="chat-msg" style="animation-delay:0s;">
+          <div class="chat-avatar" style="background:var(--accent3);">&#x1F99E;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent3);">OpenClaw 小龙虾</div>
+            <div class="chat-bubble">dispatch.sh，我收到一个重构认证模块的任务，用 danger-full-access 沙盒模式，交给你。</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.3s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">收到。任务信息已登记。Codex 大厨，这次是完全访问模式，请注意安全。开始吧！</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.6s;">
+          <div class="chat-avatar" style="background:var(--accent4);">&#x1F916;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent4);">Codex CLI</div>
+            <div class="chat-bubble">我在重构的过程中遇到了问题......项目的依赖版本太旧了，有些接口已经变了，我没法继续了。退出码 1。</div>
+            <p class="aside">Codex CLI 执行过程中遇到不可恢复的错误，返回非零退出码。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.9s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">检测到退出码 1，任务状态标记为"失败"。我把错误信息写到 latest.json 里，然后通知用户。</div>
+            <p class="aside">调度脚本通过 PIPESTATUS 捕获退出码，用 jq 更新元数据中的状态字段。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:1.2s;">
+          <div class="chat-avatar" style="background:var(--accent5);">&#x1F4E2;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent5);">Telegram 通知</div>
+            <div class="chat-bubble">注意！Codex CLI 任务失败 -- 任务: auth-refactor，退出码: 1。输出摘要已附上，请检查。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scenario 3: Deep research -->
+    <div class="chat-scenario" id="scenario3">
+      <div class="chat-thread">
+
+        <div class="chat-msg" style="animation-delay:0s;">
+          <div class="chat-avatar" style="background:var(--accent);">&#x1F9D1;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent);">用户</div>
+            <div class="chat-bubble">我不需要写代码，只想让 Codex 帮我调研一下 2026 年最好的 Node.js 后端框架。</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.3s;">
+          <div class="chat-avatar" style="background:var(--accent3);">&#x1F99E;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent3);">OpenClaw 小龙虾</div>
+            <div class="chat-bubble">了解！这种研究任务我用只读沙盒模式，这样 Codex 只能读不能改文件，更安全。</div>
+            <p class="aside">小龙虾将沙盒参数设为 read-only，确保研究任务不会意外修改任何文件。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.6s;">
+          <div class="chat-avatar" style="background:var(--accent2);">&#x1F4E6;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent2);">dispatch.sh 调度员</div>
+            <div class="chat-bubble">好的，只读模式。命令：codex exec --full-auto --sandbox read-only "Deep research: 2026 年最好的 Node.js 后端框架"。Codex，请开始调研。</div>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:0.9s;">
+          <div class="chat-avatar" style="background:var(--accent4);">&#x1F916;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent4);">Codex CLI</div>
+            <div class="chat-bubble">让我查一下......整理好了一份结构化报告：推荐框架排名、优缺点对比、适用场景分析、性能基准数据。都写在输出里了。</div>
+            <p class="aside">Codex 在只读沙盒中完成研究，所有输出保存到 task-output.txt，不修改任何项目文件。</p>
+          </div>
+        </div>
+
+        <div class="chat-msg" style="animation-delay:1.2s;">
+          <div class="chat-avatar" style="background:var(--accent5);">&#x1F4E2;</div>
+          <div class="chat-body">
+            <div class="chat-sender" style="color:var(--accent5);">Telegram 通知</div>
+            <div class="chat-bubble">叮！Codex CLI 研究任务完成 -- 任务: research-nodejs，耗时 5m12s，状态: 成功。快去看看报告吧！</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SAAS TOOLBOX -->
+<section class="section container" id="saas">
+  <div class="section-header fade-in">
+    <span class="section-num" style="background:var(--accent4);">4</span>
+    <h2 class="section-title">工具箱</h2>
+    <p class="section-desc">这个项目用到了哪些第三方工具和服务？它们各自扮演什么角色？要花多少钱？</p>
+  </div>
+  <div class="saas-grid fade-in">
+
+    <!-- Codex CLI -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-paid">付费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F916;</span>
+        <span class="saas-name">OpenAI Codex CLI</span>
+      </div>
+      <p class="saas-desc">
+        AI 界的"自动写代码机器人"——你用文字描述要做什么，它就自动帮你敲代码。
+        相当于给你配了一位 24 小时在线的编程助手，支持阅读项目上下文、创建文件、修复问题。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">核心编程引擎，真正干活的 AI</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">ChatGPT Plus 用户每月有一定免费额度；免费用户可体验基础模型</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">gpt-5.3-codex 约每百万字输入 $2、输出 $8；o3 约每百万字输入 $10、输出 $40</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">当你每天派发超过 10 个编程任务，或需要用更高级的模型（如 o3）时</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh 直接调用 &rarr; OpenAI 云端服务</div>
+    </div>
+
+    <!-- OpenClaw -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-free">免费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F99E;</span>
+        <span class="saas-name">OpenClaw</span>
+      </div>
+      <p class="saas-desc">
+        AI 助手的"管家平台"——帮你把多个 AI 工具组织在一起，统一管理、统一调度。
+        就像一个智能家居中控台，控制家里所有的智能设备。这个项目本身就是 OpenClaw 的一个"技能插件"。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">AI 助手运行平台，技能宿主</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">完全开源免费，自己服务器部署</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">软件免费，只需要承担服务器费用（低配云服务器约每月 $5-10）</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">用户量增长需要更大服务器时；或需要 ClawhHub 市场上的付费高级技能时</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh 的宿主平台，提供消息通道和 Agent 唤醒机制</div>
+    </div>
+
+    <!-- Telegram Bot API -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-free">免费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F4AC;</span>
+        <span class="saas-name">Telegram Bot API</span>
+      </div>
+      <p class="saas-desc">
+        你的"私人信使"——任务做完后自动给你的 Telegram 群组发一条消息。
+        就像外卖送到了会给你发短信通知一样，你不用一直刷新页面等着。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">完成通知推送渠道</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">完全免费，无消息数量限制（每秒最多 30 条）</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">免费</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">不需要升级，除非你每秒发超过 30 条通知（基本不可能）</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh &rarr; OpenClaw 消息通道 &rarr; Telegram</div>
+    </div>
+
+    <!-- jq -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-free">免费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F527;</span>
+        <span class="saas-name">jq</span>
+      </div>
+      <p class="saas-desc">
+        数据的"翻译官"——专门处理 JSON 格式的数据（一种通用的数据记录格式），
+        可以从里面精准提取、组装、修改信息。就像 Excel 的公式功能，但专门针对结构化文本数据。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">生成和解析任务元数据、结果文件</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">完全免费开源</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">免费</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">不需要升级，永远免费</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh 内部使用，处理所有 JSON 文件</div>
+    </div>
+
+    <!-- Git -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-free">免费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F4DA;</span>
+        <span class="saas-name">Git</span>
+      </div>
+      <p class="saas-desc">
+        代码的"时光机"——记录代码的每一次修改，随时可以回到过去的某个版本。
+        Codex CLI 必须在有 Git 管理的目录里工作，所以 dispatch.sh 会自动帮你初始化。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">版本管理，Codex CLI 的前置要求</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">完全免费开源</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">免费</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">不需要升级，永远免费</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh 自动初始化 &rarr; Codex CLI 依赖</div>
+    </div>
+
+    <!-- Bash / Shell -->
+    <div class="saas-card">
+      <span class="saas-price-tag price-free">免费</span>
+      <div class="saas-head">
+        <span class="tool-icon">&#x1F4BB;</span>
+        <span class="saas-name">Bash</span>
+      </div>
+      <p class="saas-desc">
+        电脑的"对讲机"——你通过它给操作系统下达命令。整个 dispatch.sh 就是用 Bash 语言写的脚本，
+        就像一份详细的操作手册，告诉电脑一步一步该做什么。
+      </p>
+      <div class="saas-meta">
+        <div class="saas-meta-row"><span class="saas-meta-label">角色</span><span class="saas-meta-val">脚本运行环境，项目的编程语言</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">免费额度</span><span class="saas-meta-val">系统自带，完全免费</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">价格</span><span class="saas-meta-val">免费</span></div>
+        <div class="saas-meta-row"><span class="saas-meta-label">何时升级</span><span class="saas-meta-val">不需要升级，所有 Linux/Mac 系统自带</span></div>
+      </div>
+      <div class="saas-footer">关联：dispatch.sh 的运行环境</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="section container" id="glossary">
+  <div class="section-header fade-in">
+    <span class="section-num" style="background:var(--accent5);">5</span>
+    <h2 class="section-title">术语词典</h2>
+    <p class="section-desc">页面上出现的技术术语，全部用大白话解释一遍。</p>
+  </div>
+  <div class="glossary-grid fade-in">
+
+    <div class="glossary-card" id="term-codex-cli">
+      <div class="glossary-term" style="color:var(--accent);">Codex CLI</div>
+      <p class="glossary-def">OpenAI 出品的"终端编程机器人"。你在命令行里告诉它要做什么，它就自动帮你写代码、修 bug、做重构。就像请了一位随叫随到的程序员，24 小时待命。</p>
+    </div>
+
+    <div class="glossary-card" id="term-openclaw">
+      <div class="glossary-term" style="color:var(--accent2);">OpenClaw</div>
+      <p class="glossary-def">一个开源的 AI 助手管理平台，帮你把各种 AI 工具整合在一起。可以理解为"AI 助手的管家"，管着你的 AI 能用什么工具、怎么跟你沟通、记住什么。</p>
+    </div>
+
+    <div class="glossary-card" id="term-dispatch">
+      <div class="glossary-term" style="color:var(--accent3);">dispatch（分发）</div>
+      <p class="glossary-def">把任务交给别人去做。就像快递公司的"调度中心"——收到包裹后分配给哪个快递员去送。这里是把编程任务分配给 Codex 去执行。</p>
+    </div>
+
+    <div class="glossary-card" id="term-sandbox">
+      <div class="glossary-term" style="color:var(--accent4);">沙盒（Sandbox）</div>
+      <p class="glossary-def">给程序画一个"安全围栏"。在围栏里面，程序可以自由活动；但出了围栏就不行。这样即使程序出了问题，也不会影响围栏外面的东西。有三个等级：只读（只能看）、工作区写入（能改指定文件夹）、完全访问（什么都能动，要小心）。</p>
+    </div>
+
+    <div class="glossary-card" id="term-nohup">
+      <div class="glossary-term" style="color:var(--accent5);">nohup</div>
+      <p class="glossary-def">让程序在"后台默默干活"的命令。平时你关掉终端窗口，正在运行的程序也会跟着停。加了 nohup 就相当于告诉它"我走了你也别停，干完再说"。</p>
+    </div>
+
+    <div class="glossary-card" id="term-bash">
+      <div class="glossary-term" style="color:var(--accent6);">Bash</div>
+      <p class="glossary-def">电脑的"命令行语言"。你在黑底白字的终端窗口里敲的命令，大部分就是 Bash 语言。这个项目的核心脚本就是用 Bash 写的，就像用中文写了一份操作步骤。</p>
+    </div>
+
+    <div class="glossary-card" id="term-json">
+      <div class="glossary-term" style="color:var(--accent);">JSON</div>
+      <p class="glossary-def">一种通用的数据记录格式，用花括号和冒号来组织信息。就像填表格——"姓名: 张三, 年龄: 25"。程序之间交换数据时经常用这种格式，因为人能看懂、机器也能处理。</p>
+    </div>
+
+    <div class="glossary-card" id="term-jq">
+      <div class="glossary-term" style="color:var(--accent2);">jq</div>
+      <p class="glossary-def">专门处理 JSON 数据的小工具。如果 JSON 是一份表格，jq 就是帮你查表、改表、生成新表的"数据助手"。在这个项目里用来生成和读取任务信息文件。</p>
+    </div>
+
+    <div class="glossary-card" id="term-git">
+      <div class="glossary-term" style="color:var(--accent3);">Git</div>
+      <p class="glossary-def">代码的"时光机"。每次修改代码后，Git 会帮你拍一张"快照"。出了问题可以随时穿越回之前的版本。几乎所有程序员都用它来管理代码。</p>
+    </div>
+
+    <div class="glossary-card" id="term-git-init">
+      <div class="glossary-term" style="color:var(--accent4);">git init</div>
+      <p class="glossary-def">在一个文件夹里"启用时光机"。运行这个命令后，Git 就开始跟踪这个文件夹里的所有变化。dispatch.sh 会自动帮你执行这一步。</p>
+    </div>
+
+    <div class="glossary-card" id="term-webhook">
+      <div class="glossary-term" style="color:var(--accent5);">Webhook</div>
+      <p class="glossary-def">给系统设一个"自动通知机制"——当某件事发生时（比如任务完成了），自动发一条消息给指定地址。就像设了一个闹钟，到点了自动响，不用你一直盯着看。</p>
+    </div>
+
+    <div class="glossary-card" id="term-api">
+      <div class="glossary-term" style="color:var(--accent6);">API</div>
+      <p class="glossary-def">两个软件之间"打电话的接线员"。软件 A 想用软件 B 的功能，就通过 API 打个"电话"，说明要什么，B 就把结果传回来。这个项目通过 API 调用 OpenAI 的 AI 能力和 Telegram 的消息服务。</p>
+    </div>
+
+    <div class="glossary-card" id="term-exit-code">
+      <div class="glossary-term" style="color:var(--accent);">退出码（Exit Code）</div>
+      <p class="glossary-def">程序结束时留下的一个数字"成绩单"。0 表示"一切正常，任务完成"；非 0（比如 1）表示"出了问题"。dispatch.sh 根据这个数字判断 Codex 的任务是成功还是失败。</p>
+    </div>
+
+    <div class="glossary-card" id="term-telegram-bot">
+      <div class="glossary-term" style="color:var(--accent2);">Telegram Bot</div>
+      <p class="glossary-def">Telegram 里的"自动回复小助手"。你可以创建一个虚拟机器人账号，让它自动发消息、接收命令。这里用它来自动推送任务完成的通知到你的群组。</p>
+    </div>
+
+    <div class="glossary-card" id="term-pipestatus">
+      <div class="glossary-term" style="color:var(--accent3);">PIPESTATUS</div>
+      <p class="glossary-def">Bash 里的一个特殊变量，记录"流水线"上每一步的成功或失败状态。dispatch.sh 用它来获取 Codex CLI 的真实退出码，即使输出被同时保存到了文件。</p>
+    </div>
+
+    <div class="glossary-card" id="term-skill">
+      <div class="glossary-term" style="color:var(--accent4);">技能插件（Skill）</div>
+      <p class="glossary-def">给 AI 助手"学习新本领"。就像手机装 App 一样，给 AI 装一个技能插件，它就多会一项本事。codex-cli-dispatch 就是一个技能，让 AI 助手学会"分发编程任务"。</p>
+    </div>
+
+    <div class="glossary-card" id="term-full-auto">
+      <div class="glossary-term" style="color:var(--accent5);">full-auto（全自动模式）</div>
+      <p class="glossary-def">让 Codex 不需要你的确认就自动执行所有操作。平时 Codex 每写一段代码都会问你"可以吗？"，开了全自动就变成"闷头干，干完再说"。在沙盒保护下这样做是安全的。</p>
+    </div>
+
+    <div class="glossary-card" id="term-curl">
+      <div class="glossary-term" style="color:var(--accent6);">curl</div>
+      <p class="glossary-def">命令行里的"浏览器"——可以向网络地址发送请求、获取数据，只是没有图形界面。dispatch.sh 用它来给 OpenClaw 发唤醒信号，就像用对讲机呼叫同事。</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer container">
+  <p>由 <a href="https://github.com/win4r" target="_blank" rel="noopener">win4r (AI超元域)</a> 创建</p>
+  <p>开源协议：MIT | <a href="https://github.com/win4r/codex-cli-dispatch" target="_blank" rel="noopener">GitHub 仓库</a></p>
+  <p>本页面是对 codex-cli-dispatch 项目代码库的可视化解读</p>
+</footer>
+
+<!-- TERM POPOVER -->
+<div class="term-popover" id="termPopover">
+  <div class="popover-header">
+    <span class="popover-term" id="popoverTerm"></span>
+    <button class="popover-close" id="popoverClose">&times;</button>
+  </div>
+  <div class="popover-body" id="popoverBody"></div>
+</div>
+<div class="popover-backdrop" id="popoverBackdrop"></div>
+
+<script>
+(function(){
+  /* ---- Scroll fade-in ---- */
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  /* ---- Architecture expand/collapse ---- */
+  document.querySelectorAll('.arch-layer').forEach(layer=>{
+    layer.addEventListener('click',(e)=>{
+      if(e.target.closest('.term-link')) return;
+      const detail = layer.querySelector('.layer-detail');
+      const isOpen = layer.classList.contains('active');
+      document.querySelectorAll('.arch-layer').forEach(l=>{
+        l.classList.remove('active');
+        const d = l.querySelector('.layer-detail');
+        if(d) d.style.maxHeight = '0';
+      });
+      if(!isOpen){
+        layer.classList.add('active');
+        if(detail) detail.style.maxHeight = detail.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ---- Chat tabs ---- */
+  document.querySelectorAll('.chat-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.chat-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.chat-scenario').forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      const scenario = document.getElementById(tab.dataset.tab);
+      if(scenario){
+        scenario.classList.add('active');
+        // Re-trigger animations
+        scenario.querySelectorAll('.chat-msg').forEach(msg=>{
+          msg.style.animation='none';
+          msg.offsetHeight; // force reflow
+          msg.style.animation='';
+        });
+      }
+    });
+  });
+
+  /* ---- Smooth scroll nav ---- */
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  /* ---- TERM AUTO-LINKING SYSTEM ---- */
+  const termMap = {
+    'Codex CLI': 'term-codex-cli',
+    'codex exec': 'term-codex-cli',
+    'Codex': 'term-codex-cli',
+    'OpenClaw': 'term-openclaw',
+    'dispatch': 'term-dispatch',
+    'dispatch.sh': 'term-dispatch',
+    '沙盒': 'term-sandbox',
+    'Sandbox': 'term-sandbox',
+    'sandbox': 'term-sandbox',
+    'workspace-write': 'term-sandbox',
+    'read-only': 'term-sandbox',
+    'danger-full-access': 'term-sandbox',
+    'nohup': 'term-nohup',
+    'Bash': 'term-bash',
+    'bash': 'term-bash',
+    'JSON': 'term-json',
+    'json': 'term-json',
+    'jq': 'term-jq',
+    'Git': 'term-git',
+    'git': 'term-git',
+    'git init': 'term-git-init',
+    'Webhook': 'term-webhook',
+    'webhook': 'term-webhook',
+    'API': 'term-api',
+    '退出码': 'term-exit-code',
+    'Exit Code': 'term-exit-code',
+    'Telegram Bot': 'term-telegram-bot',
+    'Telegram': 'term-telegram-bot',
+    'PIPESTATUS': 'term-pipestatus',
+    '技能插件': 'term-skill',
+    'Skill': 'term-skill',
+    'SKILL.md': 'term-skill',
+    'full-auto': 'term-full-auto',
+    '全自动': 'term-full-auto',
+    'curl': 'term-curl'
+  };
+
+  // Sort terms by length (longest first) to avoid partial matches
+  const sortedTerms = Object.keys(termMap).sort((a,b)=>b.length - a.length);
+  const termRegex = new RegExp('(' + sortedTerms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')','g');
+
+  // Selectors for content areas to auto-link
+  const contentSelectors = '.layer-detail-inner, .phase-desc, .chat-bubble, .chat-msg .aside, .section-desc, .saas-desc, .hero .subtitle';
+
+  function autoLinkTerms(){
+    const containers = document.querySelectorAll(contentSelectors);
+    containers.forEach(container=>{
+      const linkedTerms = new Set();
+      const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+      const textNodes = [];
+      while(walker.nextNode()) textNodes.push(walker.currentNode);
+
+      textNodes.forEach(node=>{
+        if(node.parentElement && (node.parentElement.classList.contains('term-link') || node.parentElement.tagName==='A' || node.parentElement.tagName==='CODE')) return;
+        const text = node.textContent;
+        const parts = [];
+        let lastIndex = 0;
+        let match;
+        termRegex.lastIndex = 0;
+        while((match = termRegex.exec(text)) !== null){
+          const term = match[1];
+          const cardId = termMap[term];
+          if(linkedTerms.has(cardId)) continue;
+          linkedTerms.add(cardId);
+          if(match.index > lastIndex) parts.push(document.createTextNode(text.slice(lastIndex, match.index)));
+          const a = document.createElement('a');
+          a.className = 'term-link';
+          a.textContent = term;
+          a.dataset.termId = cardId;
+          a.setAttribute('role','button');
+          a.setAttribute('tabindex','0');
+          parts.push(a);
+          lastIndex = match.index + term.length;
+        }
+        if(parts.length > 0){
+          if(lastIndex < text.length) parts.push(document.createTextNode(text.slice(lastIndex)));
+          const frag = document.createDocumentFragment();
+          parts.forEach(p=>frag.appendChild(p));
+          node.parentElement.replaceChild(frag, node);
+        }
+      });
+    });
+  }
+  autoLinkTerms();
+
+  /* ---- FLOATING POPOVER ---- */
+  const popover = document.getElementById('termPopover');
+  const popoverTerm = document.getElementById('popoverTerm');
+  const popoverBody = document.getElementById('popoverBody');
+  const popoverClose = document.getElementById('popoverClose');
+  const popoverBackdrop = document.getElementById('popoverBackdrop');
+  let activeTermLink = null;
+
+  function showPopover(termLink){
+    const cardId = termLink.dataset.termId;
+    const card = document.getElementById(cardId);
+    if(!card) return;
+
+    const termName = card.querySelector('.glossary-term').textContent;
+    const termDef = card.querySelector('.glossary-def').textContent;
+    popoverTerm.textContent = termName;
+    popoverBody.textContent = termDef;
+
+    if(activeTermLink) activeTermLink.classList.remove('active');
+    activeTermLink = termLink;
+    termLink.classList.add('active');
+
+    popover.classList.remove('above');
+    popover.classList.add('show');
+    popoverBackdrop.classList.add('show');
+
+    // Position
+    const rect = termLink.getBoundingClientRect();
+    const popH = popover.offsetHeight;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    let top;
+    if(spaceBelow >= popH + 16){
+      top = rect.bottom + 10;
+      popover.classList.remove('above');
+    } else if(spaceAbove >= popH + 16){
+      top = rect.top - popH - 10;
+      popover.classList.add('above');
+    } else {
+      top = Math.max(8, window.innerHeight - popH - 16);
+      popover.classList.remove('above');
+    }
+
+    let left = rect.left + rect.width/2 - popover.offsetWidth/2;
+    left = Math.max(16, Math.min(left, window.innerWidth - popover.offsetWidth - 16));
+    const arrowLeft = rect.left + rect.width/2 - left;
+
+    popover.style.top = top + 'px';
+    popover.style.left = left + 'px';
+    popover.style.setProperty('--arrow-left', arrowLeft + 'px');
+  }
+
+  function hidePopover(){
+    popover.classList.remove('show');
+    popoverBackdrop.classList.remove('show');
+    if(activeTermLink){activeTermLink.classList.remove('active');activeTermLink=null;}
+  }
+
+  document.addEventListener('click',e=>{
+    const link = e.target.closest('.term-link');
+    if(link){e.preventDefault();showPopover(link);return;}
+  });
+  popoverClose.addEventListener('click',hidePopover);
+  popoverBackdrop.addEventListener('click',hidePopover);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')hidePopover();});
+  let scrollTimer;
+  window.addEventListener('scroll',()=>{
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(hidePopover,150);
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
