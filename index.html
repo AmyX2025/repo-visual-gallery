@@ -126,24 +126,6 @@ body{
   text-align:center;padding:40px 20px;
   font-size:13px;color:var(--text-muted);
 }
-
-/* Mobile */
-@media(max-width:600px){
-  .hero{padding:48px 16px 32px}
-  .hero .count{margin-top:16px;font-size:13px;padding:5px 14px}
-  .container{padding:0 16px 60px}
-  .search-wrap{margin-bottom:24px}
-  .search-input{padding:10px 16px 10px 40px;font-size:13px}
-  .card-banner{height:110px;font-size:44px}
-  .card-body{padding:16px}
-  .card-title{font-size:16px}
-  .card-desc{font-size:12px}
-  .card-tag{font-size:10px;padding:2px 8px}
-  .footer{padding:28px 16px;font-size:12px}
-}
-@media(hover:none){
-  .card:hover{transform:none;box-shadow:var(--shadow)}
-}
 </style>
 </head>
 <body>
@@ -151,7 +133,7 @@ body{
 <div class="hero">
   <h1>我的<span>开源项目</span>解读合集</h1>
   <p>每一个感兴趣的 GitHub 开源项目，都会被做成一份交互式视觉解读页面，收录在这里。</p>
-  <div class="count">已收录 3 个项目</div>
+  <div class="count">已收录 4 个项目</div>
 </div>
 
 <div class="container">
@@ -215,6 +197,25 @@ body{
           <span class="card-tag">HTML</span>
           <span class="card-tag">AI Skill</span>
           <span class="card-tag">演示文稿</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ====== 项目卡片 4: memory-lancedb-pro ====== -->
+    <a class="card" href="./memory-lancedb-pro/index.html">
+      <div class="card-banner" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa,#c4b5fd);">
+        <span style="filter:grayscale(0);">&#129504;</span>
+        <div class="card-date">2026-03-07</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          memory-lancedb-pro
+        </div>
+        <div class="card-desc">给 OpenClaw 装的「超级记忆大脑」插件，用向量数据库实现混合检索，让 AI 不仅能记住对话，还能精准回忆。</div>
+        <div class="card-meta">
+          <span class="card-tag">TypeScript</span>
+          <span class="card-tag">OpenClaw 插件</span>
+          <span class="card-tag">向量数据库</span>
         </div>
       </div>
     </a>
