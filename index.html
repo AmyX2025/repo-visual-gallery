@@ -121,6 +121,23 @@ body{
 }
 .card.hidden{display:none;}
 
+/* Filter Tabs */
+.filter-wrap{
+  display:flex;justify-content:center;gap:8px;margin-bottom:24px;flex-wrap:wrap;
+}
+.filter-tab{
+  padding:7px 18px;border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);
+  cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
+.filter-tab:hover{border-color:var(--accent);color:var(--accent);}
+.filter-tab.active{
+  background:var(--accent);color:#fff;border-color:var(--accent);
+}
+.filter-tab .tab-count{
+  display:inline-block;margin-left:4px;font-size:11px;opacity:0.7;
+}
+
 /* Footer */
 .footer{
   text-align:center;padding:40px 20px;
@@ -137,6 +154,11 @@ body{
 </div>
 
 <div class="container">
+  <div class="filter-wrap" id="filterWrap">
+    <button class="filter-tab active" data-filter="all">全部<span class="tab-count">8</span></button>
+    <button class="filter-tab" data-filter="visual">架构解读<span class="tab-count">6</span></button>
+    <button class="filter-tab" data-filter="story">故事指南<span class="tab-count">2</span></button>
+  </div>
   <div class="search-wrap">
     <span class="search-icon">&#128269;</span>
     <input class="search-input" type="text" placeholder="搜索项目名称、描述、标签..." id="searchInput">
@@ -144,7 +166,7 @@ body{
   <div class="grid" id="projectGrid">
 
     <!-- ====== 项目卡片 1: OpenClaw ====== -->
-    <a class="card" href="./openclaw/index.html">
+    <a class="card" href="./openclaw/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#ff6b35,#e85d26,#c44d1e);">
         <span style="filter:grayscale(0);">&#129438;</span>
         <div class="card-date">2026-03-05</div>
@@ -164,7 +186,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 2: YouTube 转电子书 ====== -->
-    <a class="card" href="./youtube-to-ebook/index.html">
+    <a class="card" href="./youtube-to-ebook/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#d94c1a,#e85d26,#ff8c42);">
         <span style="filter:grayscale(0);">&#128218;</span>
         <div class="card-date">2026-03-05</div>
@@ -183,7 +205,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 3: Frontend Slides ====== -->
-    <a class="card" href="./frontend-slides/index.html">
+    <a class="card" href="./frontend-slides/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#3b6df0,#5b8af0,#8baeff);">
         <span style="filter:grayscale(0);">&#127912;</span>
         <div class="card-date">2026-03-05</div>
@@ -202,7 +224,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 4: memory-lancedb-pro ====== -->
-    <a class="card" href="./memory-lancedb-pro/index.html">
+    <a class="card" href="./memory-lancedb-pro/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa,#c4b5fd);">
         <span style="filter:grayscale(0);">&#129504;</span>
         <div class="card-date">2026-03-07</div>
@@ -221,7 +243,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 5: Codex CLI Dispatch ====== -->
-    <a class="card" href="./codex-cli-dispatch/index.html">
+    <a class="card" href="./codex-cli-dispatch/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#10a37f,#34c6a0,#6ee7b7);">
         <span style="filter:grayscale(0);">&#9881;</span>
         <div class="card-date">2026-03-07</div>
@@ -240,7 +262,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 6: Impeccable ====== -->
-    <a class="card" href="./impeccable/index.html">
+    <a class="card" href="./impeccable/index.html" data-category="visual">
       <div class="card-banner" style="background:linear-gradient(135deg,#e85d26,#f0923e,#fbbf6a);">
         <span style="filter:grayscale(0);">&#10024;</span>
         <div class="card-date">2026-03-09</div>
@@ -259,7 +281,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 7: OpenClaw 故事指南 ====== -->
-    <a class="card" href="./openclaw-guide/index.html">
+    <a class="card" href="./openclaw-guide/index.html" data-category="story">
       <div class="card-banner" style="background:linear-gradient(135deg,#c44d1e,#e85d26,#ff6b35);">
         <span style="filter:grayscale(0);">&#128214;</span>
         <div class="card-date">2026-03-12</div>
@@ -278,7 +300,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 8: Impeccable 设计指南 ====== -->
-    <a class="card" href="./impeccable-guide/index.html">
+    <a class="card" href="./impeccable-guide/index.html" data-category="story">
       <div class="card-banner" style="background:linear-gradient(135deg,#f0923e,#fbbf6a,#fde68a);">
         <span style="filter:grayscale(0);">&#128214;</span>
         <div class="card-date">2026-03-12</div>
@@ -305,18 +327,32 @@ body{
 </div>
 
 <script>
-document.getElementById('searchInput').addEventListener('input', function() {
-  const query = this.value.toLowerCase().trim();
+let activeFilter = 'all';
+
+function filterCards() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const cards = document.querySelectorAll('#projectGrid .card');
   let visibleCount = 0;
   cards.forEach(card => {
-    const text = card.textContent.toLowerCase();
-    const match = !query || text.includes(query);
-    card.classList.toggle('hidden', !match);
-    if (match) visibleCount++;
+    const categoryMatch = activeFilter === 'all' || card.dataset.category === activeFilter;
+    const textMatch = !query || card.textContent.toLowerCase().includes(query);
+    const show = categoryMatch && textMatch;
+    card.classList.toggle('hidden', !show);
+    if (show) visibleCount++;
   });
-  document.getElementById('noResults').style.display = (visibleCount === 0 && query) ? 'block' : 'none';
+  document.getElementById('noResults').style.display = (visibleCount === 0) ? 'block' : 'none';
+}
+
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeFilter = tab.dataset.filter;
+    filterCards();
+  });
 });
+
+document.getElementById('searchInput').addEventListener('input', filterCards);
 </script>
 
 </body>
