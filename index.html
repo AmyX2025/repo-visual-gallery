@@ -151,16 +151,17 @@ body{
 <body>
 
 <div class="hero">
-  <h1>我的<span>开源项目</span>解读合集</h1>
-  <p>每一个感兴趣的 GitHub 开源项目，都会被做成一份交互式视觉解读页面，收录在这里。</p>
-  <div class="count">已收录 11 个项目</div>
+  <h1>我的<span>学习内容</span>解读合集</h1>
+  <p>把每一个感兴趣的项目或学习内容，做成一份交互式解读页面，收录在这里。</p>
+  <div class="count">已收录 12 个项目</div>
 </div>
 
 <div class="container">
   <div class="filter-wrap" id="filterWrap">
-    <button class="filter-tab active" data-filter="all">全部<span class="tab-count">11</span></button>
+    <button class="filter-tab active" data-filter="all">全部<span class="tab-count">12</span></button>
     <button class="filter-tab" data-filter="visual">架构解读<span class="tab-count">6</span></button>
-    <button class="filter-tab" data-filter="story">故事指南<span class="tab-count">5</span></button>
+    <button class="filter-tab" data-filter="story">项目故事<span class="tab-count">4</span></button>
+    <button class="filter-tab" data-filter="notes">学习笔记<span class="tab-count">2</span></button>
   </div>
   <div class="search-wrap">
     <span class="search-icon">&#128269;</span>
@@ -360,7 +361,7 @@ body{
     </a>
 
     <!-- ====== 项目卡片 11: 设计流程已死 ====== -->
-    <a class="card" href="./design-process-is-dead/index.html" data-category="story">
+    <a class="card" href="./design-process-is-dead/index.html" data-category="notes">
       <div class="card-banner" style="background:linear-gradient(135deg,#c0392b,#e74c3c,#ff6b6b);">
         <svg viewBox="0 0 80 80" fill="none"><rect x="14" y="12" width="30" height="40" rx="2" fill="#fff"/><rect x="14" y="12" width="30" height="8" rx="2" fill="rgba(192,57,43,0.15)"/><line x1="20" y1="26" x2="38" y2="26" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/><line x1="20" y1="32" x2="36" y2="32" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/><line x1="20" y1="38" x2="34" y2="38" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity="0.2"/><line x1="20" y1="44" x2="31" y2="44" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity="0.15"/><path d="M10 48 L52 16" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round"/><path d="M10 16 L52 48" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round"/><path d="M54 40 Q62 36 60 28 Q58 22 52 24 Q58 30 54 40Z" fill="rgba(255,255,255,0.5)"/><circle cx="62" cy="52" r="7" fill="rgba(255,255,255,0.2)"/><path d="M59 52 Q62 46 65 52 Q62 58 59 52Z" fill="rgba(255,255,255,0.5)"/></svg>
         <div class="card-date">2026-03-26</div>
@@ -372,8 +373,27 @@ body{
         <div class="card-desc">那套「调研→线框→评审→交付」的老路正在消亡，取而代之的是一种以 AI 为核心的全新设计范式。</div>
         <div class="card-meta">
           <span class="card-tag">设计</span>
-          <span class="card-tag">故事指南</span>
+          <span class="card-tag">YouTube</span>
           <span class="card-tag">AI 时代</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ====== 项目卡片 12: Codebase-to-Course ====== -->
+    <a class="card" href="./codebase-to-course/index.html" data-category="notes">
+      <div class="card-banner" style="background:linear-gradient(135deg,#2a7b9b,#3a9dbf,#6ec6e0);">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="14" y="16" width="36" height="28" rx="3" fill="#fff"/><rect x="14" y="16" width="36" height="7" rx="3" fill="rgba(42,123,155,0.15)"/><path d="M22 26 L28 31 L22 36" stroke="#2a7b9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/><line x1="32" y1="36" x2="44" y2="36" stroke="#2a7b9b" stroke-width="2" stroke-linecap="round" opacity="0.35"/><path d="M48 30 Q56 24 58 18" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M58 18 L60 16 L56 16" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="32" cy="56" r="10" fill="rgba(255,255,255,0.15)"/><rect x="27" y="51" width="10" height="12" rx="2" fill="rgba(255,255,255,0.5)"/><path d="M29 55 L35 55 M29 58 L33 58" stroke="#2a7b9b" stroke-width="1" stroke-linecap="round" opacity="0.6"/><path d="M40 50 L52 50 M40 54 L50 54 M40 58 L48 58" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="card-date">2026-03-26</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          Codebase-to-Course
+        </div>
+        <div class="card-desc">把任何代码仓库变成一门交互式课程——这门课本身就是用同名技能生成的，讲的就是它自己怎么运作，套娃式学习体验。</div>
+        <div class="card-meta">
+          <span class="card-tag">AI 工具</span>
+          <span class="card-tag">GitHub</span>
+          <span class="card-tag">交互课程</span>
         </div>
       </div>
     </a>
