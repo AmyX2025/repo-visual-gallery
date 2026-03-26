@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开发者图标库视觉指南</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <!-- Remix Icon webfont -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+  <!-- Tabler Icons webfont -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory: #f5f0e8;
+      --paper: #ece7dd;
+      --ink: #1a1714;
+      --ink-soft: #3d3830;
+      --ink-muted: #7a7264;
+      --ink-faint: #a69e92;
+      --rule: #c8c0b4;
+      --rule-light: #ddd6ca;
+      --terracotta: #b5441b;
+      --terracotta-light: #d4693f;
+      --terracotta-bg: rgba(181,68,27,0.06);
+      --green-ink: #2d5a3d;
+      --green-bg: #e8f0eb;
+      --surface: #faf7f2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--ivory);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 48px);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 6vw, 72px);
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      color: var(--ink);
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    .hero-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      max-width: 480px;
+    }
+
+    .hero-meta {
+      text-align: right;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      line-height: 1.8;
+    }
+
+    .hero-meta strong {
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    /* ─── CRITERIA ─── */
+    .criteria-section {
+      padding: clamp(36px, 5vw, 64px) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .criteria-top {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .criteria-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      position: sticky;
+      top: 24px;
+    }
+
+    .criteria-heading span {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      margin-top: 12px;
+      letter-spacing: 0;
+      line-height: 1.6;
+    }
+
+    .criteria-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .criteria-item {
+      padding: 20px 24px 20px 0;
+      border-bottom: 1px solid var(--rule-light);
+    }
+
+    .criteria-item:nth-child(even) {
+      padding-left: 24px;
+      border-left: 1px solid var(--rule-light);
+    }
+
+    .criteria-item:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+
+    .criteria-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .criteria-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+      letter-spacing: -0.01em;
+    }
+
+    .criteria-desc {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .criteria-highlight {
+      grid-column: 1 / -1;
+      background: var(--green-bg);
+      margin: 0 -24px;
+      padding: 20px 24px !important;
+      border-bottom: none !important;
+      border-left: none !important;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .criteria-highlight .criteria-label {
+      color: var(--green-ink);
+      font-size: 0.92rem;
+      margin-bottom: 3px;
+    }
+
+    .criteria-highlight .criteria-desc {
+      color: var(--green-ink);
+      opacity: 0.8;
+    }
+
+    .criteria-highlight .criteria-desc strong {
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .criteria-check {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .criteria-check svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--green-bg);
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    /* ─── LIBRARY SECTIONS ─── */
+    .libraries {
+      padding-bottom: 40px;
+    }
+
+    .library {
+      border-bottom: 1px solid var(--rule);
+      padding: clamp(32px, 4vw, 56px) 0;
+    }
+
+    .library:last-child {
+      border-bottom: none;
+    }
+
+    .lib-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .lib-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--ink-faint);
+      margin-bottom: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .lib-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .lib-tagline {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    .lib-right {
+      text-align: right;
+      padding-top: 24px;
+    }
+
+    .lib-count {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .lib-count-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    .lib-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--terracotta);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+    }
+
+    .lib-link:hover {
+      color: var(--terracotta-light);
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.66rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border: 1px solid var(--rule);
+      color: var(--ink-soft);
+      letter-spacing: 0.01em;
+    }
+
+    .tag.accent {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+      background: var(--terracotta-bg);
+    }
+
+    /* Icon Grid */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2px;
+      background: var(--surface);
+      border: 1px solid var(--rule-light);
+      margin-bottom: 20px;
+    }
+
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 8px 14px;
+      cursor: default;
+      transition: background 0.15s;
+      background: var(--surface);
+    }
+
+    .icon-item:hover {
+      background: var(--paper);
+    }
+
+    .icon-item img {
+      width: 24px;
+      height: 24px;
+      display: block;
+      opacity: 0.85;
+    }
+
+    .icon-item:hover img {
+      opacity: 1;
+    }
+
+    .icon-item i.ri,
+    .icon-item .ri-icon,
+    .icon-item i.ti {
+      font-size: 24px;
+      line-height: 1;
+      color: var(--ink);
+      display: block;
+      opacity: 0.85;
+    }
+
+    .icon-item:hover i {
+      opacity: 1;
+    }
+
+    .icon-lbl {
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: var(--ink-faint);
+      text-align: center;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+      letter-spacing: 0.02em;
+    }
+
+    /* Weight & Variant Showcases */
+    .weight-section,
+    .variant-section {
+      background: var(--surface);
+      border: 1px solid var(--rule-light);
+      border-top: none;
+      padding: 20px 24px;
+      margin-top: -1px;
+      margin-bottom: 20px;
+    }
+
+    .weight-title,
+    .variant-title {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 14px;
+    }
+
+    .weight-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2px;
+    }
+
+    .weight-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 8px;
+      background: var(--ivory);
+    }
+
+    .weight-item img {
+      width: 28px;
+      height: 28px;
+      opacity: 0.85;
+    }
+
+    .weight-lbl {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .variant-row {
+      display: flex;
+      gap: 40px;
+    }
+
+    .variant-group { flex: 1; }
+
+    .variant-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .variant-icons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .variant-icons img {
+      width: 24px;
+      height: 24px;
+      opacity: 0.85;
+    }
+
+    /* Library Footer */
+    .lib-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .lib-footer-note {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    .license-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      background: var(--green-bg);
+      color: var(--green-ink);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── COMPARISON TABLE ─── */
+    .comparison-section {
+      padding: clamp(36px, 5vw, 64px) 0 clamp(60px, 8vw, 100px);
+    }
+
+    .comparison-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .comparison-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .comparison-sub {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    thead th {
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      border-bottom: 1px solid var(--ink);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--rule-light);
+      vertical-align: top;
+      color: var(--ink-soft);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover td {
+      background: var(--terracotta-bg);
+    }
+
+    .lib-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .lib-name-cell {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .best-for {
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .pill-green {
+      display: inline-block;
+      font-size: 0.64rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      background: var(--green-bg);
+      color: var(--green-ink);
+    }
+
+    /* ─── FOOTER ─── */
+    .page-footer {
+      border-top: 2px solid var(--ink);
+      padding: 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .footer-right {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @media (prefers-reduced-motion: no-preference) {
+      .library,
+      .criteria-item,
+      .hero-body,
+      .comparison-section {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .hero-body { animation-delay: 0.1s; }
+
+      .criteria-item:nth-child(1) { animation-delay: 0.05s; }
+      .criteria-item:nth-child(2) { animation-delay: 0.1s; }
+      .criteria-item:nth-child(3) { animation-delay: 0.15s; }
+      .criteria-item:nth-child(4) { animation-delay: 0.2s; }
+      .criteria-item:nth-child(5) { animation-delay: 0.25s; }
+      .criteria-item:nth-child(6) { animation-delay: 0.3s; }
+
+      .library:nth-child(1) { animation-delay: 0.05s; }
+      .library:nth-child(2) { animation-delay: 0.1s; }
+      .library:nth-child(3) { animation-delay: 0.15s; }
+      .library:nth-child(4) { animation-delay: 0.2s; }
+      .library:nth-child(5) { animation-delay: 0.25s; }
+      .library:nth-child(6) { animation-delay: 0.3s; }
+      .library:nth-child(7) { animation-delay: 0.35s; }
+
+      .comparison-section { animation-delay: 0.1s; }
+
+      @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .hero-body { grid-template-columns: 1fr; gap: 20px; }
+      .hero-meta { text-align: left; }
+      .criteria-top { grid-template-columns: 1fr; gap: 20px; }
+      .criteria-heading { position: static; }
+      .criteria-list { grid-template-columns: 1fr; }
+      .criteria-item:nth-child(even) { padding-left: 0; border-left: none; }
+      .criteria-highlight { margin: 0; flex-direction: column; align-items: flex-start; }
+      .lib-top { grid-template-columns: 1fr; gap: 16px; }
+      .lib-right { text-align: left; padding-top: 0; }
+      .icon-grid { grid-template-columns: repeat(4, 1fr); }
+      .weight-row { grid-template-columns: repeat(3, 1fr); }
+      .variant-row { flex-direction: column; gap: 20px; }
+      .comparison-header { flex-direction: column; gap: 4px; }
+    }
+
+    @media (max-width: 520px) {
+      .icon-grid { grid-template-columns: repeat(3, 1fr); }
+      .page-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="hero-eyebrow">Icon Library Guide / 2026</div>
+    <h1>拒绝 AI 味，<br>找到真正<em>有气质</em>的图标</h1>
+    <div class="hero-body">
+      <p class="hero-desc">精选 7 个开发者圈子里真正在用的开源图标库，从极简轮廓到多重量级系统，每一个都有自己的美学立场。所有图标均为真实 CDN 渲染，非截图。</p>
+      <div class="hero-meta">
+        <strong>7</strong> 个精选库<br>
+        <strong>21,000+</strong> 个图标总数<br>
+        <strong>全部免费</strong> 个人 &amp; 商业可用
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── CRITERIA ─── -->
+  <section class="criteria-section">
+    <div class="criteria-top">
+      <div class="criteria-heading">
+        为什么是这 7 个？
+        <span>不是所有开源图标库都值得用。以下是把 Font Awesome、Material Icons 等大量库排除在外的判断逻辑。</span>
+      </div>
+      <div class="criteria-list">
+        <div class="criteria-item">
+          <div class="criteria-num">01</div>
+          <div class="criteria-label">没有「认出来了」感</div>
+          <div class="criteria-desc">Font Awesome 和 Material Icons 用了超过 10 年，一眼就能认出，会让设计显得平庸。这 7 个库大多数用户不会主动注意到——这才是好图标应有的状态。</div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">02</div>
+          <div class="criteria-label">不是 AI 的默认选项</div>
+          <div class="criteria-desc">AI 生成 HTML 时几乎默认使用 Font Awesome 或 Material Icons，因为训练数据里充满了它们。本页收录的都是人工精选后使用的库，天然带有「非 AI 生成」的气质。</div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">03</div>
+          <div class="criteria-label">2018 年之后的美学</div>
+          <div class="criteria-desc">图标的流行审美在 2018–2020 年间发生了明显转变，从厚重填充转向精细描边。这 7 个库都诞生或成型于这次转变之后，视觉语言更现代。</div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">04</div>
+          <div class="criteria-label">开发者社区的真实使用</div>
+          <div class="criteria-desc">这些库在 GitHub Star、Reddit、开发者博客中持续被提及和推荐，是设计品味好的工程师在实际项目中真正选择的工具，而不是教程里的占位符。</div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">05</div>
+          <div class="criteria-label">设计系统级的一致性</div>
+          <div class="criteria-desc">每个库内部都遵守严格的网格规范（24x24 或 15x15），stroke-width、圆角、间距保持统一。混用同一套库的不同图标，不会出现「风格不搭」的问题。</div>
+        </div>
+        <div class="criteria-item criteria-highlight">
+          <div class="criteria-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="criteria-label">全部免费 / 个人 &amp; 商业均可用</div>
+            <div class="criteria-desc">7 个库全部采用 MIT、ISC 或 Apache 2.0 许可证。<strong>个人项目、商业产品、SaaS、客户交付物均可免费使用，无需署名，无需付费。</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LIBRARIES ─── -->
+  <section class="libraries">
+
+    <!-- 1. LUCIDE -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">01 /</div>
+          <div class="lib-name">Lucide</div>
+          <div class="lib-tagline">极简描边美学，开发者圈子公认的「默认最佳选择」。Feather Icons 的精神继承者，2px stroke，圆角收尾，极度克制。</div>
+          <div class="tags">
+            <span class="tag accent">描边风格</span>
+            <span class="tag">ISC 许可</span>
+            <span class="tag">24x24 grid</span>
+            <span class="tag">React / Vue / Svelte / Angular</span>
+            <span class="tag">stroke-width: 2</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">1,500+</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://lucide.dev" class="lib-link">lucide.dev &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/home.svg" alt="home"><span class="icon-lbl">home</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/user.svg" alt="user"><span class="icon-lbl">user</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/search.svg" alt="search"><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/settings.svg" alt="settings"><span class="icon-lbl">settings</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/bell.svg" alt="bell"><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/star.svg" alt="star"><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/heart.svg" alt="heart"><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/check.svg" alt="check"><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/x.svg" alt="x"><span class="icon-lbl">x</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/plus.svg" alt="plus"><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/arrow-right.svg" alt="arrow-right"><span class="icon-lbl">arrow-right</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/mail.svg" alt="mail"><span class="icon-lbl">mail</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/folder.svg" alt="folder"><span class="icon-lbl">folder</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/image.svg" alt="image"><span class="icon-lbl">image</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/lock.svg" alt="lock"><span class="icon-lbl">lock</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/zap.svg" alt="zap"><span class="icon-lbl">zap</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/calendar.svg" alt="calendar"><span class="icon-lbl">calendar</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/layers.svg" alt="layers"><span class="icon-lbl">layers</span></div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：dashboard、工具类应用、开发者工具</span>
+        <span class="license-badge">ISC / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 2. HEROICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">02 /</div>
+          <div class="lib-name">Heroicons</div>
+          <div class="lib-tagline">Tailwind 官方团队出品，精而不多。stroke-width: 1.5，比 Lucide 细一档，视觉上更轻盈优雅。outline + solid 双套。</div>
+          <div class="tags">
+            <span class="tag accent">outline + solid</span>
+            <span class="tag">MIT 许可</span>
+            <span class="tag">24x24 / 20x20</span>
+            <span class="tag">Tailwind 生态</span>
+            <span class="tag">stroke-width: 1.5</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">292</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://heroicons.com" class="lib-link">heroicons.com &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/home.svg" alt="home"><span class="icon-lbl">home</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/user.svg" alt="user"><span class="icon-lbl">user</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/magnifying-glass.svg" alt="search"><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/cog-6-tooth.svg" alt="settings"><span class="icon-lbl">settings</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/bell.svg" alt="bell"><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/star.svg" alt="star"><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/heart.svg" alt="heart"><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/check.svg" alt="check"><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/x-mark.svg" alt="close"><span class="icon-lbl">x-mark</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/plus.svg" alt="plus"><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/arrow-right.svg" alt="arrow-right"><span class="icon-lbl">arrow-right</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/envelope.svg" alt="mail"><span class="icon-lbl">envelope</span></div>
+      </div>
+      <!-- Outline vs Solid comparison -->
+      <div class="variant-section">
+        <div class="variant-title">同一套图标的 outline 与 solid 两种形态</div>
+        <div class="variant-row">
+          <div class="variant-group">
+            <div class="variant-label">Outline（线条）</div>
+            <div class="variant-icons">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/bookmark.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/heart.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/star.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/bell.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/outline/folder.svg">
+            </div>
+          </div>
+          <div class="variant-group">
+            <div class="variant-label">Solid（填充）</div>
+            <div class="variant-icons">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/solid/bookmark.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/solid/heart.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/solid/star.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/solid/bell.svg">
+              <img src="https://cdn.jsdelivr.net/gh/tailwindlabs/heroicons@2.1.3/src/24/solid/folder.svg">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：Tailwind 项目、SaaS 应用、落地页</span>
+        <span class="license-badge">MIT / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 3. PHOSPHOR ICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">03 /</div>
+          <div class="lib-name">Phosphor Icons</div>
+          <div class="lib-tagline">最灵活的图标系统，同一个图标有 6 种重量。从极细的 thin 到填充的 fill，一个库满足所有场景。</div>
+          <div class="tags">
+            <span class="tag accent">6 种重量</span>
+            <span class="tag">MIT 许可</span>
+            <span class="tag">256x256 grid</span>
+            <span class="tag">React / Vue / Flutter / Elm</span>
+            <span class="tag">duotone 双色</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">9,072</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://phosphoricons.com" class="lib-link">phosphoricons.com &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/house.svg" alt="house"><span class="icon-lbl">house</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/user.svg" alt="user"><span class="icon-lbl">user</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/magnifying-glass.svg" alt="search"><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/gear.svg" alt="gear"><span class="icon-lbl">gear</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/bell.svg" alt="bell"><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/star.svg" alt="star"><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/heart.svg" alt="heart"><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/check.svg" alt="check"><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/x.svg" alt="x"><span class="icon-lbl">x</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/plus.svg" alt="plus"><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/arrow-right.svg" alt="arrow-right"><span class="icon-lbl">arrow-right</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/envelope-simple.svg" alt="mail"><span class="icon-lbl">envelope</span></div>
+      </div>
+      <!-- Weight showcase -->
+      <div class="weight-section">
+        <div class="weight-title">同一个「house」图标的 6 种重量变化</div>
+        <div class="weight-row">
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/thin/house-thin.svg">
+            <span class="weight-lbl">Thin</span>
+          </div>
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/light/house-light.svg">
+            <span class="weight-lbl">Light</span>
+          </div>
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/regular/house.svg">
+            <span class="weight-lbl">Regular</span>
+          </div>
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/house-bold.svg">
+            <span class="weight-lbl">Bold</span>
+          </div>
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/fill/house-fill.svg">
+            <span class="weight-lbl">Fill</span>
+          </div>
+          <div class="weight-item">
+            <img src="https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/duotone/house-duotone.svg">
+            <span class="weight-lbl">Duotone</span>
+          </div>
+        </div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：需要层次感、插图风格、品牌定制</span>
+        <span class="license-badge">MIT / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 4. TABLER ICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">04 /</div>
+          <div class="lib-name">Tabler Icons</div>
+          <div class="lib-tagline">体量最大的精致图标库，大型项目首选。严格对齐 24px 像素网格，2px stroke，覆盖面极广，几乎找不到缺失的图标。</div>
+          <div class="tags">
+            <span class="tag accent">5,900+ 图标</span>
+            <span class="tag">MIT 许可</span>
+            <span class="tag">24x24 grid</span>
+            <span class="tag">stroke + filled 双版本</span>
+            <span class="tag">SVG / Webfont / PNG</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">5,900+</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://tabler.io/icons" class="lib-link">tabler.io/icons &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><i class="ti ti-home"></i><span class="icon-lbl">home</span></div>
+        <div class="icon-item"><i class="ti ti-user"></i><span class="icon-lbl">user</span></div>
+        <div class="icon-item"><i class="ti ti-search"></i><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><i class="ti ti-settings"></i><span class="icon-lbl">settings</span></div>
+        <div class="icon-item"><i class="ti ti-bell"></i><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><i class="ti ti-star"></i><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><i class="ti ti-heart"></i><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><i class="ti ti-check"></i><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><i class="ti ti-x"></i><span class="icon-lbl">x</span></div>
+        <div class="icon-item"><i class="ti ti-plus"></i><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><i class="ti ti-arrow-right"></i><span class="icon-lbl">arrow-right</span></div>
+        <div class="icon-item"><i class="ti ti-mail"></i><span class="icon-lbl">mail</span></div>
+        <div class="icon-item"><i class="ti ti-brand-github"></i><span class="icon-lbl">github</span></div>
+        <div class="icon-item"><i class="ti ti-code"></i><span class="icon-lbl">code</span></div>
+        <div class="icon-item"><i class="ti ti-database"></i><span class="icon-lbl">database</span></div>
+        <div class="icon-item"><i class="ti ti-cloud"></i><span class="icon-lbl">cloud</span></div>
+        <div class="icon-item"><i class="ti ti-chart-bar"></i><span class="icon-lbl">chart-bar</span></div>
+        <div class="icon-item"><i class="ti ti-lock"></i><span class="icon-lbl">lock</span></div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：管理后台、大型 SaaS、需要超全图标覆盖的项目</span>
+        <span class="license-badge">MIT / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 5. REMIX ICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">05 /</div>
+          <div class="lib-name">Remix Icon</div>
+          <div class="lib-tagline">每个图标都有 line 和 fill 两个版本，设计感平衡。适合需要状态切换（如点赞前后）的交互场景，整体风格现代干净。</div>
+          <div class="tags">
+            <span class="tag accent">line + fill 配对</span>
+            <span class="tag">Apache 2.0</span>
+            <span class="tag">24x24</span>
+            <span class="tag">Webfont / SVG</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">2,800+</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://remixicon.com" class="lib-link">remixicon.com &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><i class="ri-home-line ri-icon"></i><span class="icon-lbl">home</span></div>
+        <div class="icon-item"><i class="ri-user-line ri-icon"></i><span class="icon-lbl">user</span></div>
+        <div class="icon-item"><i class="ri-search-line ri-icon"></i><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><i class="ri-settings-line ri-icon"></i><span class="icon-lbl">settings</span></div>
+        <div class="icon-item"><i class="ri-notification-line ri-icon"></i><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><i class="ri-star-line ri-icon"></i><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><i class="ri-heart-line ri-icon"></i><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><i class="ri-check-line ri-icon"></i><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><i class="ri-close-line ri-icon"></i><span class="icon-lbl">close</span></div>
+        <div class="icon-item"><i class="ri-add-line ri-icon"></i><span class="icon-lbl">add</span></div>
+        <div class="icon-item"><i class="ri-arrow-right-line ri-icon"></i><span class="icon-lbl">arrow</span></div>
+        <div class="icon-item"><i class="ri-mail-line ri-icon"></i><span class="icon-lbl">mail</span></div>
+      </div>
+      <!-- Line vs Fill demo -->
+      <div class="variant-section">
+        <div class="variant-title">line 与 fill 的状态对比（适合交互切换）</div>
+        <div class="variant-row">
+          <div class="variant-group">
+            <div class="variant-label">Line（默认态）</div>
+            <div class="variant-icons" style="gap:14px;">
+              <i class="ri-heart-line" style="font-size:24px;color:var(--ink);"></i>
+              <i class="ri-star-line" style="font-size:24px;color:var(--ink);"></i>
+              <i class="ri-bookmark-line" style="font-size:24px;color:var(--ink);"></i>
+              <i class="ri-thumb-up-line" style="font-size:24px;color:var(--ink);"></i>
+              <i class="ri-notification-line" style="font-size:24px;color:var(--ink);"></i>
+            </div>
+          </div>
+          <div class="variant-group">
+            <div class="variant-label">Fill（激活态）</div>
+            <div class="variant-icons" style="gap:14px;">
+              <i class="ri-heart-fill" style="font-size:24px;color:#b5441b;"></i>
+              <i class="ri-star-fill" style="font-size:24px;color:#c67d1a;"></i>
+              <i class="ri-bookmark-fill" style="font-size:24px;color:#2d5a3d;"></i>
+              <i class="ri-thumb-up-fill" style="font-size:24px;color:#2d5a3d;"></i>
+              <i class="ri-notification-fill" style="font-size:24px;color:#b5441b;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：内容平台、社交应用、需要状态交互的界面</span>
+        <span class="license-badge">Apache 2.0 / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 6. BOOTSTRAP ICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">06 /</div>
+          <div class="lib-name">Bootstrap Icons</div>
+          <div class="lib-tagline">成熟可靠的老牌选手，覆盖面广，独立于 Bootstrap 框架。填充风格为主，视觉重量偏重，有经典的「工具感」气质。</div>
+          <div class="tags">
+            <span class="tag accent">fill 为主</span>
+            <span class="tag">MIT 许可</span>
+            <span class="tag">独立使用</span>
+            <span class="tag">Webfont / SVG</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">2,000+</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://icons.getbootstrap.com" class="lib-link">icons.getbootstrap.com &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/house.svg" alt="house"><span class="icon-lbl">house</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/person.svg" alt="person"><span class="icon-lbl">person</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/search.svg" alt="search"><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/gear.svg" alt="gear"><span class="icon-lbl">gear</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/bell.svg" alt="bell"><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/star.svg" alt="star"><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/heart.svg" alt="heart"><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/check.svg" alt="check"><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/x.svg" alt="x"><span class="icon-lbl">x</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/plus.svg" alt="plus"><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/arrow-right.svg" alt="arrow-right"><span class="icon-lbl">arrow-right</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/envelope.svg" alt="envelope"><span class="icon-lbl">envelope</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/github.svg" alt="github"><span class="icon-lbl">github</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/lightning.svg" alt="lightning"><span class="icon-lbl">lightning</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/shield.svg" alt="shield"><span class="icon-lbl">shield</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/cloud.svg" alt="cloud"><span class="icon-lbl">cloud</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/bar-chart.svg" alt="chart"><span class="icon-lbl">chart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/lock.svg" alt="lock"><span class="icon-lbl">lock</span></div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：企业级应用、传统 Web 项目、快速原型</span>
+        <span class="license-badge">MIT / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+    <!-- 7. RADIX ICONS -->
+    <article class="library">
+      <div class="lib-top">
+        <div>
+          <div class="lib-number">07 /</div>
+          <div class="lib-name">Radix Icons</div>
+          <div class="lib-tagline">为软件 UI 专门设计的 15x15px 精密工艺。数量最少，但每一个都是精品。fill 风格，超级精准，适合 dashboard 和专业工具类 UI。</div>
+          <div class="tags">
+            <span class="tag accent">fill 风格</span>
+            <span class="tag">MIT 许可</span>
+            <span class="tag">15x15 grid</span>
+            <span class="tag">专为软件 UI</span>
+            <span class="tag">Radix UI / shadcn</span>
+          </div>
+        </div>
+        <div class="lib-right">
+          <div class="lib-count">~320</div>
+          <div class="lib-count-label">图标</div>
+          <a href="https://www.radix-ui.com/icons" class="lib-link">radix-ui.com/icons &rarr;</a>
+        </div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/gear.svg" alt="gear"><span class="icon-lbl">gear</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/person.svg" alt="person"><span class="icon-lbl">person</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/magnifying-glass.svg" alt="search"><span class="icon-lbl">search</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/bell.svg" alt="bell"><span class="icon-lbl">bell</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/star.svg" alt="star"><span class="icon-lbl">star</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/heart.svg" alt="heart"><span class="icon-lbl">heart</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/check.svg" alt="check"><span class="icon-lbl">check</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/cross-2.svg" alt="cross"><span class="icon-lbl">cross-2</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/plus.svg" alt="plus"><span class="icon-lbl">plus</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/chevron-right.svg" alt="chevron"><span class="icon-lbl">chevron-r</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/pencil-1.svg" alt="pencil"><span class="icon-lbl">pencil</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/trash.svg" alt="trash"><span class="icon-lbl">trash</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/copy.svg" alt="copy"><span class="icon-lbl">copy</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/share-2.svg" alt="share"><span class="icon-lbl">share</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/download.svg" alt="download"><span class="icon-lbl">download</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/dots-horizontal.svg" alt="more"><span class="icon-lbl">more</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/mixer-horizontal.svg" alt="mixer"><span class="icon-lbl">mixer</span></div>
+        <div class="icon-item"><img src="https://cdn.jsdelivr.net/gh/radix-ui/icons@main/packages/radix-icons/icons/lock-closed.svg" alt="lock"><span class="icon-lbl">lock</span></div>
+      </div>
+      <div class="lib-footer">
+        <span class="lib-footer-note">适合：shadcn/ui、Radix 组件库、专业工具类产品</span>
+        <span class="license-badge">MIT / 个人 &amp; 商业免费</span>
+      </div>
+    </article>
+
+  </section><!-- end .libraries -->
+
+  <!-- ─── COMPARISON TABLE ─── -->
+  <section class="comparison-section">
+    <div class="comparison-header">
+      <div class="comparison-title">一眼对比</div>
+      <div class="comparison-sub">根据项目场景快速决策</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>图标库</th>
+            <th>数量</th>
+            <th>风格</th>
+            <th>Grid</th>
+            <th>许可</th>
+            <th>最适合场景</th>
+            <th>AI 气质？</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#1a1714;"></span>Lucide</div>
+              <div class="best-for">开发者最爱</div>
+            </td>
+            <td>1,500+</td>
+            <td>描边 stroke-2</td>
+            <td>24x24</td>
+            <td><span class="pill-green">ISC</span></td>
+            <td>Dashboard、工具类、开发者工具</td>
+            <td>完全没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#6366f1;"></span>Heroicons</div>
+              <div class="best-for">Tailwind 生态</div>
+            </td>
+            <td>292</td>
+            <td>描边 stroke-1.5 / fill</td>
+            <td>24x24 / 20x20</td>
+            <td><span class="pill-green">MIT</span></td>
+            <td>SaaS 应用、落地页、Tailwind 项目</td>
+            <td>完全没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#ea580c;"></span>Phosphor</div>
+              <div class="best-for">最灵活</div>
+            </td>
+            <td>9,000+</td>
+            <td>6 种重量（thin&rarr;duotone）</td>
+            <td>256x256</td>
+            <td><span class="pill-green">MIT</span></td>
+            <td>品牌定制、设计系统、插图风</td>
+            <td>完全没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#2563eb;"></span>Tabler</div>
+              <div class="best-for">体量最大</div>
+            </td>
+            <td>5,900+</td>
+            <td>描边 stroke-2 / filled</td>
+            <td>24x24</td>
+            <td><span class="pill-green">MIT</span></td>
+            <td>管理后台、企业级大型应用</td>
+            <td>完全没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#dc2626;"></span>Remix Icon</div>
+              <div class="best-for">交互状态</div>
+            </td>
+            <td>2,800+</td>
+            <td>line + fill 配对</td>
+            <td>24x24</td>
+            <td><span class="pill-green">Apache 2.0</span></td>
+            <td>内容平台、社交产品、互动界面</td>
+            <td>完全没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#7c3aed;"></span>Bootstrap Icons</div>
+              <div class="best-for">老牌可靠</div>
+            </td>
+            <td>2,000+</td>
+            <td>fill 为主 / outline 部分</td>
+            <td>16x16</td>
+            <td><span class="pill-green">MIT</span></td>
+            <td>企业应用、传统 Web、快速原型</td>
+            <td>几乎没有</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="lib-name-cell"><span class="lib-dot" style="background:#11181c;"></span>Radix Icons</div>
+              <div class="best-for">精品小集</div>
+            </td>
+            <td>~320</td>
+            <td>fill 精密</td>
+            <td>15x15</td>
+            <td><span class="pill-green">MIT</span></td>
+            <td>shadcn/ui、专业工具、组件库</td>
+            <td>完全没有</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="page-footer">
+    <div class="footer-left">
+      所有图标库均为开源，许可证允许个人 &amp; 商业使用。<br>
+      图标由各自 CDN 实时渲染，非静态截图。
+    </div>
+    <div class="footer-right">Icon Library Guide / 2026</div>
+  </footer>
+
+</div><!-- end .wrap -->
+</body>
+</html>
