@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HyperFrames 视频效果指南</title>
+    <title>HyperFrames 自动化剪辑指南</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -479,6 +479,238 @@
         margin-top: 24px;
       }
 
+      .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .mode-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 300px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.34);
+        padding: 22px;
+      }
+
+      .mode-preview {
+        position: relative;
+        height: 170px;
+        margin: 16px 0;
+        overflow: hidden;
+        border: 1px solid rgba(25, 24, 23, 0.16);
+        border-radius: 8px;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          #fffaf1;
+        background-size: 22px 22px;
+      }
+
+      .mode-slide {
+        position: absolute;
+        left: 18px;
+        top: 22px;
+        width: 62%;
+        height: 108px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(25, 24, 23, 0.16);
+        box-shadow: 0 14px 32px rgba(25, 24, 23, 0.12);
+      }
+
+      .mode-slide::before,
+      .mode-slide::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 18px;
+        height: 10px;
+        border-radius: 999px;
+        background: #2f3834;
+      }
+
+      .mode-slide::before {
+        top: 24px;
+        width: 72%;
+      }
+
+      .mode-slide::after {
+        top: 50px;
+        width: 46%;
+        background: #d84d2a;
+      }
+
+      .mode-pip {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        width: 92px;
+        height: 118px;
+        border-radius: 8px;
+        border: 2px solid #fffaf1;
+        background:
+          radial-gradient(circle at 50% 28%, #c98f75 0 18px, transparent 19px),
+          linear-gradient(#2f3834 0 0) center 92% / 54px 58px no-repeat,
+          #1b1c1f;
+        box-shadow: 0 18px 36px rgba(25, 24, 23, 0.24);
+      }
+
+      .mode-person {
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        width: 112px;
+        height: 148px;
+        border-radius: 60px 60px 18px 18px;
+        transform: translateX(-50%);
+        background:
+          radial-gradient(circle at 50% 23%, #c98f75 0 28px, transparent 29px),
+          linear-gradient(#2f3834 0 0) center bottom / 72px 82px no-repeat;
+      }
+
+      .mode-overlay-card {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 50%;
+        min-height: 74px;
+        border-radius: 8px;
+        border: 1px solid rgba(25, 24, 23, 0.18);
+        background: rgba(247, 243, 234, 0.86);
+        box-shadow: 0 16px 38px rgba(25, 24, 23, 0.16);
+      }
+
+      .mode-overlay-card::before,
+      .mode-overlay-card::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        height: 10px;
+        border-radius: 999px;
+        background: #2f3834;
+      }
+
+      .mode-overlay-card::before {
+        top: 20px;
+        width: 70%;
+      }
+
+      .mode-overlay-card::after {
+        top: 44px;
+        width: 48%;
+        background: #d99600;
+      }
+
+      .workflow-map {
+        display: grid;
+        gap: 14px;
+        margin-top: 24px;
+      }
+
+      .workflow-stage {
+        display: grid;
+        grid-template-columns: 78px minmax(0, 0.9fr) minmax(0, 1.15fr) minmax(0, 0.95fr);
+        gap: 16px;
+        align-items: stretch;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.32);
+      }
+
+      .stage-number {
+        display: grid;
+        place-items: center;
+        min-height: 88px;
+        border-radius: 8px;
+        background: #1b1c1f;
+        color: #fff8ec;
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 950;
+      }
+
+      .workflow-stage h3 {
+        font-size: clamp(1.25rem, 2vw, 1.75rem);
+        line-height: 1.05;
+        margin-bottom: 8px;
+      }
+
+      .workflow-stage p,
+      .workflow-stage li {
+        color: #423d37;
+        line-height: 1.55;
+      }
+
+      .workflow-stage ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .confirm-pill {
+        display: inline-flex;
+        align-items: center;
+        width: max-content;
+        max-width: 100%;
+        margin-bottom: 8px;
+        border: 1px solid rgba(216, 77, 42, 0.32);
+        border-radius: 999px;
+        padding: 5px 9px;
+        background: rgba(216, 77, 42, 0.08);
+        color: #9f3d25;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .confirm-pill.agent {
+        border-color: rgba(56, 115, 95, 0.3);
+        background: rgba(56, 115, 95, 0.08);
+        color: #38735f;
+      }
+
+      .sample-gate {
+        margin-top: 24px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        padding: 22px;
+        background:
+          radial-gradient(circle at 12% 20%, rgba(216, 77, 42, 0.16), transparent 26%),
+          radial-gradient(circle at 86% 22%, rgba(0, 117, 222, 0.12), transparent 30%),
+          rgba(255, 255, 255, 0.34);
+      }
+
+      .gate-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      .gate-card {
+        min-height: 150px;
+        border: 1px solid rgba(25, 24, 23, 0.14);
+        border-radius: 8px;
+        padding: 16px;
+        background: #fffaf1;
+      }
+
+      .gate-card b {
+        display: block;
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+      }
+
+      .gate-card span {
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
       .prompt-box {
         border: 1px dashed var(--line-strong);
         background: #fffaf1;
@@ -688,7 +920,7 @@
 
       .flow {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         gap: 12px;
         margin-top: 24px;
       }
@@ -1167,6 +1399,7 @@
       }
 
       .motion-grid,
+      .caption-style-grid,
       .transition-grid,
       .block-grid,
       .scenario-grid {
@@ -1347,6 +1580,267 @@
 
       .demo-karaoke span:nth-child(3) {
         animation-delay: 0.7s;
+      }
+
+      .caption-style-card {
+        border: 1px solid var(--line-strong);
+        background: rgba(255, 255, 255, 0.34);
+        border-radius: 8px;
+        overflow: hidden;
+        min-height: 382px;
+      }
+
+      .caption-stage {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 24% 28%, rgba(255, 255, 255, 0.16), transparent 28%),
+          linear-gradient(135deg, #101114, #2a241f 48%, #101114);
+        color: #fff8ec;
+        border-bottom: 1px solid rgba(25, 24, 23, 0.2);
+      }
+
+      .caption-stage::before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        top: 22px;
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255, 248, 236, 0.88), rgba(216, 77, 42, 0.48));
+        box-shadow: 0 12px 38px rgba(0, 0, 0, 0.32);
+      }
+
+      .caption-stage::after {
+        content: "";
+        position: absolute;
+        left: 42px;
+        top: 46px;
+        width: 22px;
+        height: 16px;
+        border-radius: 50% 50% 44% 44%;
+        border: 2px solid rgba(17, 18, 20, 0.7);
+        border-top: 0;
+        opacity: 0.5;
+      }
+
+      .caption-meta {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        color: rgba(255, 248, 236, 0.56);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+      }
+
+      .caption-body {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .caption-body p {
+        color: #4b443d;
+        line-height: 1.55;
+      }
+
+      .cap-clean {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 22px;
+        text-align: center;
+        font-weight: 800;
+        font-size: clamp(1.05rem, 2.2vw, 1.42rem);
+        text-shadow: 0 2px 7px rgba(0, 0, 0, 0.85), 0 0 2px #000;
+        animation: cleanCaption 3.4s ease-in-out infinite;
+      }
+
+      .cap-xhs {
+        position: absolute;
+        left: 26px;
+        right: 26px;
+        bottom: 34px;
+        display: grid;
+        gap: 10px;
+        justify-items: start;
+        font-family: var(--font-display);
+        font-size: clamp(1.45rem, 3vw, 2.35rem);
+        line-height: 1.02;
+        font-weight: 900;
+      }
+
+      .cap-xhs span {
+        display: inline-block;
+        padding: 7px 10px;
+        background: #fff8ec;
+        color: #111214;
+        border-radius: 8px;
+        box-shadow: 4px 4px 0 #d84d2a;
+        animation: xhsPop 2.6s ease-in-out infinite;
+      }
+
+      .cap-xhs em {
+        color: #d84d2a;
+        font-style: normal;
+      }
+
+      .cap-word {
+        position: absolute;
+        left: 22px;
+        right: 22px;
+        bottom: 34px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-family: var(--font-display);
+        font-size: clamp(1.2rem, 2.45vw, 1.78rem);
+        font-weight: 900;
+      }
+
+      .cap-word span {
+        color: rgba(255, 248, 236, 0.42);
+        transform-origin: center;
+        animation: wordLight 2.8s ease-in-out infinite;
+      }
+
+      .cap-word span:nth-child(2) {
+        animation-delay: 0.35s;
+      }
+
+      .cap-word span:nth-child(3) {
+        animation-delay: 0.7s;
+      }
+
+      .cap-word span:nth-child(4) {
+        animation-delay: 1.05s;
+      }
+
+      .cap-karaoke {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 28px;
+        display: flex;
+        justify-content: center;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+
+      .cap-karaoke span {
+        padding: 8px 11px;
+        border-radius: 999px;
+        color: #111214;
+        background: rgba(255, 248, 236, 0.25);
+        font-weight: 900;
+        animation: karaokePill 2.8s ease-in-out infinite;
+      }
+
+      .cap-karaoke span:nth-child(2) {
+        animation-delay: 0.45s;
+      }
+
+      .cap-karaoke span:nth-child(3) {
+        animation-delay: 0.9s;
+      }
+
+      .cap-marker {
+        position: absolute;
+        left: 28px;
+        right: 28px;
+        bottom: 42px;
+        color: #fff8ec;
+        font-family: var(--font-display);
+        font-size: clamp(1.45rem, 3vw, 2.2rem);
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .cap-marker b {
+        position: relative;
+        color: #111214;
+        z-index: 1;
+      }
+
+      .cap-marker b::before {
+        content: "";
+        position: absolute;
+        inset: auto -8px -2px -8px;
+        height: 70%;
+        z-index: -1;
+        border-radius: 6px;
+        background: #ffde59;
+        transform-origin: left center;
+        animation: markerSweep 2.6s ease-in-out infinite;
+      }
+
+      .cap-bounce {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 35px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, 2.8vw, 2rem);
+        font-weight: 900;
+      }
+
+      .cap-bounce span {
+        display: inline-block;
+        color: #fff8ec;
+        text-shadow: 3px 3px 0 #d84d2a;
+        animation: bounceWord 1.8s ease-in-out infinite;
+      }
+
+      .cap-bounce span:nth-child(2) {
+        animation-delay: 0.16s;
+      }
+
+      .cap-bounce span:nth-child(3) {
+        animation-delay: 0.32s;
+      }
+
+      .cap-type {
+        position: absolute;
+        left: 28px;
+        bottom: 42px;
+        max-width: calc(100% - 56px);
+        color: #9be7ff;
+        font-family: var(--font-mono);
+        font-size: clamp(1.05rem, 2vw, 1.45rem);
+        font-weight: 800;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid currentColor;
+        animation: captionTyping 3.4s steps(12) infinite, caret 0.8s step-end infinite;
+      }
+
+      .cap-cinema {
+        position: absolute;
+        inset: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #f5ead6;
+        font-family: "Songti SC", "STSong", serif;
+        font-size: clamp(1.55rem, 3.2vw, 2.35rem);
+        line-height: 1.18;
+        letter-spacing: 0.08em;
+        text-shadow: 0 18px 44px rgba(0, 0, 0, 0.48);
+        animation: cinemaFade 4.2s ease-in-out infinite;
+      }
+
+      .cap-cinema span {
+        display: block;
       }
 
       .transition-card video,
@@ -2022,6 +2516,109 @@
         }
       }
 
+      @keyframes cleanCaption {
+        0%,
+        100% {
+          opacity: 0.72;
+          transform: translateY(4px);
+        }
+        28%,
+        78% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes xhsPop {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) rotate(-2deg) scale(0.88);
+        }
+        24%,
+        78% {
+          opacity: 1;
+          transform: translateY(0) rotate(-1deg) scale(1);
+        }
+        42% {
+          transform: translateY(-2px) rotate(-1deg) scale(1.05);
+        }
+        100% {
+          opacity: 0.85;
+          transform: translateY(0) rotate(-1deg) scale(0.98);
+        }
+      }
+
+      @keyframes wordLight {
+        0%,
+        26%,
+        100% {
+          color: rgba(255, 248, 236, 0.42);
+          transform: translateY(0) scale(1);
+          text-shadow: none;
+        }
+        36%,
+        52% {
+          color: #fff8ec;
+          transform: translateY(-4px) scale(1.08);
+          text-shadow: 0 0 18px rgba(255, 222, 89, 0.52);
+        }
+      }
+
+      @keyframes karaokePill {
+        0%,
+        30%,
+        100% {
+          color: rgba(255, 248, 236, 0.66);
+          background: rgba(255, 248, 236, 0.13);
+          transform: translateY(0) scale(1);
+        }
+        42%,
+        60% {
+          color: #111214;
+          background: #ffde59;
+          transform: translateY(-7px) scale(1.07);
+        }
+      }
+
+      @keyframes bounceWord {
+        0%,
+        100% {
+          transform: translateY(10px) scale(0.9);
+          opacity: 0.56;
+        }
+        34%,
+        62% {
+          transform: translateY(-7px) scale(1.08);
+          opacity: 1;
+        }
+      }
+
+      @keyframes captionTyping {
+        0%,
+        18% {
+          width: 0;
+        }
+        70%,
+        100% {
+          width: 12ch;
+        }
+      }
+
+      @keyframes cinemaFade {
+        0%,
+        100% {
+          opacity: 0.48;
+          transform: translateY(8px) scale(0.98);
+          filter: blur(0.4px);
+        }
+        30%,
+        78% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
       @media (max-width: 1080px) {
         .hero-grid,
         .section-head,
@@ -2036,15 +2633,22 @@
         }
 
         .motion-grid,
+        .caption-style-grid,
         .transition-grid,
         .block-grid,
         .scenario-grid,
+        .mode-grid,
         .coverage-grid,
         .decision-grid,
         .recipe-grid,
         .catalog-grid,
+        .gate-grid,
         .flow {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .workflow-stage {
+          grid-template-columns: 70px minmax(0, 1fr);
         }
 
         .flow-step::after {
@@ -2055,6 +2659,10 @@
           align-items: flex-start;
           flex-direction: column;
         }
+
+        .section {
+          scroll-margin-top: 142px;
+        }
       }
 
       @media (max-width: 680px) {
@@ -2064,20 +2672,32 @@
 
         .section {
           padding: 60px 16px;
+          scroll-margin-top: 220px;
         }
 
         .style-grid,
         .legend,
         .motion-grid,
+        .caption-style-grid,
         .transition-grid,
         .block-grid,
         .scenario-grid,
+        .mode-grid,
         .coverage-grid,
         .decision-grid,
         .recipe-grid,
         .catalog-grid,
+        .gate-grid,
         .flow {
           grid-template-columns: 1fr;
+        }
+
+        .workflow-stage {
+          grid-template-columns: 1fr;
+        }
+
+        .stage-number {
+          min-height: 60px;
         }
 
         .nav {
@@ -2101,11 +2721,13 @@
   <body>
     <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
     <header class="topbar">
-      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>HyperFrames 视频效果指南</div>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>HyperFrames 自动化剪辑指南</div>
       <nav class="nav" aria-label="页面导航">
         <a href="#start" class="active">先看这里</a>
+        <a href="#production">完整工作流</a>
         <a href="#styles">8 种风格</a>
         <a href="#motion">动效参考</a>
+        <a href="#captions">字幕样式</a>
         <a href="#transitions">转场预览</a>
         <a href="#blocks">常用素材</a>
         <a href="#workflow">怎么调用</a>
@@ -2120,15 +2742,15 @@
       <section id="start" class="section">
         <div class="wrap hero-grid">
           <div>
-            <div class="eyebrow">不是代码课</div>
-            <h1><span>像逛剪映素材库</span><span>一样看</span><span>HyperFrames</span></h1>
+            <div class="eyebrow">不是代码课，也不是问题大全</div>
+            <h1><span>指挥 Agent</span><span>用 HyperFrames</span><span>剪出好视频</span></h1>
             <p class="lead">
-              这版不再讲源码。你要看的不是“它怎么实现”，而是：
-              <strong>这条片子可以长成什么样、动起来是什么感觉、我应该怎么描述修改意见。</strong>
+              这份指南解决的不是“怎么导出一个 MP4”，而是：
+              <strong>怎样让 Codex、Claude Code 或未来的 Agent 先看懂能力库，再用更少返工做出更高级、更贴合口播的视频。</strong>
             </p>
             <div class="hero-note">
               <strong>阅读方式：</strong>
-              先看 8 种画面风格，再看动效和转场，最后用“需求模板”生成一段可以直接发给 Codex 或 Claude Code 的剪辑要求。
+              先看完整工作流和确认关卡，再看风格、字幕、动效、转场和素材模块，最后用“需求模板”生成一段可以直接发给 Agent 的剪辑要求。
             </div>
           </div>
           <div class="stage-frame" aria-label="视频效果示意">
@@ -2154,19 +2776,19 @@
               </div>
               <div class="bubble right">
                 <small>Codex / Claude Code</small>
-                那就先不要谈代码。我们把它拆成：风格、动效、转场、素材模块。
+                那就先不要谈代码，也不要直接开做。先查能力库，再做信息层规划和可视化样板。
               </div>
               <div class="bubble">
                 <small>HyperFrames</small>
-                我负责把网页画面变成视频，也提供现成素材模块和转场预览。
+                我能把 HTML 画面、字幕、动效、转场、blocks 变成视频，但需要先被正确调用。
               </div>
               <div class="bubble right">
                 <small>你真正需要说清楚</small>
-                “整体是什么气质？哪句话要强调？哪里要插素材？转场是温柔还是有冲击力？”
+                “这条片子的主视觉是谁？哪些节点我必须确认？视觉方案要先给我看 HTML 小样。”
               </div>
               <div class="bubble">
                 <small>这份指南</small>
-                用可视化小样帮你建立这些词和画面之间的关系。
+                把工作流、能力库和提示词收在一起，避免 Agent 新开 session 后凭感觉乱剪。
               </div>
             </div>
             <div class="plain-card">
@@ -2184,36 +2806,279 @@
                 = 普通推拉之外，更有视觉冲击的切换效果。
               </p>
               <div class="flow">
-                <div class="flow-step"><b>口播/主题</b><span>你这条片子到底在讲什么</span></div>
-                <div class="flow-step"><b>画面风格</b><span>高级、温柔、数据感、炸裂等</span></div>
-                <div class="flow-step"><b>动效</b><span>文字怎么出现，重点怎么强调</span></div>
-                <div class="flow-step"><b>素材模块</b><span>插入图表、社交卡片、3D 设备等</span></div>
-                <div class="flow-step"><b>转场</b><span>段落之间怎么切换</span></div>
+                <div class="flow-step"><b>读档</b><span>先读 skill、第二大脑和历史案例</span></div>
+                <div class="flow-step"><b>识别</b><span>判断素材、画幅和视频形态</span></div>
+                <div class="flow-step"><b>ASR</b><span>用真实口播拿时间轴</span></div>
+                <div class="flow-step"><b>规划</b><span>先定每个时间点展示什么</span></div>
+                <div class="flow-step"><b>可视化确认</b><span>用 HTML 样板或短样片判断</span></div>
+                <div class="flow-step"><b>制作 QA</b><span>再完整制作、检查、归档</span></div>
               </div>
             </div>
           </div>
 
           <div class="coverage-grid" style="margin-top: 24px">
             <div class="coverage-card">
-              <span class="source-badge">边界说明</span>
-              <strong style="margin-top: 14px">先看精选，再查完整库</strong>
+              <span class="source-badge">核心目标</span>
+              <strong style="margin-top: 14px">优质，不只是能出片</strong>
               <p style="margin-top: 12px">
-                前半部分是帮你建立感觉的精选示范；后面有 55 项官方素材库清单。你不用背名字，需要时让 Codex 或 Claude Code 去查。
+                重点不是让 Agent 导出视频，而是让它理解内容、查清能力、做出可判断的视觉方案，再进入完整制作。
               </p>
             </div>
             <div class="coverage-card">
-              <span class="source-badge">官方预览</span>
-              <strong style="margin-top: 14px">素材模块</strong>
+              <span class="source-badge">能力索引</span>
+              <strong style="margin-top: 14px">先知道有什么子弹</strong>
               <p style="margin-top: 12px">
-                你看到的 Liquid Glass、3D 设备、X 帖子卡片等预览，来自官方素材库的图片/视频，不是我随手画的。
+                新 session 不能假设 Agent 自动知道全部 blocks、转场、字幕和风格。开工前要先让它读文档、查库、给你选项。
               </p>
             </div>
             <div class="coverage-card">
-              <span class="source-badge">示意小样</span>
-              <strong style="margin-top: 14px">风格和动效</strong>
+              <span class="source-badge">确认方式</span>
+              <strong style="margin-top: 14px">视觉判断要可视化</strong>
               <p style="margin-top: 12px">
-                8 种风格卡和动效参考是我按 HyperFrames 的风格规则做的示意小样，目的是帮你理解“一个词大概对应什么画面感觉”。
+                只用文字说“这里用悬浮卡片”不够。真正要确认的是 HTML storyboard、关键帧或 10-20 秒短样片。
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="production" class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">先把合作方式定清楚</div>
+              <h2>完整工作流：谁做什么，谁确认</h2>
+            </div>
+            <div class="plain-card">
+              <p>
+                这不是只为了节省渲染时间。真正浪费时间的是确认点放得太晚：内容没对齐就做动效，视觉没看过就做全片，最后只能大返工。
+              </p>
+            </div>
+          </div>
+
+          <div class="mode-grid">
+            <article class="mode-card">
+              <span class="source-badge">形态 A</span>
+              <h3 style="margin-top: 14px">HTML / PPT 主画面 + 真人 PIP</h3>
+              <div class="mode-preview" aria-label="HTML 主画面加真人小窗示意">
+                <div class="mode-slide"></div>
+                <div class="mode-pip"></div>
+              </div>
+              <p>
+                主画面承载图解、页面、流程和观点，真人作为右侧或右下角小窗出现。适合横屏课程、复杂概念解释、方法论和 Agent 工作流。
+              </p>
+            </article>
+            <article class="mode-card">
+              <span class="source-badge">形态 B</span>
+              <h3 style="margin-top: 14px">真人主画面 + 动态信息层</h3>
+              <div class="mode-preview" aria-label="真人主画面加信息层示意">
+                <div class="mode-person"></div>
+                <div class="mode-overlay-card"></div>
+              </div>
+              <p>
+                真人是主画面，信息层只负责加强重点、证据、截图、定义和趋势。适合小红书竖屏口播，不能做成廉价贴纸堆叠。
+              </p>
+            </article>
+          </div>
+
+          <div class="workflow-map">
+            <article class="workflow-stage">
+              <div class="stage-number">0</div>
+              <div>
+                <span class="confirm-pill agent">Agent 先做</span>
+                <h3>启动读档</h3>
+                <p>读 AGENTS、HyperFrames skill、第二大脑剪辑系统、已跑通案例。先知道 Amy 的偏好和项目规矩。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">具体动作</span>
+                <ul>
+                  <li>确认素材入口和项目目录。</li>
+                  <li>查 HyperFrames 能力索引、registry、examples。</li>
+                  <li>说明这次准备用哪种视频形态。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>确认这条片子到底是“主画面讲解页”，还是“真人主画面 + 信息层”。这是后面所有设计的入口。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">1</div>
+              <div>
+                <span class="confirm-pill agent">Agent 先做</span>
+                <h3>素材识别</h3>
+                <p>扫描待剪辑文件夹，判断哪个是口播视频、口播稿、截图证据、参考图、可复用素材。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">具体动作</span>
+                <ul>
+                  <li>列素材，不直接删除或移动。</li>
+                  <li>如果有多个口播视频，按时长、大小、修改时间判断。</li>
+                  <li>新建独立项目目录，避免中间产物乱堆。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>只在素材有歧义时需要你确认。素材明确时，Agent 可以继续往下跑。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">2</div>
+              <div>
+                <span class="confirm-pill agent">Agent 先做</span>
+                <h3>ASR 时间轴</h3>
+                <p>对真实口播视频转文字，拿到每句话的时间。ASR 是时间依据，口播稿只是理解依据。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">具体动作</span>
+                <ul>
+                  <li>用中文 ASR 生成 JSON / SRT。</li>
+                  <li>找出开头、转折、证据、金句、结尾的真实时间点。</li>
+                  <li>不靠文稿平均分配时间。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>通常不需要你确认技术结果，但如果 ASR 错得离谱，Agent 要先指出问题，不能继续硬做。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">3</div>
+              <div>
+                <span class="confirm-pill">必须确认</span>
+                <h3>页面 / 信息层规划</h3>
+                <p>先决定每个时间段画面上出现什么。屏幕文字不是字幕，而是帮观众记住重点。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">Agent 输出</span>
+                <ul>
+                  <li>时间段 / 口播内容 / 观众要记住什么。</li>
+                  <li>屏幕文字 / 用哪个素材 / 动效备注。</li>
+                  <li>哪些地方放证据截图，哪些地方只留给口播。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>确认“这里到底该展示什么”。这一步不通过，后面做得再漂亮也可能偏题。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">4</div>
+              <div>
+                <span class="confirm-pill">必须可视化</span>
+                <h3>视觉样板</h3>
+                <p>涉及风格、悬浮卡、字幕、转场、证据截图展示方式时，不能只用文字描述。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">Agent 输出</span>
+                <ul>
+                  <li>HTML storyboard 或关键帧页面。</li>
+                  <li>必要时做 10-20 秒短动效样片。</li>
+                  <li>对比 2-3 个视觉方向，不要全片先做完。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>你看画面判断：高级吗？像贴纸吗？遮脸吗？字幕抢不抢？证据截图看得清吗？</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">5</div>
+              <div>
+                <span class="confirm-pill agent">Agent 先做</span>
+                <h3>完整制作</h3>
+                <p>确认内容和视觉方向后，再写 HyperFrames HTML、CSS、GSAP，接入 blocks、字幕、转场和素材。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">具体动作</span>
+                <ul>
+                  <li>按 ASR 锚点安排画面出现和退出。</li>
+                  <li>先本地预览、检查遮挡和文字溢出。</li>
+                  <li>跑 lint / inspect / validate，先排低级问题。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>一般看局部预览或样片即可。不要每改一点就要求完整出片。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">6</div>
+              <div>
+                <span class="confirm-pill">最终确认</span>
+                <h3>成片 QA</h3>
+                <p>完整渲染只是其中一步，关键是检查最终 MP4 里画面和口播是否真的对齐。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">Agent 输出</span>
+                <ul>
+                  <li>完整 review / final MP4。</li>
+                  <li>关键时间点抽帧 contact sheet。</li>
+                  <li>问题清单：遮挡、错位、空帧、字幕区、截图清晰度。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>你主要判断整体节奏、审美、观点是否被正确突出。技术问题应该由 Agent 先自查。</p>
+              </div>
+            </article>
+
+            <article class="workflow-stage">
+              <div class="stage-number">7</div>
+              <div>
+                <span class="confirm-pill agent">Agent 收尾</span>
+                <h3>归档和回写</h3>
+                <p>每跑通一条片子，都要把新规则写回项目文档。这样下一个 Agent 才能继承经验。</p>
+              </div>
+              <div>
+                <span class="confirm-pill agent">具体动作</span>
+                <ul>
+                  <li>保留最终成片、ASR、源码、规划表、QA 图。</li>
+                  <li>更新 PROJECT_STATE、设计说明和复用规则。</li>
+                  <li>稳定经验再回写 skill / 第二大脑 / GitHub 手册。</li>
+                </ul>
+              </div>
+              <div>
+                <span class="confirm-pill">Amy 确认点</span>
+                <p>如果要删除中间产物或改长期规则，先给你看清单，确认后再执行。</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="sample-gate">
+            <div class="section-head" style="margin-bottom: 0">
+              <div>
+                <div class="eyebrow">视觉确认不是口头描述</div>
+                <h2>凡是影响审美的选择，都要先变成可看的东西</h2>
+              </div>
+              <div class="plain-card">
+                <p>
+                  如果 Agent 只写“这里用悬浮卡片、这里用高级转场”，你还是在开盲盒。正确做法是先给你可看的 HTML 或短样片。
+                </p>
+              </div>
+            </div>
+            <div class="gate-grid">
+              <div class="gate-card"><b>信息层规划表</b><span>确认每个时间点画面上到底出现什么，不先讨论颜色和花活。</span></div>
+              <div class="gate-card"><b>HTML storyboard</b><span>把几屏关键画面做成可滚动页面，让你直接看布局和层级。</span></div>
+              <div class="gate-card"><b>关键帧对比</b><span>颜色、字体、卡片大小、人物位置、截图展示方式可以并排比。</span></div>
+              <div class="gate-card"><b>10-20 秒短样片</b><span>用来判断节奏、动效和转场，不等整条片子做完才发现不对。</span></div>
+            </div>
+          </div>
+
+          <div class="plain-card" style="margin-top: 24px">
+            <h3>新 session 可以直接这样启动</h3>
+            <div class="prompt-box" style="margin-top: 12px">
+@hyperframes 启动 Ami HyperFrames 自动化剪辑模式。
+
+请先读取工作区 AGENTS、hyperframes-koubo-video skill、第二大脑里的 HyperFrames 自动化剪辑系统，以及已剪辑案例。
+
+先做素材识别、ASR、能力索引盘点、页面/信息层规划表。涉及视觉风格、卡片、字幕、转场和 blocks 的选择时，请先给我 HTML storyboard、关键帧对比或 10-20 秒短样片，不要直接完整制作或全片渲染。
             </div>
           </div>
         </div>
@@ -2250,6 +3115,26 @@
             </div>
           </div>
           <div id="motionGrid" class="motion-grid"></div>
+        </div>
+      </section>
+
+      <section id="captions" class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">中文字幕怎么长</div>
+              <h2>字幕不是翻译条，是节奏和重点</h2>
+            </div>
+            <div class="plain-card">
+              <p>
+                HyperFrames 可以把中文字幕直接烧录进 MP4。它没有剪映式模板按钮，但可以用 HTML/CSS/GSAP 做出下面这些字幕语言：底部字幕、逐词高亮、荧光笔、弹跳、打字机、片名卡。
+              </p>
+            </div>
+          </div>
+          <div id="captionStyleGrid" class="caption-style-grid"></div>
+          <p class="video-note">
+            真实制作时，我会先用中文 ASR 拿时间轴，再把逐字稿整理成更适合上屏的短句。字幕不能遮脸，也不能遮右下角口播小窗。
+          </p>
         </div>
       </section>
 
@@ -2307,12 +3192,12 @@
         <div class="wrap">
           <div class="section-head">
             <div>
-              <div class="eyebrow">你不用背素材名</div>
-              <h2>你负责判断方向，AI 负责查库和落地</h2>
+              <div class="eyebrow">能力库怎么变成剪辑方案</div>
+              <h2>你负责判断取舍，Agent 负责查库和落地</h2>
             </div>
             <div class="plain-card">
               <p>
-                HyperFrames 的完整素材库是给 Codex / Claude Code 查的。你只需要把内容、平台、画面感觉和底线说清楚；如果你知道某个素材名，再点名即可。
+                HyperFrames 的完整素材库是给 Codex / Claude Code 查的。你不用背完 55 项，但要要求 Agent 开工前先查清楚“有什么子弹”，再给你可视化方案。
               </p>
             </div>
           </div>
@@ -2322,11 +3207,12 @@
               <span class="source-badge">你必须知道</span>
               <h3 style="margin-top: 14px">编辑者要做的判断</h3>
               <ul>
+                <li>视频形态：主画面是 HTML/PPT，还是真人口播。</li>
                 <li>这条片子的目标：种草、解释、复盘、发布、引流、讲故事。</li>
                 <li>整体气质：温柔、高级、数据感、科技感、强冲击、电影感。</li>
                 <li>哪里是重点：开头抓人、某个金句、某个数字、某个证据截图。</li>
                 <li>不要什么：不要太花、不要遮脸、不要像 PPT、不要太赛博。</li>
-                <li>你喜欢的参考：可以说“像第几张风格卡”或“像液态玻璃那张”。</li>
+                <li>视觉样板是否通过：高级吗、清楚吗、像不像廉价贴纸。</li>
               </ul>
             </div>
             <div class="decision-card">
@@ -2337,7 +3223,7 @@
                 <li>决定具体素材名，比如用 flowchart、data-chart 还是 x-post。</li>
                 <li>安装和接入素材，也就是运行 hyperframes add 和写入页面。</li>
                 <li>安排素材出现的时间、大小、位置、层级和持续时间。</li>
-                <li>预览后根据画面拥挤程度，删掉不必要的效果。</li>
+                <li>先用 HTML storyboard 或短样片让你看，再进入完整制作。</li>
               </ul>
             </div>
           </div>
@@ -2352,9 +3238,9 @@
             </article>
             <article class="decision-card">
               <span class="source-badge">调用前先让它解释</span>
-              <h3 style="margin-top: 14px">不要让 AI 直接乱塞效果</h3>
+              <h3 style="margin-top: 14px">不要让 Agent 直接乱塞效果</h3>
               <p style="margin-top: 10px">
-                让它先列出：选了哪个画面风格、哪个素材模块、哪个转场、用在哪一段、为什么适合。你确认后再让它制作。
+                让它先列出：选了哪个画面风格、哪个素材模块、哪个转场、用在哪一段、为什么适合。视觉方案要变成 HTML 或短样片，你确认后再让它制作。
               </p>
             </article>
             <article class="decision-card">
@@ -2369,7 +3255,7 @@
           <div class="plain-card" style="margin-top: 22px">
             <h3>可以直接复制给 Codex / Claude Code 的话</h3>
             <div class="prompt-box" style="margin-top: 12px">
-              我不知道具体素材名。请你先查 HyperFrames 官方素材库，根据我的视频内容推荐 3 套方案：每套包括画面风格、1-2 个素材模块、转场方式、适合放在哪些时间点，以及为什么这样选。先不要制作，等我确认方案后再开始。
+              我不知道具体素材名。请你先查 HyperFrames 官方素材库和本地能力索引，根据我的视频内容推荐 3 套方案：每套包括视频形态、画面风格、1-2 个素材模块、字幕样式、转场方式、适合放在哪些时间点，以及为什么这样选。先不要制作完整视频，先给我 HTML storyboard、关键帧对比或 10-20 秒短样片，等我确认方案后再进入完整制作。
             </div>
           </div>
         </div>
@@ -2508,6 +3394,10 @@
                 <h3>4. 选转场语气</h3>
                 <div class="builder-options" id="builderTransitions"></div>
               </div>
+              <div class="builder-row">
+                <h3>5. 选中文字幕样式</h3>
+                <div class="builder-options" id="builderCaptions"></div>
+              </div>
             </div>
             <div class="builder-panel">
               <h3>可以直接发送的剪辑要求</h3>
@@ -2555,7 +3445,7 @@
       <div class="wrap">
         <h3>一句话总结</h3>
         <p style="margin-top: 10px">
-          HyperFrames 对你来说不是“写代码工具”，而是一个让 Codex 或 Claude Code 调用更丰富画面效果的视频素材系统。你的关键能力不是会写 HTML，而是会说清楚：整体风格、重点动效、素材模块、转场方式。
+          HyperFrames 对你来说不是“写代码工具”，而是一个让 Codex、Claude Code 或未来 Agent 调用更丰富画面效果的视频生产系统。你的关键能力不是会写 HTML，而是会设定目标、确认信息层、要求可视化样板，并在 Agent 查清能力库后做审美取舍。
         </p>
       </div>
     </footer>
@@ -2726,6 +3616,65 @@
             when: "电影感、情绪推进、最后揭晓",
             say: "“这一幕做很慢的镜头推进，别让画面像静态 PPT。”",
             demo: '<div class="scene-a" style="animation: zoomOld 4s ease-in-out infinite">慢慢推进</div>'
+          }
+        ];
+
+        const captionStyles = [
+          {
+            key: "clean-bottom",
+            title: "干净底部字幕",
+            fit: "正常口播、访谈、讲解",
+            say: "“底部保留简洁白字字幕，加轻微阴影，不要遮脸。”",
+            demo: '<div class="caption-meta">CLEAN</div><div class="cap-clean">真正重要的是选择，而不是努力。</div>'
+          },
+          {
+            key: "xhs-emphasis",
+            title: "小红书重点字幕",
+            fit: "开头抓人、观点输出、爆点句",
+            say: "“重要句子做成小红书大字字幕，关键词用橙色高亮。”",
+            demo: '<div class="caption-meta">XHS</div><div class="cap-xhs"><span>别再开<em>盲盒</em>剪片</span><span>先定画面语言</span></div>'
+          },
+          {
+            key: "word-highlight",
+            title: "逐词高亮字幕",
+            fit: "口播同步、观点拆解、跟读感",
+            say: "“字幕按词逐个高亮，重要词稍微放大。”",
+            demo: '<div class="caption-meta">WORD</div><div class="cap-word"><span>风格</span><span>动效</span><span>素材</span><span>转场</span></div>'
+          },
+          {
+            key: "karaoke",
+            title: "卡拉 OK 字幕",
+            fit: "节奏型内容、音乐感、强同步",
+            say: "“用卡拉 OK 式逐词亮起，但不要太花。”",
+            demo: '<div class="caption-meta">KARAOKE</div><div class="cap-karaoke"><span>听懂</span><span>看见</span><span>记住</span></div>'
+          },
+          {
+            key: "marker",
+            title: "荧光笔字幕",
+            fit: "知识点、金句、结论强调",
+            say: "“关键词下面像荧光笔一样划过去，只强调一两个词。”",
+            demo: '<div class="caption-meta">MARKER</div><div class="cap-marker">这一步叫 <b>视觉确认</b></div>'
+          },
+          {
+            key: "bounce",
+            title: "弹跳字幕",
+            fit: "高能短视频、爆点词、轻松表达",
+            say: "“关键词弹出来，有一点弹跳，但不要整段都跳。”",
+            demo: '<div class="caption-meta">BOUNCE</div><div class="cap-bounce"><span>停</span><span>一</span><span>下</span></div>'
+          },
+          {
+            key: "typewriter",
+            title: "打字机字幕",
+            fit: "AI 感、教程、推理过程",
+            say: "“这句像被实时生成一样打出来，适合 AI 或推理段落。”",
+            demo: '<div class="caption-meta">TYPE</div><div class="cap-type">正在生成...</div>'
+          },
+          {
+            key: "cinematic-title",
+            title: "高级片名字卡",
+            fit: "开场、结尾、转折、情绪总结",
+            say: "“金句单独做成片名字卡，字少、留白大、慢慢淡入。”",
+            demo: '<div class="caption-meta">TITLE CARD</div><div class="cap-cinema"><span>有些答案</span><span>不是立刻出现的</span></div>'
           }
         ];
 
@@ -3035,11 +3984,20 @@
           style: styles[0],
           motion: motions[0],
           block: blocks[0],
-          transition: transitions[0]
+          transition: transitions[0],
+          caption: captionStyles[0]
         };
 
         const $ = (selector, root = document) => root.querySelector(selector);
         const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+        function scrollToSection(selector, behavior = "smooth") {
+          const target = $(selector);
+          if (!target) return;
+          const headerHeight = $(".topbar")?.getBoundingClientRect().height || 0;
+          const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 18;
+          window.scrollTo({ top: Math.max(0, top), behavior });
+        }
 
         function renderStyles() {
           $("#styleGrid").innerHTML = styles
@@ -3083,6 +4041,26 @@
                     <h3>${motion.title}</h3>
                     <p><b>什么时候用：</b>${motion.when}</p>
                     <p><b>你可以这样说：</b>${motion.say}</p>
+                  </div>
+                </article>`;
+            })
+            .join("");
+        }
+
+        function renderCaptionStyles() {
+          $("#captionStyleGrid").innerHTML = captionStyles
+            .map((caption) => {
+              return `
+                <article class="caption-style-card">
+                  <div class="caption-stage" aria-label="${caption.title} 预览">
+                    <span class="source-badge dark">示意小样</span>
+                    ${caption.demo}
+                  </div>
+                  <div class="caption-body">
+                    <h3>${caption.title}</h3>
+                    <p><b>适合：</b>${caption.fit}</p>
+                    <p><b>你可以这样说：</b>${caption.say}</p>
+                    <button class="copy-btn secondary" data-use-caption="${caption.key}">加入需求模板</button>
                   </div>
                 </article>`;
             })
@@ -3208,6 +4186,9 @@
           $("#builderTransitions").innerHTML = transitions
             .map((item, index) => `<button class="chip ${index === 0 ? "active" : ""}" data-builder="transition" data-value="${item.key}">${item.cn}</button>`)
             .join("");
+          $("#builderCaptions").innerHTML = captionStyles
+            .map((item, index) => `<button class="chip ${index === 0 ? "active" : ""}" data-builder="caption" data-value="${item.key}">${item.title}</button>`)
+            .join("");
           updatePrompt();
         }
 
@@ -3234,6 +4215,8 @@
         function updatePrompt() {
           const text = `请按这个方向帮我做/改 HyperFrames 视频：
 
+开工前请先读 HyperFrames 相关 skill、registry/examples、本地能力索引和本项目经验文档。不要直接完整制作；先给我信息层/页面规划表，再给 HTML storyboard、关键帧对比或 10-20 秒短样片。
+
 整体画面风格：${selections.style.cn}（官方引用名：${selections.style.en}）。
 画面感觉：${selections.style.prompt}
 
@@ -3246,10 +4229,15 @@
 转场方向：${selections.transition.title}（${selections.transition.cn}）。
 使用位置：只在开头、段落大切换或结尾用 1-2 次，不要每一页都用，避免喧宾夺主。
 
+中文字幕样式：${selections.caption.title}。
+具体说法：${selections.caption.say}
+
 请优先保证：
-1. 文字不要遮挡口播小窗或人物脸。
-2. 每一屏都要有轻微运动，不能像静态 PPT。
-3. 给我预览后，我会按“整体风格 / 重点动效 / 素材模块 / 转场方式”这四类给修改意见。`;
+1. 先判断视频形态：HTML/PPT 主画面 + 真人 PIP，还是真人主画面 + 动态信息层。
+2. 文字不要遮挡口播小窗或人物脸，底部要预留字幕安全区。
+3. 屏幕信息层不是字幕，每一屏只突出一个被提炼后的重点。
+4. 每一屏都要有轻微运动，不能像静态 PPT，但动效必须服务口播语义。
+5. 给我预览后，我会按“视频形态 / 内容规划 / 整体风格 / 重点动效 / 素材模块 / 转场方式 / 字幕样式”这几类给修改意见。`;
           $("#promptOutput").value = text;
         }
 
@@ -3258,6 +4246,7 @@
           if (type === "motion") selections.motion = motions.find((item) => item.key === value) || selections.motion;
           if (type === "block") selections.block = blocks.find((item) => item.key === value) || selections.block;
           if (type === "transition") selections.transition = transitions.find((item) => item.key === value) || selections.transition;
+          if (type === "caption") selections.caption = captionStyles.find((item) => item.key === value) || selections.caption;
           $$(`[data-builder="${type}"]`).forEach((button) => button.classList.toggle("active", button.dataset.value === value));
           updatePrompt();
         }
@@ -3290,12 +4279,20 @@
 
         function bindEvents() {
           document.addEventListener("click", (event) => {
+            const navLink = event.target.closest('.nav a[href^="#"]');
+            if (navLink) {
+              event.preventDefault();
+              const hash = navLink.getAttribute("href");
+              history.replaceState(null, "", hash);
+              scrollToSection(hash);
+            }
+
             const styleButton = event.target.closest("[data-pick-style]");
             if (styleButton) {
               const slug = styleButton.dataset.pickStyle;
               setBuilder("style", slug);
               $$(".style-card").forEach((card) => card.classList.toggle("selected", card.dataset.styleCard === slug));
-              $("#builder").scrollIntoView({ behavior: "smooth", block: "start" });
+              scrollToSection("#builder");
             }
 
             const builderChip = event.target.closest("[data-builder]");
@@ -3304,13 +4301,19 @@
             const blockButton = event.target.closest("[data-use-block]");
             if (blockButton) {
               setBuilder("block", blockButton.dataset.useBlock);
-              $("#builder").scrollIntoView({ behavior: "smooth", block: "start" });
+              scrollToSection("#builder");
             }
 
             const transitionButton = event.target.closest("[data-use-transition]");
             if (transitionButton) {
               setBuilder("transition", transitionButton.dataset.useTransition);
-              $("#builder").scrollIntoView({ behavior: "smooth", block: "start" });
+              scrollToSection("#builder");
+            }
+
+            const captionButton = event.target.closest("[data-use-caption]");
+            if (captionButton) {
+              setBuilder("caption", captionButton.dataset.useCaption);
+              scrollToSection("#builder");
             }
 
             const transitionFilter = event.target.closest("[data-transition-filter]");
@@ -3411,6 +4414,7 @@
             selections.motion = motions[0];
             selections.block = blocks[0];
             selections.transition = transitions[0];
+            selections.caption = captionStyles[0];
             renderBuilder();
           });
 
@@ -3485,6 +4489,7 @@
 
         renderStyles();
         renderMotions();
+        renderCaptionStyles();
         renderTransitions();
         renderBlocks();
         renderCatalog();
@@ -3496,7 +4501,7 @@
         setupTooltips();
         if (location.hash) {
           requestAnimationFrame(() => {
-            document.querySelector(location.hash)?.scrollIntoView({ block: "start" });
+            scrollToSection(location.hash, "auto");
           });
         }
       })();
